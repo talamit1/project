@@ -1,0 +1,8 @@
+;;if-start
+MAKE_LITERAL(T_INTEGER, 1)
+cmp rax,SOB_FALSE
+MAKE_LITERAL(T_INTEGER, 2)
+L_if_else_1:
+MAKE_LITERAL(T_INTEGER, 3)
+L_if_end_1:
+;end-if
