@@ -50,7 +50,10 @@
                   (begin
                     (code-gen test))
                     "cmp rax,SOB_FALSE\n"
+                    "je "
+                    else-label "\n"
                     (begin (code-gen thenExpr))
+                    "jmp " endIf-label "\n"
                     else-label ":\n"
                     (begin (code-gen elseExpr))
                     endIf-label ":\n"
@@ -66,7 +69,7 @@
     (lambda (constToGen) 
         
         (let ((const  (number->string (cadr constToGen))))
-            (debugPrint const)
+            
             (string-append
                 "MAKE_LITERAL(T_INTEGER, "    
                 const ")\n"
@@ -120,48 +123,92 @@
     )    
 )
 
-
-(define disectList
-    (lambda (constLst item) 
-        (debugPrint item)
-        (cond
-            ((or (number? item)    (char? item)  (string? item) (null? item))
-                `(,@constLst ,item))
-            ((symbol? item)  `(,@constLst ,(disectList '() (symbol->string item))))
-            ((pair? item)
-                `(,@constLst ,item ,@(disectList '() (car item)) ,@(disectList '() (cdr item)))
-                )
-           
+(define removedup
+    (lambda (lst item) 
+        
+        (if (and (member item lst) #t)
+            lst
+            (cons item lst)
             )
-    )    
+        )
+        
+    
+)
+
+(define (void? x)
+    (eq? x (void))
+)
+
+(define remove-primitive-helper
+    (lambda (resLst item) 
+        (if (or (boolean? item) (null? item) (void? item))
+            resLst
+            `(,@resLst ,item)
+            )
+        
+        )
+    
+    )
+
+
+(define remove-primitives
+    (lambda (lst) 
+        (fold-left remove-primitive-helper '() lst)
+    )
+)
+
+(define topo-helper
+    (lambda (lst item)
+    (cond
+        ((or (number? item) (char? item)(string? item) (null? item)(boolean? item))`(,@lst ,item))
+        ((symbol? item)
+          `(,@(topo-helper lst (symbol->string item)) ,item) )
+        ((pair? item)
+         `(,@(topo-helper lst (car item)) ,@(topo-helper '() (cdr item) ),item))
+         ((vector? item)
+          `(,@(apply append
+           (fold-left topo-helper '() 
+           (vector->list item))) ,item))
+         )        
+        
+    
+    )
 )
 
 
-(define topologi-sort
-    (lambda (lst)
-        (if (null? lst) '()
-        (fold-left disectList '() (reverse lst) )
-        
-        )
-
-        ))
-
-
-
-
+(define topological-sort
+    (lambda (constList)
+        (if (null? constList) '()
+            (fold-left topo-helper '() constList)
+                
+            
+        ) 
     
+    )
+)
+
+
+(define (remove-duplicates lst)
+     (fold-left removedup '() lst)    
+)
+
+
+
+
 (define createConstTable
     (lambda (AST)
+        
     
         (let* 
-            ((constants (getALLConstants (car AST)))    ;;get All constants in code
-            ;;((onstWithNoList  (fold-left disectLists '() constants)     ))
-            )
+            ((constants  (getALLConstants  AST))    ;;get All constants in code
+             (no-Dup-Constatns  (remove-primitives (remove-duplicates constants)))
+             (sortedConstLst    
+                (reverse (remove-duplicates (remove-primitives(topological-sort no-Dup-Constatns)))))
+             )
             
-            
+            (debugPrint sortedConstLst)
             #t
-           ;; (debugPrint constListWithNoDup)
-            ;;listAndVectorSplitConsts
+
             
             )
         
@@ -173,7 +220,7 @@
 
 (define code-gen
     (lambda (exprToGen) 
-        (debugPrint exprToGen)
+        
        (if  (not (list? exprToGen))
             (string-append (symbol->string exprToGen) "\n")
             (let ((tag (car exprToGen)))
@@ -210,13 +257,15 @@
 
 (define compile-scheme-file
     (lambda (scheme-file nasm-file) 
+        
         (let* 
             ((stringExp (file->list scheme-file))
-             (astExpression (pipeline stringExp))
+             (astExpression (car (pipeline stringExp)))
              (constTable (createConstTable astExpression))
              )
-             
-             (write-to-file nasm-file (code-gen (car astExpression)))
+             #t
+
+             ;;(write-to-file nasm-file (code-gen (car astExpression)))
 
              
             )
