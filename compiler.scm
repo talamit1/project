@@ -109,6 +109,26 @@
             (run)))))
 
 ;-----------------------------Constatn-table--------------------------------------
+;;get an exp and returns its type
+(define getConstType
+    (lambda (x)
+    (cond 
+        ((number? x) "Number")
+        ((list? x) "List")
+        ((pair? x) "Pair")
+        ((string? x) "String")
+        ((vector? x) "Vector")
+        ((symbol? x) "Symbol")
+        ((char? x) "Char")
+        ((boolean? x) "Boolean")
+        ((void? x) "Void")
+        ((improper? x) "improper")
+    (else "Failed"))
+    
+    ))
+
+
+
 
 (define getALLConstants
     (lambda (ASTExp)
@@ -200,19 +220,165 @@
         
     
         (let* 
-            ((constants  (getALLConstants  AST))    ;;get All constants in code
-             (no-Dup-Constatns  (remove-primitives (remove-duplicates constants)))
+            ((constants  (reverse (getALLConstants  AST)))    ;;get All constants in code
+             (no-Dup-Constatns (reverse  (remove-primitives (remove-duplicates constants))))
              (sortedConstLst    
                 (reverse (remove-duplicates (remove-primitives(topological-sort no-Dup-Constatns)))))
-             )
+            (constructed-table (prepareToWriteToAssembly sortedConstLst)) 
+            )
+            (display "constatns are: ")
+            ;;(debugPrint constants)
+            ;(debugPrint sortedConstLst)
+            (debugPrint constructed-table)
             
-            (debugPrint sortedConstLst)
             #t
 
             
             )
+    )
+)
+
+
+
+
+
+
+
+;;get as an inoput an entry of type (address representation const) and a string to get
+;; "addr" - returns address
+;; "rep" - returns representation
+;; "const" - returns the constants itself
+ (define getFromEntry
+    (lambda (fieldToGet entry) 
+        (cond ((equal? fieldToGet "addr") (car entry))
+              ((equal? fieldToGet "rep") (cadr entry))
+              ((equal? fieldToGet "const")  (cadr(cdr entry)))
+        
+        )
+    )
+)  
+(define create-const-pair-label (makeLabel "sobPair"))
+
+(define create-const-reg-label
+    (lambda (type val)
+        (cond 
+            ((number? val) (string-append "sob" type (number->string val)))
+            ((symbol? val) (string-append "sob" type (symbol->string val)))
+            (else (string-append "sob" type val))
+            
+        )
+    )
+)
+
+
+(define find-rep
+    (lambda (constLst repToFind) 
+        
         
 
+
+        (let (
+                (onlyWithRep     
+                    (filter (lambda (item) (eq? (getFromEntry "rep" item) repToFind)) constLst)
+                )
+             )
+             
+             
+             (if (eq? (length onlyWithRep) 0)
+                 #f
+                  (getFromEntry "addr" (car onlyWithRep))
+                    
+            )
+        )
+        
+    )
+    
+    
+)
+
+
+(define add-To-Constants-Table
+    (lambda (existingConsts item) 
+        ;;(debugPrint item)
+        
+        (cond 
+            ((pair? item) 
+                (if(not (find-rep existingConsts item))                
+                    ;;in case we hadn't already insert this list to the table
+                    (let*
+                        (
+                        (addedCdr (add-To-Constants-Table existingConsts (cdr item)))
+						(addedCar (add-To-Constants-Table existingConsts (car item))) 
+						(car-label (find-rep addedCar (car item)))
+						(cdr-label (find-rep addedCar (cdr item)))
+                        (label (create-const-pair-label))
+                        )
+                    
+                            
+                        (append addedCar (list (list label item (string-append label ": dq MAKE_LITERAL_PAIR(" car-label "," cdr-label ")"))))
+                    )
+
+                    ;;else
+                    existingConsts
+                
+                )
+            )
+
+
+
+
+
+            ((not (pair? item))
+             (if (not (find-rep existingConsts item))
+                (let*  
+                    ((constType (getConstType item))
+                     (label  (create-const-reg-label constType item)))
+                     (cond 
+                        ((void? item) existingConsts)
+                        ((boolean? item) existingConsts)
+                        ((number? item) (append existingConsts 
+                            (list (list label item (string-append label ": dq MAKE_LITERAL(T_INTEGER ," (number->string item) ")")))
+                        ))
+                        ((char? item) (append existingConsts 
+                            (list (list label item (string-append label ": dq MAKE_LITERAL(T_CHAR ," (number->string (char->integer item)) ")" )))
+                        ))
+                        ((symbol? item) (append existingConsts 
+                            (list (list label item (string-append label ": dq MAKE_LITERAL(T_SYMBOL ," (symbol->string item) ")")))
+                        ))
+                        ((string? item) (append existingConsts 
+                            (list (list label item (string-append label ": dq MAKE_LITERAL_STRING " (string-append "\""  item "\""))))
+                        ))
+                    )
+                    
+                
+                )                 
+                 
+                 existingConsts)
+                        
+            )
+        )
+
+
+    )
+    
+)
+
+
+
+(define prepareToWriteToAssembly
+    (lambda (const-lst)
+        
+        (let ((basics 
+            (list 
+                (list "sobNil" '() "sobNil: dq SOB_NIL")
+                (list "sobTrue" #t "sobTrue: dq SOB_TRUE")
+                (list "sobFalse" #f "sobFalse: dq SOB_FALSE") 
+                (list "sobVoid" 'void "sobVoid: dq SOB_VOID")
+            ))
+        )
+            
+         (fold-left add-To-Constants-Table basics const-lst)
+        )    
     )
 )
 
