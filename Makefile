@@ -6,3 +6,13 @@ dependencies:= (load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic
 %:
 
 	echo '$(dependencies) (compile-scheme-file "$(MAKECMDGOALS).scm" "$(MAKECMDGOALS).s")' | scheme -q 
+	nasm -f elf64 $(MAKECMDGOALS).s -o $(MAKECMDGOALS).o
+	gcc $(MAKECMDGOALS).o -o $(MAKECMDGOALS)
+
+
+#tell make that "clean" is not a file name!
+.PHONY: clean
+
+#Clean the build directory
+clean:
+	rm -f *.o foo.s foo
