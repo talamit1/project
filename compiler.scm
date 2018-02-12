@@ -2,7 +2,26 @@
     (load "tag-parser.scm");
     (load "sexpr-parser.scm");
     
+;;prologue
+    (define prologue
+    (string-append 
+    "%include \"scheme.s\"\n\n"
+    "section .data\n"
+    "start_of_data:\n\n"
+    )
+)
     
+;epilogue
+(define epilogue
+    (string-append 
+    "\tret\n\n\n"  
+    "section .data\n"
+    "newline:\n\t"
+        "db CHAR_NEWLINE, 0\n"
+    )
+)
+
+
     ;;---------------------------------code-genCases----------------------------
     
     
@@ -23,41 +42,31 @@
     
     ;;create a label to jump to for else if condition is not whitestand                
     (define create-else-label (makeLabel "L_if_else_"))
-    
-    ;;if (x) thenCode elseCode
-    ;;cmp(x)
-    ;; jz  "L_if_else_11"
-    ;; [[thenCode]]
-    ;; jpm L_if_end_11
-    ;; L_if_else_11
-    ;; [[elseCode]]
-    ;; L_if_end_11
-    ;;NOTE: 11 is random and it will be different identifier for each if-else statement
-    
+       
     ;;create a label to jump the end of the statement after we execute the "then" code                
     (define create-endIf-label (makeLabel "L_if_end_"))
     
     
     (define code-gen-if3
-        (lambda (if-expr)
+        (lambda (if-expr constTable)
             (let* ((else-label (create-else-label))
                   (endIf-label (create-endIf-label))
                   (test (cadr if-expr))
                   (thenExpr  (caddr if-expr))
                   (elseExpr  (cadddr if-expr)))
                 (string-append
-                    ";;if-start\n"
+                    "\t;if-start\n"
                       (begin
-                        (code-gen test))
-                        "cmp rax,SOB_FALSE\n"
-                        "je "
+                        (code-gen test constTable))
+                        "\tcmp rax,SOB_FALSE\n"
+                        "\tje "
                         else-label "\n"
-                        (begin (code-gen thenExpr))
-                        "jmp " endIf-label "\n"
-                        else-label ":\n"
-                        (begin (code-gen elseExpr))
-                        endIf-label ":\n"
-                        ";end-if" "\n"
+                        (begin (code-gen thenExpr constTable))
+                        "\tjmp " endIf-label "\n"
+                        "\t" else-label ":\n"
+                        (begin (code-gen elseExpr constTable))
+                        "\t"endIf-label ":\n"
+                        "\t;end-if" "\n"
                 )        
             )
         )    
@@ -72,7 +81,7 @@
     (define create-endOr-label (makeLabel "L_or_end_"))
     
     (define code-gen-or
-        (lambda (or-expr)
+        (lambda (or-expr constTable)
             (let* ((endOr-label (create-endOr-label))
                   (orLst1 (cadr or-expr))
                   (bool #f))
@@ -81,12 +90,12 @@
                                         bool 
                                         (if (null? (cdr orLst))
                                             (string-append
-                                                "\t"
-                                                (begin (code-gen (car orLst)))
+                                                
+                                                (begin (code-gen (car orLst) constTable))
                                                 "\t" endOr-label":\n\t")
                                             (string-append
-                                                "\t"
-                                                (begin (code-gen (car orLst)))
+                                                
+                                                (begin (code-gen (car orLst) constTable))
                                                 "\t"
                                                 "cmp rax,SOB_FALSE\n\t"
                                                 "jne "
@@ -100,38 +109,18 @@
     
     ;;---------------------------------code-gen-seq--------------------------------
     
-    ;;prologue
-    (define prologue
-        (string-append 
-        "%include \"scheme.s\"\n\n"
-        "section .data\n"
-        "start_of_data:\n"
+    (define code-gen-seq
+        (lambda (seq-expr constTable) 
+            (debugPrint seq-expr)
+             (fold-left string-append "" (map (lambda (x) (code-gen x constTable)) (cadr seq-expr)))
         )
     )
-    
-    
-    (define epilogue
-        (string-append 
-        "\tret\n\n\n"  
-        "section .data\n"
-        "newline:\n\t"
-           "db CHAR_NEWLINE, 0\n"
-        )
-    )
-    
-    
+
     ;;---------------------------------code-gen-const--------------------------------
     (define code-gen-const
-        (lambda (constToGen) 
-            
-            (let ((const  (number->string (cadr constToGen))))
-                
-                (string-append
-                    "MAKE_LITERAL(T_INTEGER, "    
-                    const ")\n"
-                )
-                
-            )   
+        (lambda (constToGen constTable) 
+                    (string-append
+                        "\tmov rax, qword[" (find-rep constTable (cadr constToGen)) "]\n")                  
         )
     )
     
@@ -335,7 +324,7 @@
     
             (let (
                     (onlyWithRep     
-                        (filter (lambda (item) (eq? (getFromEntry "rep" item) repToFind)) constLst)
+                        (filter (lambda (item) (equal? (getFromEntry "rep" item) repToFind)) constLst)
                     )
                  )
                  
@@ -371,7 +360,7 @@
                             )
                         
                                 
-                            (append addedCar (list (list label item (string-append label ": dq MAKE_LITERAL_PAIR(" car-label "," cdr-label ")"))))
+                            (append addedCar (list (list label item (string-append label ":\n\tdq MAKE_LITERAL_PAIR(" car-label "," cdr-label ")\n"))))
                         )
     
                         ;;else
@@ -437,22 +426,6 @@
             )    
         )
     )
-    
-
-(define make-string
-    (lambda (lst)
-        (fold-right string-append "" lst)
-    )
-)
-
-(define only-rep-list
-   (lambda (constLst)
-        (map (lambda (x) (car (reverse x))) constLst)
-   ) 
-)
-
-
-
 
     ;----------------------------Free-Var-Table-----------------------------;
     
@@ -517,23 +490,38 @@
         )
     )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+       
+
+    (define make-string
+        (lambda (lst)
+            (fold-right string-append "" lst)
+        )
+    )
+
+    (define only-rep-list
+        (lambda (constLst)
+            (map (lambda (x) (car (reverse x))) constLst)
+        ) 
+    )
     
     (define code-gen
-        (lambda (exprToGen) 
+        (lambda (exprToGen constTable) 
             
            (if  (not (list? exprToGen))
                 (string-append (symbol->string exprToGen) "\n")
                 (let ((tag (car exprToGen)))
-                    (debugPrint tag)
-                    (cond 
-                        ((equal? tag `if3) (code-gen-if3 exprToGen))
-                        ((equal? tag `const) (code-gen-const exprToGen))
-                        ((equal? tag `or) (code-gen-or exprToGen))
-                    )
-                
+                     (debugPrint tag)
+                     (cond 
+                        ((equal? tag `const) (code-gen-const exprToGen constTable))
+                        ((equal? tag `if3) (code-gen-if3 exprToGen constTable))
+                        ((equal? tag `or) (code-gen-or exprToGen constTable))
+                        ((equal? tag `seq) (code-gen-seq exprToGen constTable))
+                     )
                 ) 
            ) 
-        
         )
     )
     
@@ -546,10 +534,10 @@
                     (display constantTable file)
                     ;;(display free-vars file)
                     ;;(display cisc-symbols file)
-                    (display (string-append  "section .bss\n"
+                    (display (string-append  "\nsection .bss\n"
                         "extern exit, printf, scanf\n"
                         ;"global main, write_sob, write_sob_if_not_void\n"
-                        "section .text\n"
+                        "section .text\n\n"
                         "main:\n"
                         "\tnop\n") file)
                     (display contents file)   ;here is the code gen output
@@ -566,20 +554,19 @@
                 ((stringExp (file->list scheme-file))
                  (astExpression  (pipeline stringExp))
                  (constTable (createConstTable astExpression))
-                 (consTableRep (only-rep-list constTable))
+                 (consTableRep (make-string (only-rep-list constTable)))
                  (freeTable (createFreeTable astExpression))
                  (codeEpilogue (string-append "\tpush RAX\n"
                     "\tcall write_sob\n"
                     "\tadd rsp,8\n"
                     "\tmov rdi, newline\n\tmov rax, 0\n\tcall printf\n"
                     ))
-                 (generated-code (make-string (map (lambda(x) (string-append "\n\n" (code-gen x) codeEpilogue "\n\n")) astExpression)))
+                 (generated-code (make-string (map (lambda(x) (string-append "\n\n" (code-gen x constTable) codeEpilogue "\n\n")) astExpression)))
                  )
-                 (display "\n\n\n")
-                 (debugPrint consTableRep)
+                 ;(display "\n\n\n")
+                 ;(debugPrint consTableRep)
                  ;(debugPrint  (cddar constTable))
-                 (display "\n\n\n")
-                 ;(debugPrint (car generated-code))
+                 ;(display "\n\n\n")
                  (write-to-file nasm-file generated-code consTableRep)
     
                  
