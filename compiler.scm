@@ -1,6 +1,6 @@
 (load "semantic-analyzer.scm");
-    (load "tag-parser.scm");
-    (load "sexpr-parser.scm");
+(load "tag-parser.scm");
+(load "sexpr-parser.scm");
     
 ;;prologue
     (define prologue
@@ -14,16 +14,14 @@
 ;epilogue
 (define epilogue
     (string-append 
-    "\tret\n\n\n"  
+    "\tret\n\n"  
     "section .data\n"
     "newline:\n\t"
         "db CHAR_NEWLINE, 0\n"
     )
 )
 
-
     ;;---------------------------------code-genCases----------------------------
-    
     
     ;;makes a labels with ascending number
     ;;string->procedure ()=>string
@@ -37,7 +35,24 @@
                 (lambda ()
                    (set! n (+ n 1))
                     (string-append str (number->string n))))))
-    
+
+
+    ;;---------------------------------code-gen-define--------------------------------
+    (define code-gen-define 
+        (lambda (def-expr constTable freeTable)
+            (let ((defExp (caddr def-expr))
+                  (defVarLabel (find-rep freeTable (cadadr def-expr)))) 
+                    
+                  (string-append 
+                   "\t; ******start-define*****\n" 
+                   (code-gen defExp constTable freeTable)
+                   "\tmov [" defVarLabel "], rax\n"
+                   "\tmov rax, SOB_VOID\n\t; ******end-define*****\n")
+            )
+        )
+    )
+
+
     ;;---------------------------------code-gen-if3--------------------------------
     
     ;;create a label to jump to for else if condition is not whitestand                
@@ -48,7 +63,7 @@
     
     
     (define code-gen-if3
-        (lambda (if-expr constTable)
+        (lambda (if-expr constTable freeTable)
             (let* ((else-label (create-else-label))
                   (endIf-label (create-endIf-label))
                   (test (cadr if-expr))
@@ -57,31 +72,29 @@
                 (string-append
                     "\t;if-start\n"
                       (begin
-                        (code-gen test constTable))
+                        (code-gen test constTable freeTable))
                         "\tcmp rax,SOB_FALSE\n"
                         "\tje "
                         else-label "\n"
-                        (begin (code-gen thenExpr constTable))
+                        (begin (code-gen thenExpr constTable freeTable))
                         "\tjmp " endIf-label "\n"
                         "\t" else-label ":\n"
-                        (begin (code-gen elseExpr constTable))
+                        (begin (code-gen elseExpr constTable freeTable))
                         "\t"endIf-label ":\n"
                         "\t;end-if" "\n"
                 )        
             )
         )    
-        
     )
     
-    
-    
+
     ;;---------------------------------code-gen-or--------------------------------
     
     ;;create a label to jump the end of the or statment               
     (define create-endOr-label (makeLabel "L_or_end_"))
     
     (define code-gen-or
-        (lambda (or-expr constTable)
+        (lambda (or-expr constTable freeTable)
             (let* ((endOr-label (create-endOr-label))
                   (orLst1 (cadr or-expr))
                   (bool #f))
@@ -91,11 +104,10 @@
                                         (if (null? (cdr orLst))
                                             (string-append
                                                 
-                                                (begin (code-gen (car orLst) constTable))
+                                                (begin (code-gen (car orLst) constTable freeTable))
                                                 "\t" endOr-label":\n\t")
                                             (string-append
-                                                
-                                                (begin (code-gen (car orLst) constTable))
+                                                (begin (code-gen (car orLst) constTable freeTable))
                                                 "\t"
                                                 "cmp rax,SOB_FALSE\n\t"
                                                 "jne "
@@ -110,20 +122,19 @@
     ;;---------------------------------code-gen-seq--------------------------------
     
     (define code-gen-seq
-        (lambda (seq-expr constTable) 
+        (lambda (seq-expr constTable freeTable) 
             (debugPrint seq-expr)
-             (fold-left string-append "" (map (lambda (x) (code-gen x constTable)) (cadr seq-expr)))
+             (fold-left string-append "" (map (lambda (x) (code-gen x constTable freeTable)) (cadr seq-expr)))
         )
     )
 
     ;;---------------------------------code-gen-const--------------------------------
     (define code-gen-const
-        (lambda (constToGen constTable) 
+        (lambda (constToGen constTable freeTable) 
                     (string-append
                         "\tmov rax, qword[" (find-rep constTable (cadr constToGen)) "]\n")                  
         )
     )
-    
     
     
     (define pipeline
@@ -157,24 +168,23 @@
     ;;get an exp and returns its type
     (define getConstType
         (lambda (x)
-        (cond 
-            ((number? x) "Number")
-            ((list? x) "List")
-            ((pair? x) "Pair")
-            ((string? x) "String")
-            ((vector? x) "Vector")
-            ((symbol? x) "Symbol")
-            ((char? x) "Char")
-            ((boolean? x) "Boolean")
-            ((void? x) "Void")
-            ((improper? x) "improper")
-        (else "Failed"))
+            (cond 
+                ((number? x) "Number")
+                ((list? x) "List")
+                ((pair? x) "Pair")
+                ((string? x) "String")
+                ((vector? x) "Vector")
+                ((symbol? x) "Symbol")
+                ((char? x) "Char")
+                ((boolean? x) "Boolean")
+                ((void? x) "Void")
+                ((improper? x) "improper")
+            (else "Failed"))
         
-        ))
+        )
+    )
     
-    
-    
-    
+ 
     (define getALLConstants
         (lambda (ASTExp)
             (cond  ((null? ASTExp) '())
@@ -182,8 +192,7 @@
                    ((and (pair? ASTExp) (equal? 'const (car ASTExp))) (list (cadr ASTExp)))
                    (else
                     `(,@(getALLConstants (cdr ASTExp)) ,@(getALLConstants (car ASTExp)))
-                    )
-                
+                    )   
             )
         )    
     )
@@ -195,15 +204,14 @@
                 lst
                 (cons item lst)
                 )
-            )
-            
-        
+            ) 
     )
     
     (define (void? x)
         (eq? x (void))
     )
-    
+
+
     (define remove-primitive-helper
         (lambda (resLst item) 
             (if (or (boolean? item) (null? item) (void? item))
@@ -234,9 +242,7 @@
               `(,@(apply append
                (fold-left topo-helper '() 
                (vector->list item))) ,item))
-             )        
-            
-        
+             )         
         )
     )
     
@@ -244,11 +250,8 @@
     (define topological-sort
         (lambda (constList)
             (if (null? constList) '()
-                (fold-left topo-helper '() constList)
-                    
-                
-            ) 
-        
+                (fold-left topo-helper '() constList)            
+            )   
         )
     )
     
@@ -257,13 +260,9 @@
          (fold-left removedup '() lst)    
     )
     
-    
-    
-    
+      
     (define createConstTable
-        (lambda (AST)
-            
-        
+        (lambda (AST)      
             (let* 
                 ((constants  (reverse (getALLConstants  AST)))    ;;get All constants in code
                  (no-Dup-Constatns (reverse  (remove-primitives (remove-duplicates constants))))
@@ -271,24 +270,17 @@
                     (reverse (remove-duplicates (remove-primitives(topological-sort no-Dup-Constatns)))))
                 (constructed-table (prepareToWriteToAssembly sortedConstLst)) 
                 )
-                (display "constatns are: ")
+                ;(display "constatns are: ")
                 ;;(debugPrint constants)
                 ;(debugPrint sortedConstLst)
-                (debugPrint constructed-table)
-                
-                constructed-table
-    
-                
+                ;(debugPrint constructed-table)
+                constructed-table             
                 )
         )
     )
     
     
-    
-    
-    
-    
-    
+
     ;;get as an inoput an entry of type (address representation const) and a string to get
     ;; "addr" - returns address
     ;; "rep" - returns representation
@@ -318,34 +310,23 @@
     
     (define find-rep
         (lambda (constLst repToFind) 
-            
-            
-    
-    
             (let (
                     (onlyWithRep     
                         (filter (lambda (item) (equal? (getFromEntry "rep" item) repToFind)) constLst)
                     )
                  )
-                 
-                 
+                                 
                  (if (eq? (length onlyWithRep) 0)
                      #f
-                      (getFromEntry "addr" (car onlyWithRep))
-                        
+                      (getFromEntry "addr" (car onlyWithRep))                       
                 )
-            )
-            
+            )          
         )
-        
-        
     )
-    
-    
+     
     (define add-To-Constants-Table
         (lambda (existingConsts item) 
             ;;(debugPrint item)
-            
             (cond 
                 ((pair? item) 
                     (if(not (find-rep existingConsts item))                
@@ -357,22 +338,15 @@
                             (car-label (find-rep addedCar (car item)))
                             (cdr-label (find-rep addedCar (cdr item)))
                             (label (create-const-pair-label))
-                            )
-                        
-                                
+                            )                                                     
                             (append addedCar (list (list label item (string-append label ":\n\tdq MAKE_LITERAL_PAIR(" car-label "," cdr-label ")\n"))))
                         )
-    
                         ;;else
                         existingConsts
-                    
                     )
                 )
     
-    
-    
-    
-    
+
                 ((not (pair? item))
                  (if (not (find-rep existingConsts item))
                     (let*  
@@ -393,22 +367,13 @@
                             ((string? item) (append existingConsts 
                                 (list (list label item (string-append label ":\n\tdq MAKE_LITERAL_STRING " (string-append "\""  item "\"")))) 
                             ))
-                        )
-                        
-                     
+                        )                    
                     )                 
-                     
-                     existingConsts)
-                            
+                     existingConsts)          
                 )
             )
-    
-    
         )
-        
     )
-    
-    
     
     (define prepareToWriteToAssembly
         (lambda (const-lst)
@@ -427,7 +392,7 @@
         )
     )
 
-    ;----------------------------Free-Var-Table-----------------------------;
+;----------------------------Free-Var-Table-----------------------------;
     
     (define getAllFreeVars
         (lambda (ASTExp)
@@ -437,22 +402,20 @@
                    (else
                     `(,@(getAllFreeVars (cdr ASTExp)) ,@(getAllFreeVars (car ASTExp)))
                     )
-                
             )
         )    
     )
     
-    
     ;make initial free vars table with elemntary procedures
     (define basicFree
                 (list 
-                    (list "free_plus" '+ "free_plus: dq SOB_UNDEFINED")
-                    (list "free_minus" '- "free_minus: dq SOB_UNDEFINED")
-                    (list "free_shave" '= "free_shave: dq SOB_UNDEFINED")
-                    (list "free_mul" '* "free_mul: dq SOB_UNDEFINED")
-                    (list "free_div" '/ "free_div: dq SOB_UNDEFINED")
-                    (list "free_grater" '> "free_grater: dq SOB_UNDEFINED")
-                    (list "free_smaller" '> "free_smaller: dq SOB_UNDEFINED")  
+                    (list "free_plus" '+ "free_plus:\n\tdq SOB_UNDEFINED\n")
+                    (list "free_minus" '- "free_minus:\n\tdq SOB_UNDEFINED\n")
+                    (list "free_shave" '= "free_shave:\n\tdq SOB_UNDEFINED\n")
+                    (list "free_mul" '* "free_mul:\n\tdq SOB_UNDEFINED\n")
+                    (list "free_div" '/ "free_div:\n\tdq SOB_UNDEFINED\n")
+                    (list "free_grater" '> "free_grater:\n\tdq SOB_UNDEFINED\n")
+                    (list "free_smaller" '> "free_smaller:\n\tdq SOB_UNDEFINED\n")  
                 )
             )
     
@@ -460,7 +423,7 @@
         (lambda (x)
             (let ((label (string-append "free_" (symbol->string x))))
             
-                (list  label x (string-append label ": dq SOB_UNDEFINED"))
+                (list label x (string-append label ":\n\tdq SOB_UNDEFINED\n"))
             )
         )
     )
@@ -491,10 +454,6 @@
     )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-       
-
     (define make-string
         (lambda (lst)
             (fold-right string-append "" lst)
@@ -508,17 +467,17 @@
     )
     
     (define code-gen
-        (lambda (exprToGen constTable) 
-            
+        (lambda (exprToGen constTable freeTable) 
            (if  (not (list? exprToGen))
                 (string-append (symbol->string exprToGen) "\n")
                 (let ((tag (car exprToGen)))
                      (debugPrint tag)
                      (cond 
-                        ((equal? tag `const) (code-gen-const exprToGen constTable))
-                        ((equal? tag `if3) (code-gen-if3 exprToGen constTable))
-                        ((equal? tag `or) (code-gen-or exprToGen constTable))
-                        ((equal? tag `seq) (code-gen-seq exprToGen constTable))
+                        ((equal? tag `const) (code-gen-const exprToGen constTable freeTable))
+                        ((equal? tag `if3) (code-gen-if3 exprToGen constTable freeTable))
+                        ((equal? tag `or) (code-gen-or exprToGen constTable freeTable))
+                        ((equal? tag `seq) (code-gen-seq exprToGen constTable freeTable))
+                        ((equal? tag `define) (code-gen-define exprToGen constTable freeTable))
                      )
                 ) 
            ) 
@@ -527,12 +486,12 @@
     
     
     (define write-to-file
-        (lambda (file-name contents constantTable )
+        (lambda (file-name contents constantTable freeTable)
             ;;(print "@@in write " lst)
             (let* ((file (open-output-file file-name 'truncate)))
                     (display prologue file)
                     (display constantTable file)
-                    ;;(display free-vars file)
+                    (display freeTable file)
                     ;;(display cisc-symbols file)
                     (display (string-append  "\nsection .bss\n"
                         "extern exit, printf, scanf\n"
@@ -540,36 +499,34 @@
                         "section .text\n\n"
                         "main:\n"
                         "\tnop\n") file)
-                    (display contents file)   ;here is the code gen output
-                    ;(display "\nret\n" file)
+                    (display contents file)  ;here is the code gen output
                     (display epilogue file)  ;here comes all the implementation fot all global functions
                     (close-output-port file))
-            ))
+        )
+    )
     
     
     (define compile-scheme-file
-        (lambda (scheme-file nasm-file) 
-            
+        (lambda (scheme-file nasm-file)    
             (let* 
                 ((stringExp (file->list scheme-file))
                  (astExpression  (pipeline stringExp))
                  (constTable (createConstTable astExpression))
                  (consTableRep (make-string (only-rep-list constTable)))
                  (freeTable (createFreeTable astExpression))
+                 (freeTableRep (make-string (only-rep-list freeTable)))
                  (codeEpilogue (string-append "\tpush RAX\n"
                     "\tcall write_sob\n"
                     "\tadd rsp,8\n"
                     "\tmov rdi, newline\n\tmov rax, 0\n\tcall printf\n"
                     ))
-                 (generated-code (make-string (map (lambda(x) (string-append "\n\n" (code-gen x constTable) codeEpilogue "\n\n")) astExpression)))
+                 (generated-code (make-string (map (lambda(x) (string-append "\n\n" (code-gen x constTable freeTable) codeEpilogue "\n\n")) astExpression)))
                  )
-                 ;(display "\n\n\n")
-                 ;(debugPrint consTableRep)
+                 (display "\n\n\n")
+                 (debugPrint astExpression)
                  ;(debugPrint  (cddar constTable))
-                 ;(display "\n\n\n")
-                 (write-to-file nasm-file generated-code consTableRep)
-    
-                 
+                 (display "\n\n\n")
+                 (write-to-file nasm-file generated-code consTableRep freeTableRep)  
                 )
         )
     )
