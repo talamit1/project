@@ -287,7 +287,7 @@
                 ;(debugPrint sortedConstLst)
                 (debugPrint constructed-table)
                 
-                #t
+                constructed-table
     
                 
                 )
@@ -393,16 +393,16 @@
                             ((void? item) existingConsts)
                             ((boolean? item) existingConsts)
                             ((number? item) (append existingConsts 
-                                (list (list label item (string-append label ": dq MAKE_LITERAL(T_INTEGER ," (number->string item) ")")))
+                                (list (list label item (string-append label ":\n\tdq MAKE_LITERAL(T_INTEGER ," (number->string item) ")\n")))
                             ))
                             ((char? item) (append existingConsts 
-                                (list (list label item (string-append label ": dq MAKE_LITERAL(T_CHAR ," (number->string (char->integer item)) ")" )))
+                                (list (list label item (string-append label ":\n\tdq MAKE_LITERAL(T_CHAR ," (number->string (char->integer item)) ")\n" )))
                             ))
                             ((symbol? item) (append existingConsts 
-                                (list (list label item (string-append label ": dq MAKE_LITERAL(T_SYMBOL ," (symbol->string item) ")")))
+                                (list (list label item (string-append label ":\n\tdq MAKE_LITERAL(T_SYMBOL ," (symbol->string item) ")\n")))
                             ))
                             ((string? item) (append existingConsts 
-                                (list (list label item (string-append label ": dq MAKE_LITERAL_STRING " (string-append "\""  item "\""))))
+                                (list (list label item (string-append label ":\n\tdq MAKE_LITERAL_STRING " (string-append "\""  item "\"")))) 
                             ))
                         )
                         
@@ -426,10 +426,10 @@
             
             (let ((basics 
                 (list 
-                    (list "sobNil" '() "sobNil: dq SOB_NIL")
-                    (list "sobTrue" #t "sobTrue: dq SOB_TRUE")
-                    (list "sobFalse" #f "sobFalse: dq SOB_FALSE") 
-                    (list "sobVoid" 'void "sobVoid: dq SOB_VOID")
+                    (list "sobNil" '() "sobNil:\n\tdq SOB_NIL\n")
+                    (list "sobTrue" #t "sobTrue:\n\tdq SOB_TRUE\n")
+                    (list "sobFalse" #f "sobFalse:\n\tdq SOB_FALSE\n") 
+                    (list "sobVoid" 'void "sobVoid:\n\tdq SOB_VOID\n")
                 ))
             )
                 
@@ -438,6 +438,22 @@
         )
     )
     
+
+(define make-string
+    (lambda (lst)
+        (fold-right string-append "" lst)
+    )
+)
+
+(define only-rep-list
+   (lambda (constLst)
+        (map (lambda (x) (car (reverse x))) constLst)
+   ) 
+)
+
+
+
+
     ;----------------------------Free-Var-Table-----------------------------;
     
     (define getAllFreeVars
@@ -500,12 +516,7 @@
                 )
         )
     )
-    
-    (define make-string
-        (lambda (lst)
-            (fold-right string-append "" lst)
-        )
-    )
+
     
     (define code-gen
         (lambda (exprToGen) 
@@ -532,13 +543,7 @@
             ;;(print "@@in write " lst)
             (let* ((file (open-output-file file-name 'truncate)))
                     (display prologue file)
-                    (display (string-append "sobNumber1:\n" 
-                        "\tdq MAKE_LITERAL(T_INTEGER ,1)\n"
-                        "sobNumber2:\n" 
-                        "\tdq MAKE_LITERAL(T_INTEGER ,2)\n"
-                        "sobNumber3:\n" 
-                        "\tdq MAKE_LITERAL(T_INTEGER ,3)\n") file)
-                    ;;(display constantTable file)
+                    (display constantTable file)
                     ;;(display free-vars file)
                     ;;(display cisc-symbols file)
                     (display (string-append  "section .bss\n"
@@ -561,6 +566,7 @@
                 ((stringExp (file->list scheme-file))
                  (astExpression  (pipeline stringExp))
                  (constTable (createConstTable astExpression))
+                 (consTableRep (only-rep-list constTable))
                  (freeTable (createFreeTable astExpression))
                  (codeEpilogue (string-append "\tpush RAX\n"
                     "\tcall write_sob\n"
@@ -569,8 +575,12 @@
                     ))
                  (generated-code (make-string (map (lambda(x) (string-append "\n\n" (code-gen x) codeEpilogue "\n\n")) astExpression)))
                  )
+                 (display "\n\n\n")
+                 (debugPrint consTableRep)
+                 ;(debugPrint  (cddar constTable))
+                 (display "\n\n\n")
                  ;(debugPrint (car generated-code))
-                 (write-to-file nasm-file generated-code constTable)
+                 (write-to-file nasm-file generated-code consTableRep)
     
                  
                 )

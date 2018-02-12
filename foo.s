@@ -2,12 +2,22 @@
 
 section .data
 start_of_data:
-sobNumber1:
+sobNil:
+	dq SOB_NIL
+ sobTrue:
+	dq SOB_TRUE
+ sobFalse:
+	dq SOB_FALSE
+ sobVoid:
+	dq SOB_VOID
+ sobNumber1:
 	dq MAKE_LITERAL(T_INTEGER ,1)
-sobNumber2:
+ sobNumber2:
 	dq MAKE_LITERAL(T_INTEGER ,2)
-sobNumber3:
+ sobNumber3:
 	dq MAKE_LITERAL(T_INTEGER ,3)
+ sobNumber4:
+	dq MAKE_LITERAL(T_INTEGER ,4)
 section .bss
 extern exit, printf, scanf
 section .text
@@ -23,6 +33,9 @@ main:
 	cmp rax,SOB_FALSE
 	jne L_or_end_1
 	MAKE_LITERAL(T_INTEGER, 3)
+	cmp rax,SOB_FALSE
+	jne L_or_end_1
+	MAKE_LITERAL(T_INTEGER, 4)
 	L_or_end_1:
 	;or-end
 	push RAX
