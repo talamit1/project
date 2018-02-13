@@ -654,10 +654,7 @@
         (if  (not (list? exprToGen))
             (string-append (symbol->string exprToGen) "\n")
             (let ((tag (car exprToGen)))
-<<<<<<< HEAD
                     ;(debugPrint "Tall")
-=======
->>>>>>> 0c910866df72ddd4cbbfb6a2d9606c6357aa8ed1
                     (cond 
                     ((equal? tag `const) (code-gen-const exprToGen constTable freeTable))
                     ((equal? tag `if3) (code-gen-if3 exprToGen constTable freeTable))
