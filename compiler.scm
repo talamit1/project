@@ -273,7 +273,9 @@
     (lambda (lst item)
     ;(debugPrint item)
     (cond
-        ((or (number? item) (char? item)(string? item) (null? item)(boolean? item) (symbol? item) )`(,@lst ,item))
+        ((or (integer? item) (char? item)(string? item) (null? item)(boolean? item) (symbol? item) )`(,@lst ,item))
+        ((and (rational? item) (not (integer? item))
+                `(,@lst ,(numerator item) ,(denominator item) ,item )))
         ((pair? item)
             `(,@(topo-helper lst (car item)) ,@(topo-helper '() (cdr item) ),item))
             ((vector? item)
@@ -308,8 +310,8 @@
             (constructed-table (prepareToWriteToAssembly sortedConstLst)) 
             )
             (display "constatns are: ")
-            ;;(debugPrint constants)
-            ;(debugPrint sortedConstLst)
+            ;(debugPrint constants)
+            (debugPrint sortedConstLst)
             (debugPrint constructed-table)
             constructed-table             
             )
@@ -334,14 +336,19 @@
 (define create-const-pair-label (makeLabel "sobPair"))
 (define create-string-label (makeLabel "sobstr"))
 (define create-vec-label (makeLabel "sobvec"))
+(define create-int-label (makeLabel "sobInt"))
+(define create-frac-label (makeLabel "sobFrac"))
 
 (define create-const-reg-label
     (lambda (type val)
+        (integer? val)
         (cond 
-            ((number? val) (string-append "sob" type (number->string val)))
+            ((integer? val) (create-int-label))
             ((symbol? val) (string-append "sob" type (symbol->string val)))
             ((string? val)   (create-string-label))
             ((vector? val)   (create-vec-label))
+            ((and(rational? val)(not (integer? val)))   (create-frac-label))
+            
             (else (string-append "sob" type val))
             
         )
@@ -496,7 +503,7 @@
                         (cond 
                         ((void? item) existingConsts)
                         ((boolean? item) existingConsts)
-                        ((number? item) (append existingConsts 
+                        ((integer? item) (append existingConsts 
                             (list (list label item (string-append label ":\n\tdq MAKE_LITERAL(T_INTEGER ," (number->string item) ")\n")))
                             
                         ))
@@ -510,6 +517,13 @@
                             (append existingConsts 
                             (list (list label item (string-append label ":\n\tdq MAKE_LITERAL_STRING " (string-append (splitString item)  "\n"  )))) 
                         ))
+                        ((and (rational? item) (not (integer? item)))     
+                            (let ((numer  (find-rep existingConsts (numerator item)))
+                                  (denom  (find-rep existingConsts (denominator item))))
+                                  (append existingConsts
+                                  (list (list label item (string-append label ":\n\tdq MAKE_LITERAL(T_FRACTION ," numer "," denom  ")\n"))))
+                            )
+                        )
                         ((vector? item)
                         (append existingConsts
                         (list (list label item (string-append label ":\n\tdq MAKE_LITERAL_VECTOR " (string-append  (make-vec-rep item existingConsts)  "\n"  )))) 
@@ -618,7 +632,6 @@
         (if  (not (list? exprToGen))
             (string-append (symbol->string exprToGen) "\n")
             (let ((tag (car exprToGen)))
-                    (debugPrint "Tall")
                     (cond 
                     ((equal? tag `const) (code-gen-const exprToGen constTable freeTable))
                     ((equal? tag `if3) (code-gen-if3 exprToGen constTable freeTable))
