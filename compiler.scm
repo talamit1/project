@@ -4,21 +4,21 @@
 
 ;;prologue
 (define prologue
-(string-append 
-"%include \"scheme.s\"\n\n"
-"section .data\n"
-"start_of_data:\n\n"
-)
+    (string-append 
+        "%include \"scheme.s\"\n\n"
+        "section .data\n"
+        "start_of_data:\n\n"
+    )
 )
 
 ;epilogue
 (define epilogue
-(string-append 
-"\tret\n\n"  
-"section .data\n"
-"newline:\n\t"
-    "db CHAR_NEWLINE, 0\n"
-)
+    (string-append 
+        "\tret\n\n"  
+        "section .data\n"
+        "newline:\n\t"
+            "db CHAR_NEWLINE, 0\n"
+    )
 )
 
 ;;---------------------------------code-genCases----------------------------
@@ -45,27 +45,50 @@
 ; )
 
 
+;;---------------------------------code-gen-lambda-simple--------------------------------
+ 
 
-;;---------------------------------code-gen-applic--------------------------------
-;  (define code-gen-lambda-simple
+
+; (define new-env
+;     (lambda ()
+    
+;         (string-append "\t;****new-env****\n"
+;                        "mov"
+            
+            
+;             )    
+;     )    
+; )
+
+
+
+
+
+
+
+; (define code-gen-lambda-simple
 ;      (lambda (lambdaSimple-expr constTable freeTable)
+;         (let ( (body ()   )
+;              ) (param ()   )     
+;         )
 ;      )
-
 ;  )
 
 ;;---------------------------------code-gen-pvar--------------------------------
 (define code-gen-pvar
     (lambda (pvar-expr constTable freeTable)
-    (string-append "\tmov rax, qword[rbp + (4 + " (number->string (caddr pvar-expr)) ")*8]\n")
+    (string-append "\t;****pvar start****\n" "\tmov rax, qword[rbp + (4 + " (number->string (caddr pvar-expr)) ")*8]\n" "\t;****pvar end****\n")
     )
 )
 
 ;;---------------------------------code-gen-bvar--------------------------------
 (define code-gen-bvar
     (lambda (bvar-expr constTable freeTable)
-    (string-append "mov rax, qword[rbp + (2*8)]" ;env
-                    "mov rax, qword[rax + " (number->string (caddr pvar-expr))   "*8]\n"   ;env[ma]
-                    "mov rax, qword[rax + " (number->string (cadddr pvar-expr))  "*8]\n")  ;env [ma][mi]
+    (string-append  "\t;****bvar start****\n"
+                    "\tmov rax, qword[rbp + (2*8)]" ;env
+                    "\tmov rax, qword[rax + " (number->string (caddr pvar-expr))   "*8]\n"   ;env[ma]
+                    "\tmov rax, qword[rax + " (number->string (cadddr pvar-expr))  "*8]\n"   ;env [ma][mi]
+                    "\t;****bvar end****\n")  
     )
 )
 
@@ -73,7 +96,6 @@
 ;  (define code-gen-set
 ;      (lambda (set-expr constTable freeTable)
 ;      )
-
 ;  )
 
 ;;---------------------------------code-gen-define--------------------------------
@@ -273,7 +295,9 @@
     (lambda (lst item)
     ;(debugPrint item)
     (cond
-        ((or (number? item) (char? item)(string? item) (null? item)(boolean? item) (symbol? item) )`(,@lst ,item))
+        ((or (integer? item) (char? item)(string? item) (null? item)(boolean? item) (symbol? item) )`(,@lst ,item))
+        ((and (rational? item) (not (integer? item))
+                `(,@lst ,(numerator item) ,(denominator item) ,item )))
         ((pair? item)
             `(,@(topo-helper lst (car item)) ,@(topo-helper '() (cdr item) ),item))
             ((vector? item)
@@ -308,8 +332,8 @@
             (constructed-table (prepareToWriteToAssembly sortedConstLst)) 
             )
             (display "constatns are: ")
-            ;;(debugPrint constants)
-            ;(debugPrint sortedConstLst)
+            ;(debugPrint constants)
+            (debugPrint sortedConstLst)
             (debugPrint constructed-table)
             constructed-table             
             )
@@ -334,14 +358,19 @@
 (define create-const-pair-label (makeLabel "sobPair"))
 (define create-string-label (makeLabel "sobstr"))
 (define create-vec-label (makeLabel "sobvec"))
+(define create-int-label (makeLabel "sobInt"))
+(define create-frac-label (makeLabel "sobFrac"))
 
 (define create-const-reg-label
     (lambda (type val)
+        (integer? val)
         (cond 
-            ((number? val) (string-append "sob" type (number->string val)))
+            ((integer? val) (create-int-label))
             ((symbol? val) (string-append "sob" type (symbol->string val)))
             ((string? val)   (create-string-label))
             ((vector? val)   (create-vec-label))
+            ((and(rational? val)(not (integer? val)))   (create-frac-label))
+            
             (else (string-append "sob" type val))
             
         )
@@ -496,7 +525,7 @@
                         (cond 
                         ((void? item) existingConsts)
                         ((boolean? item) existingConsts)
-                        ((number? item) (append existingConsts 
+                        ((integer? item) (append existingConsts 
                             (list (list label item (string-append label ":\n\tdq MAKE_LITERAL(T_INTEGER ," (number->string item) ")\n")))
                             
                         ))
@@ -510,6 +539,13 @@
                             (append existingConsts 
                             (list (list label item (string-append label ":\n\tdq MAKE_LITERAL_STRING " (string-append (splitString item)  "\n"  )))) 
                         ))
+                        ((and (rational? item) (not (integer? item)))     
+                            (let ((numer  (find-rep existingConsts (numerator item)))
+                                  (denom  (find-rep existingConsts (denominator item))))
+                                  (append existingConsts
+                                  (list (list label item (string-append label ":\n\tdq MAKE_LITERAL(T_FRACTION ," numer "," denom  ")\n"))))
+                            )
+                        )
                         ((vector? item)
                         (append existingConsts
                         (list (list label item (string-append label ":\n\tdq MAKE_LITERAL_VECTOR " (string-append  (make-vec-rep item existingConsts)  "\n"  )))) 
@@ -618,7 +654,10 @@
         (if  (not (list? exprToGen))
             (string-append (symbol->string exprToGen) "\n")
             (let ((tag (car exprToGen)))
-                    (debugPrint "Tall")
+<<<<<<< HEAD
+                    ;(debugPrint "Tall")
+=======
+>>>>>>> 0c910866df72ddd4cbbfb6a2d9606c6357aa8ed1
                     (cond 
                     ((equal? tag `const) (code-gen-const exprToGen constTable freeTable))
                     ((equal? tag `if3) (code-gen-if3 exprToGen constTable freeTable))
@@ -627,7 +666,7 @@
                     ;((equal? tag `set) (code-gen-set exprToGen constTable freeTable))
                     ((equal? tag `pvar) (code-gen-pvar exprToGen constTable freeTable))
                     ((equal? tag `bvar) (code-gen-bvar exprToGen constTable freeTable))
-                    ;((equal? tag `lambda-simple) (code-gen-lambda-simple exprToGen constTable freeTable))
+                    ((equal? tag `lambda-simple) (code-gen-lambda-simple exprToGen constTable freeTable))
                     ;((equal? tag `lambda-opt) (code-gen-lambda-opt exprToGen constTable freeTable))
                     ;((equal? tag `lambda-var) (code-gen-lambda-var exprToGen constTable freeTable))
                     )
@@ -648,8 +687,14 @@
                 (display (string-append  "\nsection .bss\n"
                     "extern exit, printf, scanf\n"
                     ;"global main, write_sob, write_sob_if_not_void\n"
-                    "section .text\n\n"
+                    "malloc_pointer:\n"
+                    "resb 1\n"
+                    "start_of_malloc:\n"
+                    "resb 2^30\n"
+                    "\nsection .text\n\n"
                     "main:\n"
+                    "\tmov rax, malloc_pointer\n"
+                    "\tmov qword [rax], start_of_malloc\n"
                     "\tnop\n") file)
                 (display contents file)  ;here is the code gen output
                 (display epilogue file)  ;here comes all the implementation fot all global functions
