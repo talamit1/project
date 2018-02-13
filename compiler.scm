@@ -271,16 +271,14 @@
     
     (define topo-helper
         (lambda (lst item)
+        ;(debugPrint item)
         (cond
-            ((or (number? item) (char? item)(string? item) (null? item)(boolean? item))`(,@lst ,item))
-            ((symbol? item)
-              `(,@(topo-helper lst (symbol->string item)) ,item) )
+            ((or (number? item) (char? item)(string? item) (null? item)(boolean? item) (symbol? item) )`(,@lst ,item))
             ((pair? item)
              `(,@(topo-helper lst (car item)) ,@(topo-helper '() (cdr item) ),item))
              ((vector? item)
-              `(,@(apply append
-               (fold-left topo-helper '() 
-               (vector->list item))) ,item))
+              `(,@lst ,@(fold-left topo-helper '() 
+               (vector->list item)) ,item))
              )         
         )
     )
@@ -309,10 +307,10 @@
                     (reverse (remove-duplicates (remove-primitives(topological-sort no-Dup-Constatns)))))
                 (constructed-table (prepareToWriteToAssembly sortedConstLst)) 
                 )
-                ;(display "constatns are: ")
+                (display "constatns are: ")
                 ;;(debugPrint constants)
                 ;(debugPrint sortedConstLst)
-                ;(debugPrint constructed-table)
+                (debugPrint constructed-table)
                 constructed-table             
                 )
         )
@@ -334,12 +332,16 @@
         )
     )  
     (define create-const-pair-label (makeLabel "sobPair"))
+    (define create-string-label (makeLabel "sobstr"))
+    (define create-vec-label (makeLabel "sobvec"))
     
     (define create-const-reg-label
         (lambda (type val)
             (cond 
                 ((number? val) (string-append "sob" type (number->string val)))
                 ((symbol? val) (string-append "sob" type (symbol->string val)))
+                ((string? val)   (create-string-label))
+                ((vector? val)   (create-vec-label))
                 (else (string-append "sob" type val))
                 
             )
@@ -348,13 +350,14 @@
     
     
     (define find-rep
-        (lambda (constLst repToFind) 
+        (lambda (constLst repToFind)
+            
             (let (
                     (onlyWithRep     
                         (filter (lambda (item) (equal? (getFromEntry "rep" item) repToFind)) constLst)
                     )
                  )
-                                 
+                                  
                  (if (eq? (length onlyWithRep) 0)
                      #f
                       (getFromEntry "addr" (car onlyWithRep))                       
@@ -362,7 +365,104 @@
             )          
         )
     )
-     
+    
+    
+    (define getFromTable
+        (lambda (lst)
+            (lambda (item) 
+                (find-rep lst item)
+            )
+        )
+    )
+    
+    (define prepareString
+        (lambda (str item) 
+            (string-append str ", " item  )
+            )
+    )
+    (define make-vec-rep
+        (lambda (vector table) 
+            (let* ((vecLst (vector->list vector))
+                   (getFromCurrLst (getFromTable table))
+                   (itemRepList  (map getFromCurrLst vecLst))
+                   (first (car itemRepList))
+                   (rest  (cdr itemRepList))
+                  ) 
+                  
+                  (string-append first (fold-left prepareString "" rest))
+            )
+        )
+    )
+    (define specialChar?
+        (lambda (char) 
+            (cond
+                ((equal? char #\space) "CHAR_SPACE" )
+                ((equal? char #\newline) "CHAR_NEWLINE")
+                ((equal? char #\return) "CHAR_RETURN")
+                ((equal? char #\nul) "CHAR_NUL")
+                ((equal? char #\tab) "CHAR_TAB")
+                ((equal? char #\page) "CHAR_PAGE")
+                (else #f)
+                
+                )
+            )
+        )
+
+        (define spec?
+            (lambda (str) 
+                (or
+                    (equal? str  "CHAR_SPACE" )
+                    (equal? str  "CHAR_NEWLINE")
+                    (equal? str  "CHAR_RETURN")
+                    (equal? str  "CHAR_NUL")
+                    (equal? str  "CHAR_TAB")
+                    (equal? str  "CHAR_PAGE")
+                )
+            )
+        )
+
+    (define splitSpecialChars
+        (lambda (lst ch) 
+            (let ((isSpecialspechialChar (specialChar? ch)))
+                (if isSpecialspechialChar
+                    `(,isSpecialspechialChar ,@lst)
+                    (if(null? lst)
+                        `(,(string-append "" (make-string 1 ch))  ,@lst)
+                        (if (spec? (car lst))
+                            `(,(make-string 1 ch) ,@lst)
+                            `(,(string-append (car lst) (make-string 1 ch)) ,@(cdr lst))
+                        )
+                    )
+                )
+            )
+        )
+    )
+
+    (define addQuotes
+        (lambda (stringToBeQuoted) 
+            (if (spec? stringToBeQuoted)
+                stringToBeQuoted
+                (string-append "\"" stringToBeQuoted "\"")
+            )
+        )
+    )
+    (define splitString 
+        (lambda (str) 
+            (let* ((lstStr (string->list str))
+                (splitedList (reverse (fold-left splitSpecialChars `() lstStr )))
+                (withQuotes (map addQuotes splitedList))
+                (first (car withQuotes))
+                (rest  (cdr withQuotes))
+                )
+
+                (string-append first (fold-left prepareString "" rest))
+                                 
+
+            )
+            )
+        )
+
+
     (define add-To-Constants-Table
         (lambda (existingConsts item) 
             ;;(debugPrint item)
@@ -385,9 +485,10 @@
                     )
                 )
     
-
+                                
                 ((not (pair? item))
                  (if (not (find-rep existingConsts item))
+                  
                     (let*  
                         ((constType (getConstType item))
                          (label  (create-const-reg-label constType item)))
@@ -396,18 +497,24 @@
                             ((boolean? item) existingConsts)
                             ((number? item) (append existingConsts 
                                 (list (list label item (string-append label ":\n\tdq MAKE_LITERAL(T_INTEGER ," (number->string item) ")\n")))
+                                
                             ))
                             ((char? item) (append existingConsts 
                                 (list (list label item (string-append label ":\n\tdq MAKE_LITERAL(T_CHAR ," (number->string (char->integer item)) ")\n" )))
                             ))
-                            ((symbol? item) (append existingConsts 
+                            ((symbol? item)  (append existingConsts 
                                 (list (list label item (string-append label ":\n\tdq MAKE_LITERAL(T_SYMBOL ," (symbol->string item) ")\n")))
                             ))
-                            ((string? item) (append existingConsts 
-                                (list (list label item (string-append label ":\n\tdq MAKE_LITERAL_STRING " (string-append "\""  item "\"")))) 
+                            ((string? item) 
+                                (append existingConsts 
+                                (list (list label  (string-append ":\n\tdq MAKE_LITERAL_STRING " (string-append (splitString item)  "\n"  )))) 
+                            ))
+                            ((vector? item)
+                            (append existingConsts
+                            (list (list label  (string-append  ":\n\tdq MAKE_LITERAL_VECTOR " (string-append  (make-vec-rep item existingConsts)  "\n"  )))) 
                             ))
                         )                    
-                    )                 
+                    )                
                      existingConsts)          
                 )
             )
@@ -425,7 +532,7 @@
                     (list "sobVoid" 'void "sobVoid:\n\tdq SOB_VOID\n")
                 ))
             )
-                
+              (debugPrint const-lst)  
              (fold-left add-To-Constants-Table basics const-lst)
             )    
         )
@@ -485,15 +592,15 @@
                  (constructed-free-table (build-free-vars-table no-Dup-Free))
                  (free-table (mergeFree basicFree constructed-free-table))
                 )
-                (display "free are: ")
-                (debugPrint free-table)     
+                ;(display "free are: ")
+                ;(debugPrint free-table)     
                 free-table      
                 )
         )
     )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    (define make-string
+    (define convert-to-string
         (lambda (lst)
             (fold-right string-append "" lst)
         )
@@ -510,7 +617,7 @@
            (if  (not (list? exprToGen))
                 (string-append (symbol->string exprToGen) "\n")
                 (let ((tag (car exprToGen)))
-                     (debugPrint tag)
+                     (debugPrint "Tall")
                      (cond 
                         ((equal? tag `const) (code-gen-const exprToGen constTable freeTable))
                         ((equal? tag `if3) (code-gen-if3 exprToGen constTable freeTable))
@@ -556,21 +663,21 @@
                 ((stringExp (file->list scheme-file))
                  (astExpression  (pipeline stringExp))
                  (constTable (createConstTable astExpression))
-                 (consTableRep (make-string (only-rep-list constTable)))
+                 (consTableRep (convert-to-string (only-rep-list constTable)))
                  (freeTable (createFreeTable astExpression))
-                 (freeTableRep (make-string (only-rep-list freeTable)))
+                 (freeTableRep (convert-to-string (only-rep-list freeTable)))
                  (codeEpilogue (string-append "\tpush RAX\n"
                     "\tcall write_sob\n"
                     "\tadd rsp,8\n"
                     "\tmov rdi, newline\n\tmov rax, 0\n\tcall printf\n"
                     ))
-                 (generated-code (make-string (map (lambda(x) (string-append "\n\n" (code-gen x constTable freeTable) codeEpilogue "\n\n")) astExpression)))
+                 ;(generated-code (convert-to-string (map (lambda(x) (string-append "\n\n" (code-gen x constTable freeTable) codeEpilogue "\n\n")) astExpression)))
                  )
                  (display "\n\n\n")
-                 (debugPrint astExpression)
+                 ;(debugPrint astExpression)
                  ;(debugPrint  (cddar constTable))
                  (display "\n\n\n")
-                 (write-to-file nasm-file generated-code consTableRep freeTableRep)  
+                 ;(write-to-file nasm-file generated-code consTableRep freeTableRep)  
                 )
         )
     )
