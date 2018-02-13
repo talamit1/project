@@ -37,6 +37,45 @@
                     (string-append str (number->string n))))))
 
 
+
+;;---------------------------------code-gen-applic--------------------------------
+; (define code-gen-applic
+;     (lambda (applic-expr constTable freeTable)
+;     )
+; )
+
+
+
+;;---------------------------------code-gen-applic--------------------------------
+;  (define code-gen-lambda-simple
+;      (lambda (lambdaSimple-expr constTable freeTable)
+;      )
+
+;  )
+
+;;---------------------------------code-gen-pvar--------------------------------
+ (define code-gen-pvar
+     (lambda (pvar-expr constTable freeTable)
+        (string-append "\tmov rax, qword[rbp + (4 + " (number->string (caddr pvar-expr)) ")*8]\n")
+     )
+ )
+
+;;---------------------------------code-gen-bvar--------------------------------
+ (define code-gen-bvar
+     (lambda (bvar-expr constTable freeTable)
+        (string-append "mov rax, qword[rbp + (2*8)]" ;env
+                       "mov rax, qword[rax + " (number->string (caddr pvar-expr))   "*8]\n"   ;env[ma]
+                       "mov rax, qword[rax + " (number->string (cadddr pvar-expr))  "*8]\n")  ;env [ma][mi]
+     )
+ )
+
+;;---------------------------------code-gen-set!--------------------------------
+;  (define code-gen-set
+;      (lambda (set-expr constTable freeTable)
+;      )
+
+;  )
+
     ;;---------------------------------code-gen-define--------------------------------
     (define code-gen-define 
         (lambda (def-expr constTable freeTable)
@@ -477,7 +516,12 @@
                         ((equal? tag `if3) (code-gen-if3 exprToGen constTable freeTable))
                         ((equal? tag `or) (code-gen-or exprToGen constTable freeTable))
                         ((equal? tag `seq) (code-gen-seq exprToGen constTable freeTable))
-                        ((equal? tag `define) (code-gen-define exprToGen constTable freeTable))
+                        ;((equal? tag `set) (code-gen-set exprToGen constTable freeTable))
+                        ((equal? tag `pvar) (code-gen-pvar exprToGen constTable freeTable))
+                        ((equal? tag `bvar) (code-gen-bvar exprToGen constTable freeTable))
+                        ;((equal? tag `lambda-simple) (code-gen-lambda-simple exprToGen constTable freeTable))
+                        ;((equal? tag `lambda-opt) (code-gen-lambda-opt exprToGen constTable freeTable))
+                        ;((equal? tag `lambda-var) (code-gen-lambda-var exprToGen constTable freeTable))
                      )
                 ) 
            ) 
@@ -492,7 +536,7 @@
                     (display prologue file)
                     (display constantTable file)
                     (display freeTable file)
-                    ;;(display cisc-symbols file)
+                    ;;(display symbolsTable file)
                     (display (string-append  "\nsection .bss\n"
                         "extern exit, printf, scanf\n"
                         ;"global main, write_sob, write_sob_if_not_void\n"

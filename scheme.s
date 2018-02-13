@@ -77,6 +77,13 @@
 	pop rax
 %endmacro
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;tal
+%macro my_malloc 1
+	mov rbx, malloc_pointer
+	mov rax, qword [rbx]
+	add qword [rbx], %1
+%endmacro
+
 %macro CLOSURE_ENV 1
 	DATA_UPPER %1
 	add %1, start_of_data
