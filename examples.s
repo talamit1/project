@@ -47,8 +47,6 @@
 
 %define MAKE_LITERAL_PAIR(car, cdr) (((((car - start_of_data) << ((WORD_SIZE - TYPE_BITS) >> 1)) | (cdr - start_of_data)) << TYPE_BITS) | T_PAIR)
 
-%define MAKE_LITERAL_FRACTION(numerator, denominator) (( (numerator << 34) | (denominator << TYPE_BITS)) | T_FRACTION)    
-
 %macro CAR 1
 	DATA_UPPER %1
 	add %1, start_of_data
@@ -61,25 +59,14 @@
 	mov %1, qword [%1]
 %endmacro
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;   tal     ;;;;;;;;;;;;;;
-%macro my_malloc 1
-	push rbx
-	mov rbx, malloc_pointer
-	mov rax, qword [rbx]
-	add qword [rbx], %1
-	pop rbx
-%endmacro
-
 ;;; MAKE_LITERAL_CLOSURE target, env, code
 %macro MAKE_LITERAL_CLOSURE 3
 	push rax
 	push rbx
 	mov rax, %1
-	mov qword [rax], %2
-	sub qword [rax], start_of_malloc
+	mov qword [rax], %2 - start_of_data
 	shl qword [rax], ((WORD_SIZE - TYPE_BITS) >> 1)
-	lea rbx, [rax + 8]
-	sub rbx, start_of_data
+	lea rbx, [rax + 8 - start_of_data]
 	or qword [rax], rbx
 	shl qword [rax], TYPE_BITS
 	or qword [rax], T_CLOSURE
@@ -90,7 +77,7 @@
 
 %macro CLOSURE_ENV 1
 	DATA_UPPER %1
-	add %1, start_of_malloc
+	add %1, start_of_data
 %endmacro
 
 %macro CLOSURE_CODE 1
@@ -158,14 +145,83 @@
 %define SOB_TRUE MAKE_LITERAL(T_BOOL, 1)
 %define SOB_NIL MAKE_LITERAL(T_NIL, 0)
 
-
-
+section .data
+start_of_data:
+sobNil:
+	dq SOB_NIL
+sobInt3:
+	dq MAKE_LITERAL(T_INTEGER, 3)
+sobInt2:
+	dq MAKE_LITERAL(T_INTEGER, 2)
+sobInt1:
+	dq MAKE_LITERAL(T_INTEGER, 1)
+sobPair3N:
+	dq MAKE_LITERAL_PAIR(sobInt3, sobNil)
+sobPair23N:
+	dq MAKE_LITERAL_PAIR(sobInt2, sobPair3N)
+sobPair123N:
+	dq MAKE_LITERAL_PAIR(sobInt1, sobPair23N)
+sobPair12:
+	dq MAKE_LITERAL_PAIR(sobInt1, sobInt2)
+sobPairA:
+	dq MAKE_LITERAL_PAIR(sobPair12, sobNil)
+sobPairB:
+	dq MAKE_LITERAL_PAIR(sobPair123N, sobPairA)
+sobPairC:
+	dq MAKE_LITERAL_PAIR(sobInt3, sobPair12)
+sobPairNN:
+	dq MAKE_LITERAL_PAIR(sobNil, sobNil)
+sob1:
+	dq MAKE_LITERAL_PAIR(sobInt1, sobPairNN)
+sob2:
+	dq MAKE_LITERAL_PAIR(sobInt2, sob1)
+sob3:
+	dq MAKE_LITERAL_PAIR(sob2, sob2)
+sob4:
+	dq MAKE_LITERAL_PAIR(sobInt1, sobNil)
+sob5:
+	dq MAKE_LITERAL_PAIR(sob4, sobNil)
+sob6:
+	dq 0, 0 		; closure: wait for later!
+sob7:
+	MAKE_LITERAL_STRING "Mayer", CHAR_NEWLINE, "Goldberg", CHAR_TAB, "<=="
+sob8:
+	dq MAKE_LITERAL_PAIR(sob7, sobPairB)
+sobVec1:
+	MAKE_LITERAL_VECTOR sob8, sob7, sobInt1, sobInt2, sobInt3, sob4 
 
 section .bss
 
 extern exit, printf, scanf
 global main, write_sob, write_sob_if_not_void
 section .text
+main:
+	nop
+	; setup a fake closure just to see how it prints:
+	mov rax, 0x1234
+	sal rax, 30
+	or rax, sob6 + 8 - start_of_data
+	sal rax, 4
+	or rax, T_CLOSURE
+	mov qword [sob6], rax
+	mov qword [sob6 + 8], main
+
+	; printing the fake closure:	
+	push qword [sob6]
+	call write_sob_if_not_void
+	add rsp, 1*8
+
+	; printing a vector:
+	push qword [sobVec1]
+	call write_sob_if_not_void
+	add rsp, 1*8
+
+	; will void print??
+	push qword SOB_VOID
+	call write_sob_if_not_void
+	add rsp, 1*8
+	
+	ret
 
 write_sob_undefined:
 	push rbp
