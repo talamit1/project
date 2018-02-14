@@ -76,7 +76,7 @@
                 "\tpush rbx \n"
                 "\tCLOSURE_CODE rax \t\t ;rax holds closure code\n"
                 "\tcall rax \t\t ;call the function\n"
-                ;"\tadd rsp, 32\n"
+                "\tadd rsp,3*8\n"
             )
         )
     )
@@ -91,12 +91,13 @@
     (lambda (major)        
         (string-append "\t;****new-env****\n"
                        "\tmy_malloc 8\n"
-                       "\tmov rbx, rax\t\t;rbx holds pointer to cl object\n"
+                       "\tmov r14, rax\t\t;rbx holds pointer to cl object\n"
                        "\tmy_malloc (8*" (number->string (+ major 1)) ")\n"
-                       "\tmov rcx, rax\t\t;rcx holds pointer to move previous env\n"
-                       "\tmov rax, arg_count \n"
-                       "\timul rax,8 \n"
-                       "\tmy_malloc rax\t\t;rax holds pointer to the extension\n\n"
+                       "\tmov rbx, rax\t\t;rcx holds pointer to move previous env\n"
+                       "\tmov r9, arg_count \n"
+                       "\timul r9,8 \n"
+                       "\tmy_malloc r9\t\t;rax holds pointer to the extension\n\n"
+                       "\tmov rcx, rax\n"
          )    
     )
 )
@@ -119,28 +120,32 @@
                             "\tmov r8, arg_count\t\t;r8 holds arg count\n"
                             "\tmov r9, 0\t\t;r9 holds index for loop guard\n"
                             "\t" copy-param-loop-label ":\n"
-                            "\tcmp r9, r8\n"
+                            "\tcmp r8, r9\n"
                             "\tje " copy-param-end-label "\n"
-                            "\tmov r15, An(r9)\n"
-                            "\tmov [rax+ 8*r9], r15\t\t;move old params to rax\n"
-                            "\tinc r9 \t\t ;increase counter \n"
+                            "\tmov r10, An(r9)\n"
+                            "\tmov qword[rcx + 8*r9], r10\t\t;move old params to rax\n"
+                            "\tadd r9,1 \t\t ;increase counter \n"
+
+
                             "\tjmp " copy-param-loop-label "\n"
                             "\t" copy-param-end-label ":\n"
-                            "\tmov [rcx],rax\t\t;add params from stack to extention\n"
-                            "\txor r9, r9\t\t;'i' counter\n"
-                            "\tmov r8, " (number->string major) "\n"
-                            "\tmov r11,1\t\t; 'j' counter\n"
-                            "\tmov r10, env\t\t;r10 holds env from stack\n"
+                            "\tmov qword[rbx],rcx\t\t;add params from stack to extention\n"
+                            
+                            "\tmov r8, 0\t\t;'i' counter\n"
+                            "\tmov r9,1\t\t; 'j' counter\n"
+                            "\tmov r10, " (number->string major) "\n"
+                            "\tmov r11, env\t\t;r11 holds env from stack\n"
+                            
                             "\t" copy-env-loop-label ":\n"
-                            "\tcmp r9,r8\t\t; check if copy ends\n"
-                            "\tje " copy-env-end-label "\n"
-                            "\tmov r12, [r10 + 8*r9]\t\t;r12 holds env[i]\n"
-                            "\tmov [rcx + 8*r11], r12\t\t;copy env[i] to rcx\n"
-                            "\tinc r11\t\t;inc j\n"
+                            "\tcmp r8,r10\t\t; check if copy ends\n"
+                            "\tje " copy-env-end-label"\n"
+                            "\tmov r12, qword[r11 + 8*r8]\t\t;r12 holds env[i]\n"
+                            "\tmov qword[rbx + 8*r9], r12\t\t;copy env[i] to rbx\n"
+                            "\tinc r8\t\t;inc j\n"
                             "\tinc r9\t\t;inc i\n"
                             "\tjmp " copy-env-loop-label "\n"
                             "\t" copy-env-end-label ":\n"
-                            "\t;finished copy env and params - stores in rcx\n"
+                            
             )
         )
     )        
@@ -168,8 +173,12 @@
                 (make-new-env major) 
                 (copy-param-and-env major)
                 "\tmov r15," bodyLabel "\n"
-                "\tMAKE_LITERAL_CLOSURE rbx,rcx,r15\t\t ;Create closure on targer\n"
-                "\t mov rax,[rbx]\t\t    ;put the closure in rax\n"
+                
+
+                "\tmov rax,r14\n"
+
+                "\tMAKE_LITERAL_CLOSURE rax,rbx,r15\t\t ;Create closure on targer\n"
+                "\tmov rax,qword[rax]\t\t    ;put the closure in rax\n"
                 "\tjmp " exitLabel "\n"
                 bodyLabel ":\n"
                 "\tpush rbp\n"
@@ -178,10 +187,8 @@
                 "\tleave\n"
                 "\tret \n"
                 exitLabel ":\n"
-
                 )
         )
-
     )
  )
 
@@ -218,7 +225,7 @@
                 (string-append 
                 "\t; ******start-define*****\n" 
                 (code-gen defExp constTable freeTable major)
-                "\tmov [" defVarLabel "], rax\n"
+                "\tmov qword[" defVarLabel "], rax\n"
                 "\tmov rax, SOB_VOID\n\t; ******end-define*****\n")
         )
     )
@@ -797,7 +804,7 @@
                     "extern exit, printf, scanf\n"
                     ;"global main, write_sob, write_sob_if_not_void\n"
                     "malloc_pointer:\n"
-                    "resb 1\n"
+                    "resq 1\n"
                     "start_of_malloc:\n"
                     "resb 2^30\n"
                     "\nsection .text\n\n"
