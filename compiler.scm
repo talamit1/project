@@ -15,7 +15,7 @@
 (define epilogue
     (string-append 
         "\t epilouge: \n"
-        "\tpop rbp\n"
+        "\tleave\n"
         "\tpop r12\n"
         "\tpop r13\n"
         "\tpop r14\n"
@@ -76,6 +76,7 @@
                 "\tpush rbx \n"
                 "\tCLOSURE_CODE rax \t\t ;rax holds closure code\n"
                 "\tcall rax \t\t ;call the function\n"
+                ;"\tadd rsp, 32\n"
             )
         )
     )
@@ -173,7 +174,7 @@
                 "\tpush rbp\n"
                 "\tmov rbp,rsp\n"
                 (code-gen lambda-body constTable freeTable (+ major 1))
-                "\tleave \n"
+                "\tleave\n"
                 "\tret \n"
                 exitLabel ":\n"
 

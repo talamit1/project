@@ -1,11 +1,7 @@
 ;(begin #f 2 "rrr rrr r" 3/5)
-(or 3 2 88 4)
+;(or 3 2 88 4)
 ;(define x (or 1 2))
 ;(if 1 "asaasda s    das" 3)
 ;(begin 1 5 3)
 ;(set! x 5)
-(lambda (x) 
-    (lambda (z)
-     1 2 3 
-    )
-)
+((lambda (x y r) (lambda ( a b c) y) 1 2 3 ) 4 5 6) 
