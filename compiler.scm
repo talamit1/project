@@ -123,6 +123,7 @@
                             "\tje " copy-param-end-label "\n"
                             "\tmov r15, An(r9)\n"
                             "\tmov [rax+ 8*r9], r15\t\t;move old params to rax\n"
+                            "\tinc r9 \t\t ;increase counter \n"
                             "\tjmp " copy-param-loop-label "\n"
                             "\t" copy-param-end-label ":\n"
                             "\tmov [rcx],rax\t\t;add params from stack to extention\n"
@@ -195,9 +196,9 @@
 (define code-gen-bvar
     (lambda (bvar-expr constTable freeTable major)
     (string-append  "\t;****bvar start****\n"
-                    "\tmov rax, qword[rbp + (2*8)]" ;env
-                    "\tmov rax, qword[rax + " (number->string (caddr pvar-expr))   "*8]\n"   ;env[ma]
-                    "\tmov rax, qword[rax + " (number->string (cadddr pvar-expr))  "*8]\n"   ;env [ma][mi]
+                    "\tmov rax, qword[rbp + (2*8)]\n" ;env
+                    "\tmov rax, qword[rax + " (number->string (caddr bvar-expr))   "*8]\n"   ;env[ma]
+                    "\tmov rax, qword[rax + " (number->string (cadddr bvar-expr))  "*8]\n"   ;env [ma][mi]
                     "\t;****bvar end****\n")  
     )
 )
