@@ -47,7 +47,7 @@
 
 %define MAKE_LITERAL_PAIR(car, cdr) (((((car - start_of_data) << ((WORD_SIZE - TYPE_BITS) >> 1)) | (cdr - start_of_data)) << TYPE_BITS) | T_PAIR)
 
-%define MAKE_LITERAL_FRACTION(numerator, denominator) (( (numerator << 34) | (denominator << TYPE_BITS)) | T_FRACTION)    
+%define MAKE_LITERAL_FRACTION(numerator, denominator) (((((numerator - start_of_data) << ((WORD_SIZE - TYPE_BITS) >> 1)) | (denominator - start_of_data)) << TYPE_BITS) | T_FRACTION)
 
 %macro CAR 1
 	DATA_UPPER %1
@@ -61,6 +61,18 @@
 	mov %1, qword [%1]
 %endmacro
 
+%macro NUMERATOR 1
+	DATA_UPPER %1
+	add %1, start_of_data
+	mov %1, qword [%1]
+%endmacro
+
+%macro DENOMINATOR 1
+	DATA_LOWER %1
+	add %1, start_of_data
+	mov %1, qword [%1]
+%endmacro
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;   tal     ;;;;;;;;;;;;;;
 %macro my_malloc 1
 	push rbx
@@ -69,6 +81,44 @@
 	add qword [rbx], %1
 	pop rbx
 %endmacro
+
+
+
+%define param(offset) qword [rbp + offset]
+
+struc scmframe
+.old_rbp: resq 1
+.ret_addr: resq 1
+.env: resq 1
+.arg_count: resq 1
+.A0: resq 1
+.A1: resq 1
+.A2: resq 1
+.A3: resq 1
+.A4: resq 1
+.A5: resq 1
+endstruc
+
+%define old_rbp param(scmframe.old_rbp)
+%define ret_addr param(scmframe.ret_addr)
+%define env param(scmframe.env)
+%define arg_count param(scmframe.arg_count)
+%define A0 param(scmframe.A0)
+%define A1 param(scmframe.A1)
+%define A2 param(scmframe.A2)
+%define A3 param(scmframe.A3)
+%define A4 param(scmframe.A4)
+%define A5 param(scmframe.A5)
+%define An(n) qword [rbp + 8 * (n + 4)]
+
+
+
+; %macro get_arg_count 
+; 	push rbx
+; 	mov rax, rbp[8*3]
+
+
+; %endmacro
 
 ;;; MAKE_LITERAL_CLOSURE target, env, code
 %macro MAKE_LITERAL_CLOSURE 3
@@ -181,6 +231,7 @@ write_sob_undefined:
 section .data
 .undefined:
 	db "#<undefined>", 0
+	
 
 write_sob_integer:
 	push rbp
@@ -504,6 +555,9 @@ section .data
 .dot:
 	db " . ", 0
 
+slash:
+	db "/", 0
+
 write_sob_vector:
 	push rbp
 	mov rbp, rsp
@@ -579,6 +633,23 @@ write_sob_fraction:
 	push rbp
 	mov rbp, rsp
 
+	mov rax, 0
+	mov rax, qword [rbp + 8 + 1*8]
+	NUMERATOR rax
+	push rax
+	call write_sob
+	add rsp, 1*8
+	push rax
+	mov rax, 0
+	mov rdi, slash
+	call printf
+	add rsp, 1*8
+	mov rax, qword [rbp + 8 + 1*8]
+	DENOMINATOR rax
+	push rax
+	call write_sob
+	add rsp, 1*8
+	mov rax, 0
 	leave
 	ret
 

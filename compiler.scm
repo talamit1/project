@@ -14,6 +14,10 @@
 ;epilogue
 (define epilogue
     (string-append 
+        "\tpop rbp\n"
+        "\tpop r12\n"
+        "\tpop r13\n"
+        "\tpop r14\n"
         "\tret\n\n"  
         "section .data\n"
         "newline:\n\t"
@@ -40,7 +44,7 @@
 
 ;;---------------------------------code-gen-applic--------------------------------
 ; (define code-gen-applic
-;     (lambda (applic-expr constTable freeTable)
+;     (lambda (applic-expr constTable freeTable major)
 ;     )
 ; )
 
@@ -49,41 +53,109 @@
  
 
 
-; (define new-env
-;     (lambda ()
-    
-;         (string-append "\t;****new-env****\n"
-;                        "mov"
-            
-            
-;             )    
-;     )    
-; )
+(define make-new-env
+    (lambda (major)        
+        (string-append "\t;****new-env****\n"
+                       "\tmy_malloc 8\n"
+                       "\tmov rbx, rax\t\t;rbx holds pointer to cl object\n"
+                       "\tmy_malloc (8*" (number->string (+ major 1)) ")\n"
+                       "\tmov rcx, rax\t\t;rcx holds pointer to move previous env\n"
+                       "\tmov rax, arg_count \n"
+                       "\timul rax,8 \n"
+                       "\tmy_malloc rax\t\t;rax holds pointer to the extension\n\n"
+         )    
+    )
+)
+              
+(define create-copy-parm-loop-label (makeLabel "copy_param_loop_"))          
+(define create-copy-parm-end-label (makeLabel "copy_param_end_"))
+
+(define create-copy-env-loop-label (makeLabel "copy_env_loop_"))
+(define create-copy-env-end-label (makeLabel "copy_env_end_"))
+
+(define copy-param-and-env
+    (lambda (major)
+        (let ((copy-param-loop-label (create-copy-parm-loop-label))
+            (copy-param-end-label (create-copy-parm-end-label))
+            (copy-env-loop-label (create-copy-env-loop-label))
+            (copy-env-end-label (create-copy-env-end-label))
+            )
+
+            (string-append "\t;*****copy-param******\n"
+                            "\tmov r8, arg_count\t\t;r8 holds arg count\n"
+                            "\tmov r9, 0\t\t;r9 holds index for loop guard\n"
+                            "\t" copy-param-loop-label ":\n"
+                            "\tcmp r9, r8\n"
+                            "\tje " copy-param-end-label "\n"
+                            "\tmov r15, An(r9)\n"
+                            "\tmov [rax+ 8*r9], r15\t\t;move old params to rax\n"
+                            "\tjmp " copy-param-loop-label "\n"
+                            "\t" copy-param-end-label ":\n"
+                            "\tmov [rcx],rax\t\t;add params from stack to extention\n"
+                            "\txor r9, r9\t\t;'i' counter\n"
+                            "\tmov r8, " (number->string major) "\n"
+                            "\tmov r11,1\t\t; 'j' counter\n"
+                            "\tmov r10, env\t\t;r10 holds env from stack\n"
+                            "\t" copy-env-loop-label ":\n"
+                            "\tcmp r9,r8\t\t; check if copy ends\n"
+                            "\tje " copy-env-end-label "\n"
+                            "\tmov r12, [r10 + 8*r9]\t\t;r12 holds env[i]\n"
+                            "\tmov [rcx + 8*r11], r12\t\t;copy env[i] to rcx\n"
+                            "\tinc r11\t\t;inc j\n"
+                            "\tinc r9\t\t;inc i\n"
+                            "\tjmp " copy-env-loop-label "\n"
+                            "\t" copy-env-end-label ":\n"
+                            "\t;finished copy env and params - stores in rcx\n"
+            )
+        )
+    )        
+)
 
 
 
+(define create-close-body-label
+                (makeLabel "\tL_close_body")
+)
+(define create-close-exit-label
+    (makeLabel "\tlambda_close_exit_")
+)
 
+(define code-gen-lambda-simple
+     (lambda (lambdaSimple-expr constTable freeTable major)
+        (let  ((lambda-body (getLambdaBody 'lambda-simple lambdaSimple-expr))
+               (bodyLabel (create-close-body-label))
+               (exitLabel (create-close-exit-label))
+              )
+              (debugPrint bodyLabel)
+              (debugPrint exitLabel)
+              (debugPrint lambda-body) 
+                (string-append  "\t;*****lambda simple start!*****\n\t" 
+                (make-new-env major) 
+                (copy-param-and-env major)
+                "\tmov r15," bodyLabel "\n"
+                "\tMAKE_LITERAL_CLOSURE rbx,rcx,r15\t\t ;Create closure on targer\n"
+                "\t mov rax,[rbx]\t\t    ;put the closure in rax\n"
+                "\tjmp " exitLabel "\n"
+                bodyLabel ":\n"
+                (code-gen lambda-body constTable freeTable (+ major 1))
+                exitLabel ":\n"
 
+                )
+        )
 
-
-; (define code-gen-lambda-simple
-;      (lambda (lambdaSimple-expr constTable freeTable)
-;         (let ( (body ()   )
-;              ) (param ()   )     
-;         )
-;      )
-;  )
+    )
+ )
 
 ;;---------------------------------code-gen-pvar--------------------------------
 (define code-gen-pvar
-    (lambda (pvar-expr constTable freeTable)
+    (lambda (pvar-expr constTable freeTable major)
     (string-append "\t;****pvar start****\n" "\tmov rax, qword[rbp + (4 + " (number->string (caddr pvar-expr)) ")*8]\n" "\t;****pvar end****\n")
     )
 )
 
 ;;---------------------------------code-gen-bvar--------------------------------
 (define code-gen-bvar
-    (lambda (bvar-expr constTable freeTable)
+    (lambda (bvar-expr constTable freeTable major)
     (string-append  "\t;****bvar start****\n"
                     "\tmov rax, qword[rbp + (2*8)]" ;env
                     "\tmov rax, qword[rax + " (number->string (caddr pvar-expr))   "*8]\n"   ;env[ma]
@@ -94,19 +166,19 @@
 
 ;;---------------------------------code-gen-set!--------------------------------
 ;  (define code-gen-set
-;      (lambda (set-expr constTable freeTable)
+;      (lambda (set-expr constTable freeTable major)
 ;      )
 ;  )
 
 ;;---------------------------------code-gen-define--------------------------------
 (define code-gen-define 
-    (lambda (def-expr constTable freeTable)
+    (lambda (def-expr constTable freeTable major)
         (let ((defExp (caddr def-expr))
                 (defVarLabel (find-rep freeTable (cadadr def-expr)))) 
                 
                 (string-append 
                 "\t; ******start-define*****\n" 
-                (code-gen defExp constTable freeTable)
+                (code-gen defExp constTable freeTable major)
                 "\tmov [" defVarLabel "], rax\n"
                 "\tmov rax, SOB_VOID\n\t; ******end-define*****\n")
         )
@@ -124,7 +196,7 @@
 
 
 (define code-gen-if3
-    (lambda (if-expr constTable freeTable)
+    (lambda (if-expr constTable freeTable major)
         (let* ((else-label (create-else-label))
                 (endIf-label (create-endIf-label))
                 (test (cadr if-expr))
@@ -133,14 +205,14 @@
             (string-append
                 "\t;if-start\n"
                     (begin
-                    (code-gen test constTable freeTable))
+                    (code-gen test constTable freeTable major))
                     "\tcmp rax,SOB_FALSE\n"
                     "\tje "
                     else-label "\n"
-                    (begin (code-gen thenExpr constTable freeTable))
+                    (begin (code-gen thenExpr constTable freeTable major))
                     "\tjmp " endIf-label "\n"
                     "\t" else-label ":\n"
-                    (begin (code-gen elseExpr constTable freeTable))
+                    (begin (code-gen elseExpr constTable freeTable major))
                     "\t"endIf-label ":\n"
                     "\t;end-if" "\n"
             )        
@@ -155,7 +227,7 @@
 (define create-endOr-label (makeLabel "L_or_end_"))
 
 (define code-gen-or
-    (lambda (or-expr constTable freeTable)
+    (lambda (or-expr constTable freeTable major)
         (let* ((endOr-label (create-endOr-label))
                 (orLst1 (cadr or-expr))
                 (bool #f))
@@ -165,10 +237,10 @@
                                     (if (null? (cdr orLst))
                                         (string-append
                                             
-                                            (begin (code-gen (car orLst) constTable freeTable))
+                                            (begin (code-gen (car orLst) constTable freeTable major))
                                             "\t" endOr-label":\n\t")
                                         (string-append
-                                            (begin (code-gen (car orLst) constTable freeTable))
+                                            (begin (code-gen (car orLst) constTable freeTable major))
                                             "\t"
                                             "cmp rax,SOB_FALSE\n\t"
                                             "jne "
@@ -183,15 +255,15 @@
 ;;---------------------------------code-gen-seq--------------------------------
 
 (define code-gen-seq
-    (lambda (seq-expr constTable freeTable) 
+    (lambda (seq-expr constTable freeTable major) 
         (debugPrint seq-expr)
-            (fold-left string-append "" (map (lambda (x) (code-gen x constTable freeTable)) (cadr seq-expr)))
+            (fold-left string-append "" (map (lambda (x) (code-gen x constTable freeTable major)) (cadr seq-expr)))
     )
 )
 
 ;;---------------------------------code-gen-const--------------------------------
 (define code-gen-const
-    (lambda (constToGen constTable freeTable) 
+    (lambda (constToGen constTable freeTable major) 
                 (string-append
                     "\tmov rax, qword[" (find-rep constTable (cadr constToGen)) "]\n")                  
     )
@@ -543,7 +615,7 @@
                             (let ((numer  (find-rep existingConsts (numerator item)))
                                   (denom  (find-rep existingConsts (denominator item))))
                                   (append existingConsts
-                                  (list (list label item (string-append label ":\n\tdq MAKE_LITERAL(T_FRACTION ," numer "," denom  ")\n"))))
+                                  (list (list label item (string-append label ":\n\tdq MAKE_LITERAL_FRACTION(" numer "," denom  ")\n"))))
                             )
                         )
                         ((vector? item)
@@ -650,22 +722,22 @@
 )
 
 (define code-gen
-    (lambda (exprToGen constTable freeTable) 
+    (lambda (exprToGen constTable freeTable major) 
         (if  (not (list? exprToGen))
             (string-append (symbol->string exprToGen) "\n")
             (let ((tag (car exprToGen)))
                     ;(debugPrint "Tall")
                     (cond 
-                    ((equal? tag `const) (code-gen-const exprToGen constTable freeTable))
-                    ((equal? tag `if3) (code-gen-if3 exprToGen constTable freeTable))
-                    ((equal? tag `or) (code-gen-or exprToGen constTable freeTable))
-                    ((equal? tag `seq) (code-gen-seq exprToGen constTable freeTable))
-                    ;((equal? tag `set) (code-gen-set exprToGen constTable freeTable))
-                    ((equal? tag `pvar) (code-gen-pvar exprToGen constTable freeTable))
-                    ((equal? tag `bvar) (code-gen-bvar exprToGen constTable freeTable))
-                    ((equal? tag `lambda-simple) (code-gen-lambda-simple exprToGen constTable freeTable))
-                    ;((equal? tag `lambda-opt) (code-gen-lambda-opt exprToGen constTable freeTable))
-                    ;((equal? tag `lambda-var) (code-gen-lambda-var exprToGen constTable freeTable))
+                    ((equal? tag `const) (code-gen-const exprToGen constTable freeTable major))
+                    ((equal? tag `if3) (code-gen-if3 exprToGen constTable freeTable major))
+                    ((equal? tag `or) (code-gen-or exprToGen constTable freeTable major))
+                    ((equal? tag `seq) (code-gen-seq exprToGen constTable freeTable major))
+                    ;((equal? tag `set) (code-gen-set exprToGen constTable freeTable major))
+                    ((equal? tag `pvar) (code-gen-pvar exprToGen constTable freeTable major))
+                    ((equal? tag `bvar) (code-gen-bvar exprToGen constTable freeTable major))
+                    ((equal? tag `lambda-simple) (code-gen-lambda-simple exprToGen constTable freeTable major))
+                    ;((equal? tag `lambda-opt) (code-gen-lambda-opt exprToGen constTable freeTable major))
+                    ;((equal? tag `lambda-var) (code-gen-lambda-var exprToGen constTable freeTable major))
                     )
             ) 
         ) 
@@ -690,11 +762,18 @@
                     "resb 2^30\n"
                     "\nsection .text\n\n"
                     "main:\n"
+                    "\tnop\n"
                     "\tmov rax, malloc_pointer\n"
                     "\tmov qword [rax], start_of_malloc\n"
-                    "\tnop\n") file)
+                    "\tpush 0\n" ;arg_count
+                    "\tpush 0\n" ;env
+                    "\tpush 0\n" ;ret
+                    "\tpush rbp\n" 
+                    "\tmov rbp, rsp\n"
+                    ) file)
                 (display contents file)  ;here is the code gen output
                 (display epilogue file)  ;here comes all the implementation fot all global functions
+                
                 (close-output-port file))
     )
 )
@@ -714,7 +793,7 @@
                 "\tadd rsp,8\n"
                 "\tmov rdi, newline\n\tmov rax, 0\n\tcall printf\n"
                 ))
-                (generated-code (convert-to-string (map (lambda(x) (string-append "\n\n" (code-gen x constTable freeTable) codeEpilogue "\n\n")) astExpression)))
+                (generated-code (convert-to-string (map (lambda(x) (string-append "\n\n" (code-gen x constTable freeTable 0) codeEpilogue "\n\n")) astExpression)))
                 )
                 (display "\n\n\n")
                 ;(debugPrint astExpression)

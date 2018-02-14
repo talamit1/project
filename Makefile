@@ -6,7 +6,7 @@ dependencies:= (load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic
 %:
 
 	echo '$(dependencies) (compile-scheme-file "$(MAKECMDGOALS).scm" "$(MAKECMDGOALS).s")' | scheme -q 
-	nasm -f elf64 $(MAKECMDGOALS).s -o $(MAKECMDGOALS).o
+	nasm -g -f elf64 $(MAKECMDGOALS).s -o $(MAKECMDGOALS).o
 	gcc $(MAKECMDGOALS).o -o $(MAKECMDGOALS)
 
 
