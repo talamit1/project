@@ -14,6 +14,7 @@
 ;epilogue
 (define epilogue
     (string-append 
+        "\t epilouge: \n"
         "\tpop rbp\n"
         "\tpop r12\n"
         "\tpop r13\n"
@@ -42,11 +43,43 @@
 
 
 
-;;---------------------------------code-gen-applic--------------------------------
-; (define code-gen-applic
-;     (lambda (applic-expr constTable freeTable major)
-;     )
-; )
+;---------------------------------code-gen-applic--------------------------------
+
+(define create-end-applic-label (makeLabel "After_gen_code"))
+(define code-gen-applic
+    (lambda (procExp constTable freeTable major) 
+        (let ((proc (cadr procExp))
+             (params (cadr (cdr procExp)))
+             (end-label (create-end-applic-label))
+             )
+             (debugPrint procExp)
+             (debugPrint proc)
+             (debugPrint params)
+            (string-append  
+                (apply string-append
+                    (map (lambda (bi)
+                            (string-append
+                                (code-gen bi constTable freeTable major)    
+                                "\tpush rax \t\t ;push param generated code to the stack\n"
+                            )
+                        )
+                        (reverse params)
+                    )
+                    
+                )
+                "\tpush " (number->string (length params)) "\t\t ; pushe arg_count \n"
+                (code-gen proc constTable freeTable major)
+                ";\tTYPE rax \t\t ;checks if proc s closure"
+                "\tcmp rax,T_CLOSRE\n"
+                "\tmov rbx,rax \t\t ;rsx holds the closure \n"
+                "\tCLOSURE_ENV rbx \t\t ;rbx holds closure env\n"
+                "\tpush rbx \n"
+                "\tCLOSURE_CODE rax \t\t ;rax holds closure code\n"
+                "\tcall rax \t\t ;call the function\n"
+            )
+        )
+    )
+)
 
 
 ;;---------------------------------code-gen-lambda-simple--------------------------------
@@ -137,7 +170,11 @@
                 "\t mov rax,[rbx]\t\t    ;put the closure in rax\n"
                 "\tjmp " exitLabel "\n"
                 bodyLabel ":\n"
+                "\tpush rbp\n"
+                "\tmov rbp,rsp\n"
                 (code-gen lambda-body constTable freeTable (+ major 1))
+                "\tleave \n"
+                "\tret \n"
                 exitLabel ":\n"
 
                 )
@@ -736,6 +773,7 @@
                     ((equal? tag `pvar) (code-gen-pvar exprToGen constTable freeTable major))
                     ((equal? tag `bvar) (code-gen-bvar exprToGen constTable freeTable major))
                     ((equal? tag `lambda-simple) (code-gen-lambda-simple exprToGen constTable freeTable major))
+                    ((equal? tag `applic) (code-gen-applic exprToGen constTable freeTable major))
                     ;((equal? tag `lambda-opt) (code-gen-lambda-opt exprToGen constTable freeTable major))
                     ;((equal? tag `lambda-var) (code-gen-lambda-var exprToGen constTable freeTable major))
                     )
