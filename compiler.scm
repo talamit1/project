@@ -52,9 +52,9 @@
              (params (cadr (cdr procExp)))
              (end-label (create-end-applic-label))
              )
-             (debugPrint procExp)
-             (debugPrint proc)
-             (debugPrint params)
+             ;(debugPrint procExp)
+             ;(debugPrint proc)
+             ;(debugPrint params)
             (string-append  
                 (apply string-append
                     (map (lambda (bi)
@@ -169,9 +169,9 @@
                (bodyLabel (create-close-body-label))
                (exitLabel (create-close-exit-label))
               )
-              (debugPrint bodyLabel)
-              (debugPrint exitLabel)
-              (debugPrint lambda-body) 
+              ;(debugPrint bodyLabel)
+              ;(debugPrint exitLabel)
+              ;(debugPrint lambda-body) 
                 (string-append  "\t;*****lambda simple start!*****\n\t" 
                 (make-new-env major) 
                 (copy-param-and-env major)
@@ -305,7 +305,7 @@
 
 (define code-gen-seq
     (lambda (seq-expr constTable freeTable major) 
-        (debugPrint seq-expr)
+        ;(debugPrint seq-expr)
             (fold-left string-append "" (map (lambda (x) (code-gen x constTable freeTable major)) (cadr seq-expr)))
     )
 )
@@ -452,10 +452,10 @@
                 (reverse (remove-duplicates (remove-primitives(topological-sort no-Dup-Constatns)))))
             (constructed-table (prepareToWriteToAssembly sortedConstLst)) 
             )
-            (display "constatns are: ")
+            ;(display "constatns are: ")
             ;(debugPrint constants)
-            (debugPrint sortedConstLst)
-            (debugPrint constructed-table)
+            ;(debugPrint sortedConstLst)
+            ;(debugPrint constructed-table)
             constructed-table             
             )
     )
@@ -481,6 +481,7 @@
 (define create-vec-label (makeLabel "sobvec"))
 (define create-int-label (makeLabel "sobInt"))
 (define create-frac-label (makeLabel "sobFrac"))
+(define create-char-label (makeLabel "sobChar"))
 
 (define create-const-reg-label
     (lambda (type val)
@@ -490,6 +491,7 @@
             ((symbol? val) (string-append "sob" type (symbol->string val)))
             ((string? val)   (create-string-label))
             ((vector? val)   (create-vec-label))
+            ((char? val)    (create-char-label))
             ((and(rational? val)(not (integer? val)))   (create-frac-label))
             
             (else (string-append "sob" type val))
@@ -616,7 +618,7 @@
 
 (define add-To-Constants-Table
     (lambda (existingConsts item) 
-        ;;(debugPrint item)
+        
         (cond 
             ((pair? item) 
                 (if(not (find-rep existingConsts item))                
@@ -651,7 +653,7 @@
                             
                         ))
                         ((char? item) (append existingConsts 
-                            (list (list label item (string-append label ":\n\tdq MAKE_LITERAL(T_CHAR ," (number->string (char->integer item)) ")\n" )))
+                            (list (list label item (string-append label ":\n\tdq MAKE_LITERAL(T_CHAR ," (number->string (char->integer item )) ")\n" )))
                         ))
                         ((symbol? item)  (append existingConsts 
                             (list (list label item (string-append label ":\n\tdq MAKE_LITERAL(T_SYMBOL ," (symbol->string item) ")\n")))
@@ -690,7 +692,7 @@
                 (list "sobVoid" 'void "sobVoid:\n\tdq SOB_VOID\n")
             ))
         )
-            (debugPrint const-lst)  
+            ;(debugPrint const-lst)  
             (fold-left add-To-Constants-Table basics const-lst)
         )    
     )
@@ -846,6 +848,7 @@
                 (generated-code (convert-to-string (map (lambda(x) (string-append "\n\n" (code-gen x constTable freeTable 0) codeEpilogue "\n\n")) astExpression)))
                 )
                 (display "\n\n\n")
+                ;(debugPrint 555)
                 ;(debugPrint astExpression)
                 ;(debugPrint constTable)
                 (display "\n\n\n")
