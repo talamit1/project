@@ -4,4 +4,4 @@
 ;(if 1 "asaasda s    das" 3)
 ;(begin 1 5 3)
 ;(set! x 5)
-((lambda (x y r) (lambda ( a b c) y)) 1 2 3) 
+((((lambda (x y r) (lambda (a b c) (lambda (m n u) c))) 1 7 3) 4 5 6) 33 55 77) ;==>6

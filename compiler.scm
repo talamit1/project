@@ -76,7 +76,10 @@
                 "\tpush rbx \n"
                 "\tCLOSURE_CODE rax \t\t ;rax holds closure code\n"
                 "\tcall rax \t\t ;call the function\n"
-                "\tadd rsp,3*8\n"
+                "\tadd rsp,8\n"
+                "\tpop r8\t\t;pop arg count\n" 
+                "\timul r8, 8\t\t;r8 holds number of parameters*8\n"
+                "\tadd rsp, r8\t\t;clears all args \n" 
             )
         )
     )
@@ -90,7 +93,7 @@
 (define make-new-env
     (lambda (major)        
         (string-append "\t;****new-env****\n"
-                       "\tmy_malloc 8\n"
+                       "\tmy_malloc 16\n" ;;fixed from 8
                        "\tmov r14, rax\t\t;rbx holds pointer to cl object\n"
                        "\tmy_malloc (8*" (number->string (+ major 1)) ")\n"
                        "\tmov rbx, rax\t\t;rcx holds pointer to move previous env\n"
