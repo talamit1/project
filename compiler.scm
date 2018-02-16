@@ -57,6 +57,8 @@
              ;(debugPrint params)
             (string-append  
                 (apply string-append
+
+                    "\t ; ------ APPLIC_START------------\n"  
                     (map (lambda (bi)
                             (string-append
                                 (code-gen bi constTable freeTable major)    
@@ -85,6 +87,93 @@
     )
 )
 
+;;---------------------------------code-gen-tc-applic-----------------------------------
+
+(define create-copy-frame-loop-label (makeLabel "copy_frame_loop_")) 
+(define create-copy-frame-loop-exit (makeLabel "copy_frame_exit_")) 
+
+(define tc-applic-code-label (makeLabel "tc_applic_code")) 
+    (define tc-applic-copy-label (makeLabel "tc_applic_copy")) 
+(define code-gen-tc-applic
+    (lambda (procExp constTable freeTable major) 
+        (let ((proc (cadr procExp))
+             (params (cadr (cdr procExp)))
+             (end-label (create-end-applic-label))
+             (copy-frame-start (create-copy-frame-loop-label))
+             (copy-frame-exit (create-copy-frame-loop-exit))
+
+
+             )
+
+            (string-append
+                "\t ; ------ TC-APPLIC_START------------\n"  
+                (apply string-append
+                    (map (lambda (bi)
+                            (string-append
+                                (code-gen bi constTable freeTable major)    
+                                "\tpush rax \t\t ;push param generated code to the stack\n"
+                            )
+                        )
+                        (reverse params)
+                    )
+                    
+                )
+                "\tpush " (number->string (length params)) "\t\t ; pushe arg_count \n"
+                (code-gen proc constTable freeTable major)
+                ";\tTYPE rax \t\t ;checks if proc s closure"
+                "\tcmp rax,T_CLOSRE\n"
+                "\tmov rbx,rax \t\t ;rbx holds the closure \n"
+                "\tCLOSURE_ENV rbx \t\t ;rbx holds closure env\n"
+                "\tpush rbx \t\t ;push the env in rbx to top of stack\n"           
+                "\tCLOSURE_CODE rax \t\t ;rax holds closure code\n"
+                 "\t" (tc-applic-code-label) ":\n" 
+                                                                 
+                 "\tmov r8,rbp \t\t ;backup rbp in r8 register\n"
+                 "\tmov r11 , arg_count \t\t ;put arg_caou8nt(m) in r11\n"
+                 "\tadd r11 , 3 \t\t ;  r11 = m + 3 \n"
+                 "\tpush ret_addr \t\t ;push return address to top of stack \n"
+                 "\tmov rbp,old_rbp \t\t  ;restore old fp \n"
+                 
+                "\tmov r9,8*" (number->string (+ 4 (length params))) " \t\t ;store in r10 the number of params + 4 \n" 
+                "\tadd r9,r8 \t\t ;r9 = r8(rbp) + (n+4)*8 ;    \n"
+                "\n"
+                
+                "\t;start of copy loop\n"
+                "\t"(tc-applic-copy-label)":\n"
+                
+                "\t ; r8 holds the old rbp , r9 holds the new rbp\n"
+                "\tmov r13,0 \t\t ;put 0 in r13 for loop counter \n"
+                "\t" copy-frame-start ":\n"
+                "\tcmp r13,r11  \t\t ;check if we finish copy he arguments\n"
+                "\tje " copy-frame-exit "\n"
+                "\tmov rcx,r8 \t\t ;mov rbp to rcx \n"
+                "\tshl r13,3 \t\t ;multiply r11 by 8 for argument index \n"
+                "\tsub rcx, r13 \t\t ; \n"
+                "\tsub rcx,8 \t\t \n"
+                "\tmov rcx,qword [rcx] \t\t \n"
+                "\tmov rdx,r9  \t\t \n"
+                "\tsub rdx,r13  \t\t  \n"
+                "\t mov qword [rdx],rcx  \t\t \n"
+                "\tshr r13,3 \t\t \n"
+                "\tinc r13   \t\t \n"
+                "jmp " copy-frame-start "\n"
+
+                
+                "\t" copy-frame-exit ":\n"
+                "\tsub r13,1\n"
+                "\tshl r13,3\n"
+                "\tsub r9,r13\n"
+                "\tmov rsp,r9\n"
+                "\t mov rsp,r9 \n"
+                "\t jmp rax \n"
+                
+                
+
+               
+            )
+        )
+    )
+)
 
 ;;---------------------------------code-gen-lambda-simple--------------------------------
  
@@ -772,8 +861,11 @@
     ) 
 )
 
+;;11codeGen
 (define code-gen
+    
     (lambda (exprToGen constTable freeTable major) 
+        (debugPrint exprToGen)
         (if  (not (list? exprToGen))
             (string-append (symbol->string exprToGen) "\n")
             (let ((tag (car exprToGen)))
@@ -788,6 +880,7 @@
                     ((equal? tag `bvar) (code-gen-bvar exprToGen constTable freeTable major))
                     ((equal? tag `lambda-simple) (code-gen-lambda-simple exprToGen constTable freeTable major))
                     ((equal? tag `applic) (code-gen-applic exprToGen constTable freeTable major))
+                    ((equal? tag `tc-applic) (code-gen-tc-applic exprToGen constTable freeTable major))
                     ;((equal? tag `lambda-opt) (code-gen-lambda-opt exprToGen constTable freeTable major))
                     ;((equal? tag `lambda-var) (code-gen-lambda-var exprToGen constTable freeTable major))
                     )
