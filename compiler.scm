@@ -91,16 +91,18 @@
 
 (define create-copy-frame-loop-label (makeLabel "copy_frame_loop_")) 
 (define create-copy-frame-loop-exit (makeLabel "copy_frame_exit_")) 
+(define create-debug-label (makeLabel "debug_label")) 
 
 (define tc-applic-code-label (makeLabel "tc_applic_code")) 
     (define tc-applic-copy-label (makeLabel "tc_applic_copy")) 
 (define code-gen-tc-applic
     (lambda (procExp constTable freeTable major) 
-        (let ((proc (cadr procExp))
+        (let* ((proc (cadr procExp))
              (params (cadr (cdr procExp)))
              (end-label (create-end-applic-label))
              (copy-frame-start (create-copy-frame-loop-label))
              (copy-frame-exit (create-copy-frame-loop-exit))
+             (m (number->string (length params)))
 
 
              )
@@ -118,7 +120,7 @@
                     )
                     
                 )
-                "\tpush " (number->string (length params)) "\t\t ; pushe arg_count \n"
+                "\tpush " m "\t\t ; pushe arg_count \n"
                 (code-gen proc constTable freeTable major)
                 ";\tTYPE rax \t\t ;checks if proc s closure"
                 "\tcmp rax,T_CLOSRE\n"
@@ -128,13 +130,15 @@
                 "\tCLOSURE_CODE rax \t\t ;rax holds closure code\n"
                  "\t" (tc-applic-code-label) ":\n" 
                                                                  
-                 "\tmov r8,rbp \t\t ;backup rbp in r8 register\n"
-                 "\tmov r11 , arg_count \t\t ;put arg_caou8nt(m) in r11\n"
-                 "\tadd r11 , 3 \t\t ;  r11 = m + 3 \n"
                  "\tpush ret_addr \t\t ;push return address to top of stack \n"
+                 "\tmov r8,rbp \t\t ;backup rbp in r8 register\n"
+                 "\tmov r11," m " \t\t ;put m in r11\n"
+                 "\tadd r11,3 \t\t ;  r11 = m + 3 \n"
                  "\tmov rbp,old_rbp \t\t  ;restore old fp \n"
                  
-                "\tmov r9,8*" (number->string (+ 4 (length params))) " \t\t ;store in r10 the number of params + 4 \n" 
+                "\tmov r9,arg_count"  " \t\t ;store in r9 the arg_count \n" 
+                "\tadd r9,4    \t\t ;r9 = n+4 \n"
+                "\tshl r9,3   \t\t ;r9 = 8*(n+4) \n"
                 "\tadd r9,r8 \t\t ;r9 = r8(rbp) + (n+4)*8 ;    \n"
                 "\n"
                 
@@ -153,7 +157,7 @@
                 "\tmov rcx,qword [rcx] \t\t \n"
                 "\tmov rdx,r9  \t\t \n"
                 "\tsub rdx,r13  \t\t  \n"
-                "\t mov qword [rdx],rcx  \t\t \n"
+                "\tmov qword [rdx],rcx  \t\t \n"
                 "\tshr r13,3 \t\t \n"
                 "\tinc r13   \t\t \n"
                 "jmp " copy-frame-start "\n"
@@ -164,7 +168,7 @@
                 "\tshl r13,3\n"
                 "\tsub r9,r13\n"
                 "\tmov rsp,r9\n"
-                "\t mov rsp,r9 \n"
+                "\t" (create-debug-label) ":\n"
                 "\t jmp rax \n"
                 
                 
