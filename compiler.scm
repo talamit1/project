@@ -52,9 +52,6 @@
              (params (cadr (cdr procExp)))
              (end-label (create-end-applic-label))
              )
-             ;(debugPrint procExp)
-             ;(debugPrint proc)
-             ;(debugPrint params)
             (string-append  
                 (apply string-append
 
@@ -108,7 +105,7 @@
              )
 
              (string-append (apply string-append 
-                ;"push SOB_NIL \n" 
+                
                         (map (lambda (bi) 
                             (string-append (code-gen bi constTable freeTable major)
                                             "\tpush rax \n")) (reverse params))) 
@@ -776,7 +773,7 @@
                 (list "sobNil" '() "sobNil:\n\tdq SOB_NIL\n")
                 (list "sobTrue" #t "sobTrue:\n\tdq SOB_TRUE\n")
                 (list "sobFalse" #f "sobFalse:\n\tdq SOB_FALSE\n") 
-                (list "sobVoid" 'void "sobVoid:\n\tdq SOB_VOID\n")
+                (list "sobVoid" (void) "sobVoid:\n\tdq SOB_VOID\n")
             ))
         )
             ;(debugPrint const-lst)  
@@ -920,6 +917,7 @@
                 (close-output-port file))
     )
 )
+
 
 
 (define compile-scheme-file
