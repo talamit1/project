@@ -554,6 +554,8 @@ write_sob_pair_on_cdr:
 	add rsp, 1*8
 	jmp .done
 
+
+
 .cdrIsPair:
 	mov rbx, rax
 	CDR rbx
@@ -579,7 +581,7 @@ section .data
 .dot:
 	db " . ", 0
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; pair malloc start
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; pair malloc start
 
 write_sob_pair_malloc:
 	push rbp
@@ -645,7 +647,7 @@ write_sob_pair_malloc_on_cdr:
 	call write_sob_pair_malloc_on_cdr
 	add rsp, 1*8
 
-	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; pair end
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; pair end
 .done:
 	leave
 	ret
@@ -775,6 +777,8 @@ section .data
 write_sob:
 	mov rax, qword [rsp + 1*8]
 	TYPE rax
+	;cmp rax, 14
+	;je write_sob_pair_malloc
 	jmp qword [.jmp_table + rax * 8]
 
 section .data
