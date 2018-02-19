@@ -15,6 +15,8 @@
 %define T_CLOSURE 9
 %define T_PAIR 10
 %define T_VECTOR 11
+%define T_PAIR_MALLOC 12
+
 
 %define CHAR_NUL 0
 %define CHAR_TAB 9
@@ -112,13 +114,36 @@ endstruc
 %define An(n) qword [rbp + 8 * (n + 4)]
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; MAKE_MALLOC_LITERAL_PAIR target-address, car-address, cdr-address
+%macro MAKE_MALLOC_LITERAL_PAIR 3
+push rax 
+push rbx 
+mov rax, %1 
+mov qword [rax], %2
+sub qword [rax], start_of_malloc
+shl qword [rax], ((WORD_SIZE - TYPE_BITS) >> 1) 
+mov rbx, %3 
+sub rbx, start_of_malloc
+or qword [rax], rbx 
+shl qword [rax], TYPE_BITS 
+or qword [rax], T_PAIR_MALLOC 
+pop rbx 
+pop rax 
+%endmacro
 
-; %macro get_arg_count 
-; 	push rbx
-; 	mov rax, rbp[8*3]
+%macro CAR_MALLOC 1
+	DATA_UPPER %1
+	add %1, start_of_malloc
+	mov %1, qword [%1]
+%endmacro
 
-
-; %endmacro
+%macro CDR_MALLOC 1
+	DATA_LOWER %1
+	add %1, start_of_malloc
+	mov %1, qword [%1]
+%endmacro
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; MAKE_LITERAL_CLOSURE target, env, code
 %macro MAKE_LITERAL_CLOSURE 3
@@ -207,8 +232,6 @@ endstruc
 %define SOB_FALSE MAKE_LITERAL(T_BOOL, 0)
 %define SOB_TRUE MAKE_LITERAL(T_BOOL, 1)
 %define SOB_NIL MAKE_LITERAL(T_NIL, 0)
-
-
 
 
 section .bss
@@ -545,6 +568,84 @@ write_sob_pair_on_cdr:
 	call write_sob_pair_on_cdr
 	add rsp, 1*8
 
+
+.done:
+	leave
+	ret
+
+section .data
+.space:
+	db " ", 0
+.dot:
+	db " . ", 0
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; pair malloc start
+
+write_sob_pair_malloc:
+	push rbp
+	mov rbp, rsp
+
+	mov rax, 0
+	mov rdi, .open_paren
+	call printf
+	.roy:
+	mov rax, qword [rbp + 8 + 1*8]
+	CAR_MALLOC rax
+	push rax
+	call write_sob
+	add rsp, 1*8
+	mov rax, qword [rbp + 8 + 1*8]
+	CDR_MALLOC rax
+	push rax
+	call write_sob_pair_malloc_on_cdr
+	add rsp, 1*8
+	mov rdi, .close_paren
+	mov rax, 0
+	call printf
+
+	leave
+	ret
+
+section .data
+.open_paren:
+	db "(", 0
+.close_paren:
+	db ")", 0
+
+write_sob_pair_malloc_on_cdr:
+	push rbp
+	mov rbp, rsp
+
+	mov rbx, qword [rbp + 8 + 1*8]
+	mov rax, rbx
+	TYPE rbx
+	cmp rbx, T_NIL
+	je .done
+	cmp rbx, T_PAIR_MALLOC
+	je .cdrIsPairMalloc
+	push rax
+	mov rax, 0
+	mov rdi, .dot
+	call printf
+	call write_sob
+	add rsp, 1*8
+	jmp .done
+
+.cdrIsPairMalloc:
+	mov rbx, rax
+	CDR_MALLOC rbx
+	push rbx
+	CAR_MALLOC rax
+	push rax
+	mov rax, 0
+	mov rdi, .space
+	call printf
+	call write_sob
+	add rsp, 1*8
+	call write_sob_pair_malloc_on_cdr
+	add rsp, 1*8
+
+	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; pair end
 .done:
 	leave
 	ret
@@ -682,6 +783,7 @@ section .data
 	dq write_sob_integer, write_sob_fraction, write_sob_bool
 	dq write_sob_char, write_sob_string, write_sob_symbol
 	dq write_sob_closure, write_sob_pair, write_sob_vector
+	dq write_sob_pair_malloc
 
 section .text
 write_sob_if_not_void:

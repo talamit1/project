@@ -68,8 +68,8 @@
                 )
                 "\tpush " (number->string (length params)) "\t\t ; pushe arg_count \n"
                 (code-gen proc constTable freeTable major)
-                ";\tTYPE rax \t\t ;checks if proc s closure"
-                "\tcmp rax,T_CLOSRE\n"
+                ;";\tTYPE rax \t\t ;checks if proc s closure"
+                ;"\tcmp rax,T_CLOSURE\n"
                 "\tmov rbx,rax \t\t ;rsx holds the closure \n"
                 "\tCLOSURE_ENV rbx \t\t ;rbx holds closure env\n"
                 "\tpush rbx \n"
@@ -279,6 +279,128 @@
     )
  )
 
+
+;;---------------------------------code-gen-lambda-opt--------------------------------
+    
+(define create-param-to-list-label
+    (makeLabel "\tL_copy_param_toList_loop_")
+)
+(define create-param-to-list-endLabel
+(makeLabel "\tL_copy_param_toList_exit_")
+)
+
+(define create-fix-stack-position-label
+    (makeLabel "\tL_fix_stack_position_loop_")
+)
+(define create-fix-stack-position-Endlabel
+(makeLabel "\tL_fix_stack_position_exit_")
+)
+
+
+(define code-gen-lambda-opt
+    (lambda (lambdaOpt-expr constTable freeTable major)
+       (let  ((lambda-body (getLambdaBody 'lambda-opt lambdaOpt-expr))
+              (bodyLabel (create-close-body-label))
+              (exitLabel (create-close-exit-label))
+              (copy_param_to_list_loop (create-param-to-list-label))
+              (copy_param_to_list_end (create-param-to-list-endLabel))
+              (numOfParams (length (getLambdaVars 'lambda-opt lambdaOpt-expr)))
+              (fixStackStartLoop (create-fix-stack-position-label))
+              (fixStackEndLoop (create-fix-stack-position-Endlabel))
+             )
+              (debugPrint numOfParams)
+              ;(debugPrint exitLabel)
+              ;(debugPrint lambda-body) 
+               
+              
+              
+               (string-append  "\t;*****lambda opt start!*****\n\t" 
+               (make-new-env major) 
+               (copy-param-and-env major)
+               "\tmov r15," bodyLabel "\n"
+               "\tmov rax,r14\n"
+               "\tMAKE_LITERAL_CLOSURE rax,rbx,r15\t\t ;Create closure on targer\n"
+               "\tmov rax,qword[rax]\t\t    ;put the closure in rax\n"
+               "\tjmp " exitLabel "\n"
+               bodyLabel ":\n"
+               "\tpush rbp\n"
+               "\tmov rbp,rsp\n"
+
+               ;;;;; TODO - Fix stack code
+               "\tmov rdx, sobNil\t\t;nil for building the list of params recursivly\n"
+               "\tmy_malloc 8\n"
+               "\tmov qword [rax], rdx\n"
+               "\tmov rdx, rax\n"
+               "\tmov r8, qword[rbp + 8*3]\t\t; r8 holds args count\n"
+               "\tmov r14, r8\n"
+               "\tsub r8, 1\t\t ;r8 = i\n"
+               "\tmov r9, " (number->string numOfParams) "\t\t; r9 holds number of params (e.g - (lambda (a b c . d)...) --> 4 )\n"
+               "\tsub r14, r9\n"
+               "\timul r14, 8\t\t;r14 holds the number we need to move every entry in our frame\n"
+               "\tsub r9, 1\n"
+                
+               "\tmov r10, r9\n" 
+               "\tadd r10,4\n"
+               "\timul r10, 8\n" ;;r10 is where we save the list in stack ---> [ebp +r10] = list
+               "\tsub r9, 1\n" ;;loop guard 
+               
+               ;;this loop makes the list of m parameters
+               copy_param_to_list_loop ":\n"
+               "\tcmp r8, r9\n"
+               "\tje " copy_param_to_list_end "\n"
+               "\tmov r11,An(r8)\n" 
+               "\tmy_malloc 8\n"
+               "\tmov qword[rax], r11\n"
+               "\tmov rcx, rax\n"
+               "\tmy_malloc 8\n"
+
+               ;"\tmov r15, rax\n"
+               "\tMAKE_MALLOC_LITERAL_PAIR rax,rcx,rdx\n"
+               "\tmov rdx,rax\n"
+               "\tsub r8, 1\t\t;i--\n"
+               "\tjmp" copy_param_to_list_loop "\n"
+               
+               
+               copy_param_to_list_end ":\n" 
+               "\tmov qword[rbp + 8*3], "  (number->string numOfParams)   "\t\t;update arg count\n"
+               "\tmov r15, qword[rdx]\n"
+               "\tmov qword[rbp + r10], r15\n" ;;put the opt list in the correct place
+
+               "\tmov r8, 4\n\t\t;  4 for old rbp,ret,env,arg count\n"
+               "\tadd r8, " (number->string numOfParams) "\n"
+               
+               "\tmov r9, 8\n"
+               "\timul r9, r8\n"
+               "\tsub r9, 8\n"
+               "\tadd r9, rbp\n"  ;;r9 hols position of first elemnt to fix his position
+               ;;;;;remember r14 holds how much to jump
+
+
+               fixStackStartLoop ":\n"
+               "\tcmp r8, 0\n" ;;r8 = j (elements in stack)
+               "\tje" fixStackEndLoop "\n"
+               
+               "\tmov r10, qword[r9] \n"
+               
+               "\tmov qword[r9+r14], r10\t\t; the fix\n"
+            
+               "\tsub r9, 8\n"
+               "\tsub r8, 1\t\t; j--\n"
+               "\tjmp" fixStackStartLoop "\n"
+               
+               fixStackEndLoop ":\n"
+               "\tadd rbp,r14\n"
+               "\tadd rsp, r14\n"
+                            
+               (code-gen lambda-body constTable freeTable (+ major 1))
+               "\tleave\n"
+               "\tret \n"
+               exitLabel ":\n"
+               )
+       )
+   )
+) 
+
 ;;---------------------------------code-gen-pvar--------------------------------
 (define code-gen-pvar
     (lambda (pvar-expr constTable freeTable major)
@@ -317,6 +439,42 @@
         )
     )
 )
+
+    ;;---------------------------------code-gen-set!--------------------------------
+    (define code-gen-set
+        (lambda (set-expr constTable freeTable major)
+           (let ((toGen (caddr set-expr))
+                 ) 
+                 (cond ((equal? 'fvar (caadr set-expr))     (string-append "\t;*****set-fvar-start*****\n" (code-gen toGen constTable freeTable major)   
+                                                                           "\tmov qword[" (find-rep freeTable (cadadr set-expr)) "], rax\n"
+                                                                           "\tmov rax, sobVoid\n\t;*****set-fvar-end*****\n"))
+                       ((equal? 'pvar (caadr set-expr))     (string-append "\t;*****set-pvar-start*****\n" (code-gen toGen constTable freeTable major)
+                                                                           "\tmov qword[rbp + 8*(4 + " (number->string (caddr (cadr set-expr))) " )], rax\n" 
+                                                                           "\tmov rax, sobVoid\n\t;*****set-pvar-end*****\n"))
+                       ((equal? 'bvar (caadr set-expr))     (string-append "\t;*****set-bvar-start*****\n" (code-gen toGen constTable freeTable major)
+                                                                           "\tmov rbx, qword[rbp + 8*2]\n" "\tmov rbx, qword[rbx + 8*" (number->string(car (cddadr set-expr))) "]\n" ;;major
+                                                                           "\tmov qword[rbx + 8*" (number->string(cadr (cddadr set-expr))) "], rax\n" ;;minor
+                                                                           "\tmov rax, sobVoid\n\t;*****set-bvar-end*****\n"))
+                 )
+   
+           )
+        )
+    )
+   
+   ;;---------------------------------code-gen-define--------------------------------
+   (define code-gen-define 
+       (lambda (def-expr constTable freeTable major)
+           (let    ((defExp (caddr def-expr))
+                   (defVarLabel (find-rep freeTable (cadadr def-expr)))) 
+                   
+                   (string-append 
+                   "\t; ******start-define*****\n" 
+                   (code-gen defExp constTable freeTable major)
+                   "\tmov qword[" defVarLabel "], rax\n"
+                   "\tmov rax, sobVoid\n\t; ******end-define*****\n")
+           )
+       )
+   )
 
 
 ;;---------------------------------code-gen-if3--------------------------------
@@ -391,6 +549,15 @@
     (lambda (seq-expr constTable freeTable major) 
         ;(debugPrint seq-expr)
             (fold-left string-append "" (map (lambda (x) (code-gen x constTable freeTable major)) (cadr seq-expr)))
+    )
+)
+
+   ;;---------------------------------code-gen-fvar--------------------------------
+   (define code-gen-fvar
+    (lambda (freeToGen constTable freeTable major) 
+                (string-append
+                    "\tmov rax, qword[" (find-rep freeTable (cadr freeToGen)) "]\n"
+                )         
     )
 )
 
@@ -867,16 +1034,18 @@
                     ;(debugPrint "Tall")
                     (cond 
                     ((equal? tag `const) (code-gen-const exprToGen constTable freeTable major))
+                    ((equal? tag `fvar) (code-gen-fvar exprToGen constTable freeTable major))
+                    ((equal? tag `define) (code-gen-define exprToGen constTable freeTable major))
                     ((equal? tag `if3) (code-gen-if3 exprToGen constTable freeTable major))
                     ((equal? tag `or) (code-gen-or exprToGen constTable freeTable major))
                     ((equal? tag `seq) (code-gen-seq exprToGen constTable freeTable major))
-                    ;((equal? tag `set) (code-gen-set exprToGen constTable freeTable major))
+                    ((equal? tag `set) (code-gen-set exprToGen constTable freeTable major))
                     ((equal? tag `pvar) (code-gen-pvar exprToGen constTable freeTable major))
                     ((equal? tag `bvar) (code-gen-bvar exprToGen constTable freeTable major))
                     ((equal? tag `lambda-simple) (code-gen-lambda-simple exprToGen constTable freeTable major))
                     ((equal? tag `applic) (code-gen-applic exprToGen constTable freeTable major))
                     ((equal? tag `tc-applic) (code-gen-tc-applic exprToGen constTable freeTable major))
-                    ;((equal? tag `lambda-opt) (code-gen-lambda-opt exprToGen constTable freeTable major))
+                    ((equal? tag `lambda-opt) (code-gen-lambda-opt exprToGen constTable freeTable major))
                     ;((equal? tag `lambda-var) (code-gen-lambda-var exprToGen constTable freeTable major))
                     )
             ) 
