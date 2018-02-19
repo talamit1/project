@@ -107,74 +107,68 @@
 
              )
 
-            (string-append
-                "\t ; ------ TC-APPLIC_START------------\n"  
-                (apply string-append
-                    (map (lambda (bi)
-                            (string-append
-                                (code-gen bi constTable freeTable major)    
-                                "\tpush rax \t\t ;push param generated code to the stack\n"
-                            )
-                        )
-                        (reverse params)
-                    )
+             (string-append (apply string-append 
+                ;"push SOB_NIL \n" 
+                        (map (lambda (bi) 
+                            (string-append (code-gen bi constTable freeTable major)
+                                            "\tpush rax \n")) (reverse params))) 
+
+
+                        "\tpush " m "\n\n"
+                        (code-gen proc constTable freeTable  major)
+                        
+                        
+                        "\tmov rbx , rax \n"
+
+                        "\tCLOSURE_ENV rbx \n"
+                        "\tpush rbx \n"
+
+                       ;from here tc
+                       "\tmov r8 , rbp   ;backup old rbp in r8 \n" 
+                       "\tpush ret_addr  \t\t ;pushin old return address on the stack\n"
+                       "\tmov r9,arg_count  \t\t  ;extract old_argCount to r9 r9=n \n"
+
+                       "\tmov rbp , old_rbp     ;\t\t ;changing the rbp\n"
+                                                                     
+                        "\tadd r9 , 3 \t\t ;r9 = n+3\n"
+                        "\tmov r11 , " m " \t\t ;r11=m\n" ;n= new arguments number
+                        "\tadd r11 , 3  \t\t ;r11=m+3\n  "
+                        
+                        
+                        "\tmov rbx , r9 \t\t ;rbx = n+3\n"
+                        "\tshl rbx , 3  \t\t ;r9 = 8*(n+3)\n"
+                        "\tadd rbx , r8  \t\t ;r8 = r8+8*(n+3)  \n"
                     
+
+                        "\tmov rcx , r8 \n"
+                        "\tsub rcx , 8 \n"
+
+                                           
+                        copy-frame-start ": \n"
+                        
+                        "\tcmp r11 , 0 \n"
+                        "\tje " copy-frame-exit "\n"
+
+                        "\tmov rdx , qword[rcx] \n"
+                        "\tmov qword[rbx] , rdx \n" ;rbx[i]=rcx[i]
+                    
+                    
+                        "\tsub rbx , 8 \n"
+                        "\tsub rcx , 8 \n"
+                        "\tdec r11 \n"
+                
+                        "\tjmp "   copy-frame-start "\n"
+                        
+                        copy-frame-exit ": \n"
+
+                       "\tmov rsp ,rbx \n" ; make sure!!!
+                       "\tadd rsp , 8 \n"
+                      
+                        "\tCLOSURE_CODE rax \n"
+                        "\tjmp rax \n"
+                                
+                       
                 )
-                "\tpush " m "\t\t ; pushe arg_count \n"
-                (code-gen proc constTable freeTable major)
-                ";\tTYPE rax \t\t ;checks if proc s closure"
-                "\tcmp rax,T_CLOSRE\n"
-                "\tmov rbx,rax \t\t ;rbx holds the closure \n"
-                "\tCLOSURE_ENV rbx \t\t ;rbx holds closure env\n"
-                "\tpush rbx \t\t ;push the env in rbx to top of stack\n"           
-                "\tCLOSURE_CODE rax \t\t ;rax holds closure code\n"
-                 "\t" (tc-applic-code-label) ":\n" 
-                                                                 
-                 "\tpush ret_addr \t\t ;push return address to top of stack \n"
-                 "\tmov r8,rbp \t\t ;backup rbp in r8 register\n"
-                 "\tmov r11," m " \t\t ;put m in r11\n"
-                 "\tadd r11,3 \t\t ;  r11 = m + 3 \n"
-                 "\tmov rbp,old_rbp \t\t  ;restore old fp \n"
-                 
-                "\tmov r9,arg_count"  " \t\t ;store in r9 the arg_count \n" 
-                "\tadd r9,4    \t\t ;r9 = n+4 \n"
-                "\tshl r9,3   \t\t ;r9 = 8*(n+4) \n"
-                "\tadd r9,r8 \t\t ;r9 = r8(rbp) + (n+4)*8 ;    \n"
-                "\n"
-                
-                "\t;start of copy loop\n"
-                "\t"(tc-applic-copy-label)":\n"
-                
-                "\t ; r8 holds the old rbp , r9 holds the new rbp\n"
-                "\tmov r13,0 \t\t ;put 0 in r13 for loop counter \n"
-                "\t" copy-frame-start ":\n"
-                "\tcmp r13,r11  \t\t ;check if we finish copy he arguments\n"
-                "\tje " copy-frame-exit "\n"
-                "\tmov rcx,r8 \t\t ;mov rbp to rcx \n"
-                "\tshl r13,3 \t\t ;multiply r11 by 8 for argument index \n"
-                "\tsub rcx, r13 \t\t ; \n"
-                "\tsub rcx,8 \t\t \n"
-                "\tmov rcx,qword [rcx] \t\t \n"
-                "\tmov rdx,r9  \t\t \n"
-                "\tsub rdx,r13  \t\t  \n"
-                "\tmov qword [rdx],rcx  \t\t \n"
-                "\tshr r13,3 \t\t \n"
-                "\tinc r13   \t\t \n"
-                "jmp " copy-frame-start "\n"
-
-                
-                "\t" copy-frame-exit ":\n"
-                "\tsub r13,1\n"
-                "\tshl r13,3\n"
-                "\tsub r9,r13\n"
-                "\tmov rsp,r9\n"
-                "\t" (create-debug-label) ":\n"
-                "\t jmp rax \n"
-                
-                
-
-               
-            )
         )
     )
 )
