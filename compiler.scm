@@ -4,7 +4,10 @@
 
 ;;
 (define library_functions
-    `(("free_plus" "asm_plus") ("free_isBool" "isBool") ("free_isInteger" "isInt") ("free_isPair" "isPair"))
+    `(("free_plus" "asm_plus") ("free_isBool" "isBool") ("free_isInteger" "isInt") ("free_isPair" "isPair")
+      ("free_isChar" "isChar") ("free_isProcedure" "isProc") ("free_isNull" "isNull") ("free_isNumber" "isNumber")
+      ("free_isRational" "isNumber") ("free_isVector" "isVector")
+     )
     )
 
 ;;create closurer and put it on func_name
@@ -1057,7 +1060,8 @@
                 (list "free_isNumber" 'number? "free_isNumber:\n\tdq SOB_UNDEFINED\n")                      
                 (list "free_isNull" 'null? "free_isNull:\n\tdq SOB_UNDEFINED\n")
                 (list "free_isString" 'string? "free_isString:\n\tdq SOB_UNDEFINED\n")  
-                (list "free_isRational" 'rational? "free_isRational:\n\tdq SOB_UNDEFINED\n")  
+                (list "free_isRational" 'rational? "free_isRational:\n\tdq SOB_UNDEFINED\n") 
+                (list "free_isVector" 'vector? "free_isVector:\n\tdq SOB_UNDEFINED\n")  
             )
         )
 
@@ -1236,7 +1240,7 @@
                 (func_false (string-append func_label "_false"))
                 (func_exit (string-append func_label "_exit")))
             (string-append
-                func_label ":\n"
+                "\n"func_label ":\n"
                 "\tpush  rbp\n"
                 "\tmov rbp,rsp \n"
                 "\tpush  rbx\n"
@@ -1270,13 +1274,54 @@
     (create-pred-function "T_PAIR" "isPair")
 )
 
+(define char_pred
+    (create-pred-function "T_CHAR" "isChar")
+)
+
+(define proc_pred
+    (create-pred-function "T_CLOSURE" "isProc")
+)
+
+(define null_pred
+    (create-pred-function "T_NIL" "isNull")
+)
+(define vector_pred
+    (create-pred-function "T_VECTOR" "isVector")
+)
+
+(define number_pred
+    (string-append
+        "\nisNumber:\n"
+        "\tpush rbp\n"
+        "\tmov rbp,rsp\n"
+        "\tpush rbx\n"
+        "\tpush rcx\n"
+        "\tmov rbx,An(0) \n"
+        "\tTYPE rbx \n"
+        "\tcmp rbx,T_INTEGER \n"
+        "\tje number_pred_true\n"
+        "\tcmp rbx,T_FRACTION \n"
+        "\tje number_pred_true\n"
+        "\tmov rax,0 \n"
+        "\tjmp number_pred_end\n"
+
+        "\tnumber_pred_true: \n"
+        "\tmov rax,1 \n"
+        
+        "\tnumber_pred_end:\n"
+        "\tMAKE_BOOL rax \n"
+        "\tpop rcx\n"
+        "\tpop rbx \n"
+        "\tleave \n"
+        "\tret \n"
+        )
+)
 
 
-
-        (define library_functions_creation_list
-            `(,asm_plus ,boolean_pred ,int_pred ,pair_pred)
-            
-            )
+(define library_functions_creation_list
+    `(,asm_plus ,boolean_pred ,int_pred ,pair_pred ,char_pred ,proc_pred ,null_pred ,number_pred ,vector_pred)
+    
+)
 
         ;epilogue
 (define epilogue
@@ -1291,11 +1336,6 @@
         "newline:\n\t"
             "db CHAR_NEWLINE, 0\n\n"
         (apply string-append library_functions_creation_list)
-
-        
-
-        
-        
-    )
-    
+   
+    )   
 )
