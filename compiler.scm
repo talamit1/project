@@ -293,7 +293,19 @@
     (makeLabel "\tL_fix_stack_position_loop_")
 )
 (define create-fix-stack-position-Endlabel
-(makeLabel "\tL_fix_stack_position_exit_")
+    (makeLabel "\tL_fix_stack_position_exit_")
+)
+
+(define create-nil-fix-loop-label
+    (makeLabel "\tL_nil_fix_stack_loop_")
+)
+
+(define create-after-stack-fix-label
+    (makeLabel "\tL_after_opt_stack_fix_")
+)
+
+(define create-after-nil-fix-label
+    (makeLabel "\tL_after_nil_stack_fix_")
 )
 
 
@@ -307,6 +319,9 @@
               (numOfParams (length (getLambdaVars 'lambda-opt lambdaOpt-expr)))
               (fixStackStartLoop (create-fix-stack-position-label))
               (fixStackEndLoop (create-fix-stack-position-Endlabel))
+              (afterAll (create-after-stack-fix-label))
+              (afterNil (create-after-stack-fix-label))
+              (nilLoop (create-nil-fix-loop-label))
              )
               (debugPrint numOfParams)
               ;(debugPrint exitLabel)
@@ -332,18 +347,25 @@
                 ; "\tsub r8, 1\n"
                 ; "\tmov r9, qword[rbp + 8*3]\t\t; r8 holds args count\n"
                 ; "\tcmp r8, r9\n"
-                ; ;"\tje " afterAll "\n"
+                ; "\tjne " afterNil "\n"
                 ; "\tmov r10, r9\n"
                 ; "\tadd r10, 1\n" ;;r10 is the arg count +1 fir nil
                 ; "\tmov qword[rbp + 8*3], r10\t\t;update arg count\n"
                 ; "\tmov r10, rbp\n"
                 ; "\tmov r11, r9\n"
                 ; "\tadd r11, 4\n"; r11 = i (how many entrys to move down)
+                ; nilLoop ":\n"
+                ; "\tcmp r11, 0\n"
+                ; "\tje " afterAll "\n"
+
+
+
+                ; "\tjmp " nilLoop "\n"
 
 
 
 
-
+               afterNil ":\n"
                ;;;;; TODO - Fix stack code
                "\tmov rdx, qword[sobNil]\t\t;nil for building the list of params recursivly\n"
                "\tmy_malloc 8\n"
@@ -411,7 +433,9 @@
                fixStackEndLoop ":\n"
                "\tadd rbp,r14\n"
                "\tadd rsp, r14\n"
-                            
+               
+               afterAll ":\n"
+               
                (code-gen lambda-body constTable freeTable (+ major 1))
                "\tleave\n"
                "\tret \n"
