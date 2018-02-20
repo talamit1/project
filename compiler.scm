@@ -519,41 +519,92 @@
     )
 )
 
-    ;;---------------------------------code-gen-set!--------------------------------
-    (define code-gen-set
-        (lambda (set-expr constTable freeTable major)
-           (let ((toGen (caddr set-expr))
-                 ) 
-                 (cond ((equal? 'fvar (caadr set-expr))     (string-append "\t;*****set-fvar-start*****\n" (code-gen toGen constTable freeTable major)   
-                                                                           "\tmov qword[" (find-rep freeTable (cadadr set-expr)) "], rax\n"
-                                                                           "\tmov rax, sobVoid\n\t;*****set-fvar-end*****\n"))
-                       ((equal? 'pvar (caadr set-expr))     (string-append "\t;*****set-pvar-start*****\n" (code-gen toGen constTable freeTable major)
-                                                                           "\tmov qword[rbp + 8*(4 + " (number->string (caddr (cadr set-expr))) " )], rax\n" 
-                                                                           "\tmov rax, sobVoid\n\t;*****set-pvar-end*****\n"))
-                       ((equal? 'bvar (caadr set-expr))     (string-append "\t;*****set-bvar-start*****\n" (code-gen toGen constTable freeTable major)
-                                                                           "\tmov rbx, qword[rbp + 8*2]\n" "\tmov rbx, qword[rbx + 8*" (number->string(car (cddadr set-expr))) "]\n" ;;major
-                                                                           "\tmov qword[rbx + 8*" (number->string(cadr (cddadr set-expr))) "], rax\n" ;;minor
-                                                                           "\tmov rax, sobVoid\n\t;*****set-bvar-end*****\n"))
-                 )
-   
-           )
+;;---------------------------------code-gen-set!--------------------------------
+(define code-gen-set
+    (lambda (set-expr constTable freeTable major)
+        (let ((toGen (caddr set-expr))
+                ) 
+                (cond ((equal? 'fvar (caadr set-expr))     (string-append "\t;*****set-fvar-start*****\n" (code-gen toGen constTable freeTable major)   
+                                                                        "\tmov qword[" (find-rep freeTable (cadadr set-expr)) "], rax\n"
+                                                                        "\tmov rax, sobVoid\n\t;*****set-fvar-end*****\n"))
+                    ((equal? 'pvar (caadr set-expr))     (string-append "\t;*****set-pvar-start*****\n" (code-gen toGen constTable freeTable major)
+                                                                        "\tmov qword[rbp + 8*(4 + " (number->string (caddr (cadr set-expr))) " )], rax\n" 
+                                                                        "\tmov rax, sobVoid\n\t;*****set-pvar-end*****\n"))
+                    ((equal? 'bvar (caadr set-expr))     (string-append "\t;*****set-bvar-start*****\n" (code-gen toGen constTable freeTable major)
+                                                                        "\tmov rbx, qword[rbp + 8*2]\n" "\tmov rbx, qword[rbx + 8*" (number->string(car (cddadr set-expr))) "]\n" ;;major
+                                                                        "\tmov qword[rbx + 8*" (number->string(cadr (cddadr set-expr))) "], rax\n" ;;minor
+                                                                        "\tmov rax, sobVoid\n\t;*****set-bvar-end*****\n"))
+                )
+
         )
     )
-   
-   ;;---------------------------------code-gen-define--------------------------------
-   (define code-gen-define 
-       (lambda (def-expr constTable freeTable major)
-           (let    ((defExp (caddr def-expr))
-                   (defVarLabel (find-rep freeTable (cadadr def-expr)))) 
-                   
-                   (string-append 
-                   "\t; ******start-define*****\n" 
-                   (code-gen defExp constTable freeTable major)
-                   "\tmov qword[" defVarLabel "], rax\n"
-                   "\tmov rax, sobVoid\n\t; ******end-define*****\n")
-           )
-       )
-   )
+)
+
+
+;;---------------------------------code-gen-box--------------------------------
+(define code-gen-box
+    (lambda (box-expr constTable freeTable major)
+        (let ((toGen (cadr box-expr))
+             )
+             (debugPrint toGen)
+             (string-append "\t;****** box-start *****\n" 
+                            (code-gen toGen constTable freeTable major)
+                            "\tmov rbx, rax\n"
+                            "\tmy_malloc 8\n"
+                            "\tmov qword[rax], rbx\n"
+                            "\t;***** box-end *****\n")
+        ) 
+    )
+)
+
+;;---------------------------------code-gen-box-set--------------------------------
+(define code-gen-box-set
+    (lambda (box-set-expr constTable freeTable major)
+        (let ((toGenVal (caddr box-set-expr))
+              (toGen (cadr box-set-expr)) 
+             ) 
+             (debugPrint toGenVal)
+             (debugPrint toGen)
+             (string-append "\t;****** box-set-start *****\n" 
+                            (code-gen toGenVal constTable freeTable major)
+                            "\tmov rbx, rax\n"
+                            (code-gen toGen constTable freeTable major)
+                            "\tmov qword[rax], rbx\n"
+                            "\tmov rax, sobVoid\n"
+                            "\t;***** box-set-end *****\n")
+        )
+    )
+)
+
+;;---------------------------------code-gen-box-get--------------------------------
+(define code-gen-box-get
+    (lambda (box-get-expr constTable freeTable major)
+            (let ((toGen (cadr box-get-expr))
+                 ) 
+                 (debugPrint toGen)
+                 (string-append "\t;****** box-get-start *****\n" 
+                                (code-gen toGen constTable freeTable major)
+                                "\tmov rax,qword[rax]\n"
+                                "\t;***** box-get-end *****\n")
+            )     
+    )
+)
+
+
+;;---------------------------------code-gen-define--------------------------------
+(define code-gen-define 
+    (lambda (def-expr constTable freeTable major)
+        (let    ((defExp (caddr def-expr))
+                (defVarLabel (find-rep freeTable (cadadr def-expr)))) 
+                
+                (string-append 
+                "\t; ******start-define*****\n" 
+                (code-gen defExp constTable freeTable major)
+                "\tmov qword[" defVarLabel "], rax\n"
+                "\tmov rax, sobVoid\n\t; ******end-define*****\n")
+        )
+    )
+)
 
 
 ;;---------------------------------code-gen-if3--------------------------------
@@ -812,13 +863,14 @@
 (define create-int-label (makeLabel "sobInt"))
 (define create-frac-label (makeLabel "sobFrac"))
 (define create-char-label (makeLabel "sobChar"))
+(define create-symbol-label (makeLabel "sobSymbol"))
 
 (define create-const-reg-label
     (lambda (type val)
         (integer? val)
         (cond 
             ((integer? val) (create-int-label))
-            ((symbol? val) (string-append "sob" type (symbol->string val)))
+            ((symbol? val)  (create-symbol-label))
             ((string? val)   (create-string-label))
             ((vector? val)   (create-vec-label))
             ((char? val)    (create-char-label))
@@ -1129,6 +1181,9 @@
                     ((equal? tag `or) (code-gen-or exprToGen constTable freeTable major))
                     ((equal? tag `seq) (code-gen-seq exprToGen constTable freeTable major))
                     ((equal? tag `set) (code-gen-set exprToGen constTable freeTable major))
+                    ((equal? tag `box) (code-gen-box exprToGen constTable freeTable major))
+                    ((equal? tag `box-set) (code-gen-box-set exprToGen constTable freeTable major))
+                    ((equal? tag `box-get) (code-gen-box-get exprToGen constTable freeTable major))
                     ((equal? tag `pvar) (code-gen-pvar exprToGen constTable freeTable major))
                     ((equal? tag `bvar) (code-gen-bvar exprToGen constTable freeTable major))
                     ((equal? tag `lambda-simple) (code-gen-lambda-simple exprToGen constTable freeTable major))
@@ -1222,7 +1277,22 @@
     )    
 )
 
+;; numerator
+(define asm_numerator
+    (string-append
+        "nasm_numerator:\n"
+        
 
+
+
+    )
+)
+
+;; denominator
+(define asm_denominator
+    (string-append
+    )
+)
 
 ;; + function
 (define asm_plus
