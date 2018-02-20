@@ -30,6 +30,16 @@
 
 %define MAKE_LITERAL(type, lit) ((lit << TYPE_BITS) | type)
 
+%macro MAKE_INT 1
+	shl %1, TYPE_BITS
+	or %1, T_INTEGER
+%endmacro
+
+%macro MAKE_CHAR 1
+	shl %1, TYPE_BITS
+	or %1, T_CHAR
+%endmacro
+
 %macro TYPE 1
 	and %1, ((1 << TYPE_BITS) - 1) 
 %endmacro

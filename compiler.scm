@@ -2,29 +2,53 @@
 (load "tag-parser.scm");
 (load "sexpr-parser.scm");
 
-;;prologue
-(define prologue
-    (string-append 
-        "%include \"scheme.s\"\n\n"
-        "section .data\n"
-        "start_of_data:\n\n"
+;;
+(define library_functions
+    `(("free_plus" "asm_plus"))
+    )
+
+;;create closurer and put it on func_name
+(define create-free-func-closure
+    (lambda (funcPair)
+       (let ((func_free_place (car funcPair))
+             (func_label (cadr funcPair))
+            )
+            (string-append
+                "\n;creating closure for library function " func_free_place "\n" 
+                "\tpush r15 \n"
+                "\tpush rbx \n"
+                "\tpush rax\n"
+                "\tmy_malloc 16\n"
+                "\tmov r15," func_label  "\t\t ;put in r11 tha func_label\n"
+                "\tmov rbx,0 \t\t ;put dummy env in rbx \n"
+                "\tMAKE_LITERAL_CLOSURE rax,rbx,r15\t\t ;Create closure on targer\n"
+                "\tmov rax,[rax] \n"
+                "\t mov ["func_free_place"],rax\n"
+                "\tpop rax \n"
+                "\tpop rbx \n"
+                "\tpop r15\n" 
+                
+                )
+       )       
+    
     )
 )
 
-;epilogue
-(define epilogue
+
+
+
+;;prologue
+(define prologue
     (string-append 
-        "\t epilouge: \n"
-        "\tleave\n"
-        "\tpop r12\n"
-        "\tpop r13\n"
-        "\tpop r14\n"
-        "\tret\n\n"  
+        
+        "%include \"scheme.s\"\n\n"
         "section .data\n"
-        "newline:\n\t"
-            "db CHAR_NEWLINE, 0\n"
+        "start_of_data:\n\n"
+        
     )
 )
+
+
 
 ;;---------------------------------code-genCases----------------------------
 
@@ -979,15 +1003,15 @@
 (define helpForFree
     (lambda (x)
         (let ((label (string-append "free_" (symbol->string x))))
-        
-            (list label x (string-append label ":\n\tdq SOB_UNDEFINED\n"))
+            (if (find-rep basicFree x) #f 
+            (list label x (string-append label ":\n\tdq SOB_UNDEFINED\n")))
         )
     )
 )
 
 (define build-free-vars-table
     (lambda (lst)
-        (map helpForFree lst)
+        (filter (lambda (x)  x) (map helpForFree lst))
     )
 )
 
@@ -1057,10 +1081,13 @@
 (define write-to-file
     (lambda (file-name contents constantTable freeTable)
         ;;(print "@@in write " lst)
-        (let* ((file (open-output-file file-name 'truncate)))
+        (let* ((file (open-output-file file-name 'truncate))
+                (createLib (apply string-append (map create-free-func-closure library_functions)))
+                )
                 (display prologue file)
                 (display constantTable file)
                 (display freeTable file)
+                
                 ;;(display symbolsTable file)
                 (display (string-append  "\nsection .bss\n"
                     "extern exit, printf, scanf\n"
@@ -1080,6 +1107,7 @@
                     "\tpush rbp\n" 
                     "\tmov rbp, rsp\n"
                     ) file)
+                    (display createLib file)
                 (display contents file)  ;here is the code gen output
                 (display epilogue file)  ;here comes all the implementation fot all global functions
                 
@@ -1087,7 +1115,9 @@
     )
 )
 
-
+(define show
+    (pipeline (file->list "foo.scm"))
+    )
 
 (define compile-scheme-file
     (lambda (scheme-file nasm-file)    
@@ -1113,4 +1143,49 @@
                 (write-to-file nasm-file generated-code consTableRep freeTableRep)  
             )
     )
+)
+
+
+(define asm_plus
+      (string-append
+            "\nasm_plus: \n"
+            "\tpush rbp \n"
+            "\tmov rbp,rsp \n"
+            "\tpush rbx \n"
+            "\tmov rax,An(0)\n"
+            "\tmov rbx,An(1)\n"
+            "\tDATA rbx\n" 
+            "\tDATA rax\n"           
+            "\tadd rax,rbx \n"
+            "\tMAKE_INT rax\n"
+            "\tpop rbx \n"
+            "\tleave \n"
+            "\tret \n"
+            )
+        
+        )
+
+
+
+        (define library_functions_creation_list
+            `(,asm_plus)
+            
+            )
+
+        ;epilogue
+(define epilogue
+    (string-append 
+        "\t epilouge: \n"
+        "\tleave\n"
+        "\tpop r12\n"
+        "\tpop r13\n"
+        "\tpop r14\n"
+        "\tret\n\n"  
+        "section .data\n"
+        "newline:\n\t"
+            "db CHAR_NEWLINE, 0\n\n"
+        (apply string-append library_functions_creation_list)
+        
+    )
+    
 )
