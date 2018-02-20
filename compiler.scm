@@ -14,7 +14,7 @@
 )
 ;;
 (define library_functions
-    `(("free_plus" "asm_plus") ("free_isBool" "isBool") ("free_isInteger" "isInt") ("free_isPair" "isPair")
+    `(("free_denominator" "nasm_denominator")("free_numerator" "nasm_numerator") ("free_plus" "asm_plus") ("free_isBool" "isBool") ("free_isInteger" "isInt") ("free_isPair" "isPair")
       ("free_isChar" "isChar") ("free_isProcedure" "isProc") ("free_isNull" "isNull") ("free_isNumber" "isNumber")
       ("free_isRational" "isNumber") ("free_isVector" "isVector") ("free_intToChar","intToChar") ("free_charToInt","charToInt")
       ("free_isString","isString")
@@ -1108,6 +1108,8 @@
 ;make initial free vars table with elemntary procedures
 (define basicFree
             (list 
+                (list "free_denominator" 'denominator "free_denominator:\n\tdq SOB_UNDEFINED\n")
+                (list "free_numerator" 'numerator "free_numerator:\n\tdq SOB_UNDEFINED\n")
                 (list "free_plus" '+ "free_plus:\n\tdq SOB_UNDEFINED\n")
                 (list "free_minus" '- "free_minus:\n\tdq SOB_UNDEFINED\n")
                 (list "free_shave" '= "free_shave:\n\tdq SOB_UNDEFINED\n")
@@ -1295,18 +1297,44 @@
 ;; numerator
 (define asm_numerator
     (string-append
-        "nasm_numerator:\n"
+        "\nnasm_numerator:\n"
         "\tpush rbp \n"
         "\tmov rbp,rsp \n"
-        
-
-
+        "\tmov r8, An(0)\n"
+        "\tmov rax, r8\n"
+        "\tTYPE r8\n"
+        "\tcmp r8,T_FRACTION\n"
+        "\tje numinator_frac_label\n"
+        ;"\tDATA rax\n"
+        ;"\tMAKE_INT rax\n"
+        "\tjmp end_numerator_lable\n"
+        "numinator_frac_label:\n"
+        "\tNUMERATOR rax\n"
+        "end_numerator_lable:\n"
+        "\tleave \n"
+        "\tret \n"
     )
 )
 
 ;; denominator
 (define asm_denominator
     (string-append
+        "\nnasm_denominator:\n"
+        "\tpush rbp \n"
+        "\tmov rbp,rsp \n"
+        "\tmov r8, An(0)\n"
+        "\tmov rax, r8\n"
+        "\tTYPE r8\n"
+        "\tcmp r8,T_FRACTION\n"
+        "\tje denom_frac_label\n"
+        "\tmov rax,1\n"
+        "\tMAKE_INT rax\n"
+        "\tjmp end_denominator_lable\n"
+        "denom_frac_label:\n"
+        "\tDENOMINATOR rax\n"
+        "end_denominator_lable:\n"
+        "\tleave \n"
+        "\tret \n"
     )
 )
 
@@ -1441,7 +1469,7 @@
         "\tpush rbx \n"
         "\tmov rbx,arg_count\n"
         "\tcmp rbx, arg_count \t\t ;checks if inserted more then 1 argument \n"
-        "\tjne " arg-type-exception-label "\t\t;jump to exception handler \n"
+        "\tjne " arg-count-exception-label "\t\t;jump to exception handler \n"
         "\tmov rax,An(0) \n"
         "\tDATA rax \n"
         "\tMAKE_CHAR rax\n"
@@ -1459,7 +1487,7 @@
         "\tpush rbx \n"
         "\tmov rbx,arg_count\n"
         "\tcmp rbx, arg_count \t\t ;checks if inserted more then 1 argument \n"
-        "\tjne " arg-type-exception-label "\t\t;jump to exception handler \n"
+        "\tjne " arg-count-exception-label "\t\t;jump to exception handler \n"
         "\tmov rax,An(0) \n"
         "\tDATA rax \n"
         "\tMAKE_INT rax\n"
@@ -1510,7 +1538,8 @@
 
 
 (define library_functions_creation_list
-    `(,asm_plus ,boolean_pred ,int_pred ,pair_pred ,char_pred ,proc_pred ,null_pred ,number_pred ,vector_pred
+    `(,asm_denominator ,asm_numerator ,asm_plus ,boolean_pred ,int_pred ,pair_pred
+     ,char_pred ,proc_pred ,null_pred ,number_pred ,vector_pred
       ,iteger_to_char ,char_to_int ,string_pred
      )
     
