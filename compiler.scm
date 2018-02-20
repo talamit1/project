@@ -349,9 +349,27 @@
                bodyLabel ":\n"
                "\tpush rbp\n"
                "\tmov rbp,rsp\n"
+      
+
+                ; ;;;;;;;;check if opt is nil and need to insert only nil
+                ; "\tmov r8," (number->string numOfParams) "\n"
+                ; "\tsub r8, 1\n"
+                ; "\tmov r9, qword[rbp + 8*3]\t\t; r8 holds args count\n"
+                ; "\tcmp r8, r9\n"
+                ; ;"\tje " afterAll "\n"
+                ; "\tmov r10, r9\n"
+                ; "\tadd r10, 1\n" ;;r10 is the arg count +1 fir nil
+                ; "\tmov qword[rbp + 8*3], r10\t\t;update arg count\n"
+                ; "\tmov r10, rbp\n"
+                ; "\tmov r11, r9\n"
+                ; "\tadd r11, 4\n"; r11 = i (how many entrys to move down)
+
+
+
+
 
                ;;;;; TODO - Fix stack code
-               "\tmov rdx, sobNil\t\t;nil for building the list of params recursivly\n"
+               "\tmov rdx, qword[sobNil]\t\t;nil for building the list of params recursivly\n"
                "\tmy_malloc 8\n"
                "\tmov qword [rax], rdx\n"
                "\tmov rdx, rax\n"
@@ -368,6 +386,8 @@
                "\timul r10, 8\n" ;;r10 is where we save the list in stack ---> [ebp +r10] = list
                "\tsub r9, 1\n" ;;loop guard 
                
+
+
                ;;this loop makes the list of m parameters
                copy_param_to_list_loop ":\n"
                "\tcmp r8, r9\n"
@@ -458,8 +478,9 @@
                 (string-append 
                 "\t; ******start-define*****\n" 
                 (code-gen defExp constTable freeTable major)
+                ;"\tmov rax, qword[ rax]\n"
                 "\tmov qword[" defVarLabel "], rax\n"
-                "\tmov rax, SOB_VOID\n\t; ******end-define*****\n")
+                "\tmov rax, sobVoid\n\t; ******end-define*****\n")
         )
     )
 )
@@ -1104,7 +1125,7 @@
                     "\tpush 0\n" ;arg_count
                     "\tpush 0\n" ;env
                     "\tpush 0\n" ;ret
-                    "\tpush rbp\n" 
+                    "\tpush rbp\n"
                     "\tmov rbp, rsp\n"
                     ) file)
                     (display createLib file)
@@ -1119,6 +1140,8 @@
     (pipeline (file->list "foo.scm"))
     )
 
+(define create-check-void-label (makeLabel "check_void_lable_")) 
+ 
 (define compile-scheme-file
     (lambda (scheme-file nasm-file)    
         (let* 
@@ -1128,12 +1151,14 @@
                 (consTableRep (convert-to-string (only-rep-list constTable)))
                 (freeTable (createFreeTable astExpression))
                 (freeTableRep (convert-to-string (only-rep-list freeTable)))
-                (codeEpilogue (string-append "\tpush RAX\n"
+                (codeEpilogue (string-append 
+                "\tpush RAX\n"
                 "\tcall write_sob\n"
                 "\tadd rsp,8\n"
                 "\tmov rdi, newline\n\tmov rax, 0\n\tcall printf\n"
                 ))
-                (generated-code (convert-to-string (map (lambda(x) (string-append "\n\n" (code-gen x constTable freeTable 0) codeEpilogue "\n\n")) astExpression)))
+                (generated-code (convert-to-string (map (lambda(x) (let ((checkVoid (create-check-void-label)))
+                 (string-append "\n\n" (code-gen x constTable freeTable 0) "\tcmp rax, sobVoid\n" "\tje " checkVoid "\n" codeEpilogue "\t" checkVoid ":\n" "\n\n"))) astExpression)))
                 )
                 (display "\n\n\n")
                 ;(debugPrint 555)
