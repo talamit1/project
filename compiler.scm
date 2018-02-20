@@ -1230,7 +1230,7 @@
                     "malloc_pointer:\n"
                     "resq 1\n"
                     "start_of_malloc:\n"
-                    "resb 2^30\n"
+                    "resb 1024*1024*1024\n"
                     "\nsection .text\n\n"
                     "main:\n"
                     "\tnop\n"
