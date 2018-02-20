@@ -1210,6 +1210,16 @@
     )
 )
 
+;; apply 
+(define asm_apply
+    (string-append
+        
+        
+    )    
+)
+
+
+
 ;; + function
 (define asm_plus
       (string-append
@@ -1217,12 +1227,23 @@
             "\tpush rbp \n"
             "\tmov rbp,rsp \n"
             "\tpush rbx \n"
-            "\tmov rax,An(0)\n"
-            "\tmov rbx,An(1)\n"
-            "\tDATA rbx\n" 
+            "\tpush r8 \n"
+            "\tpush r9 \n"
+            "\tmov r8,0\n" ;start result
+            "\tmov r9, arg_count\n"
+            "plus_loop:\n"
+            "\tcmp r9, 0\n"
+            "\tje end_plus_loop\n"
+            "\tmov rax,An(r9-1)\n"
             "\tDATA rax\n"           
-            "\tadd rax,rbx \n"
+            "\tadd r8,rax\n"
+            "\tsub r9, 1\n"
+            "\tjmp plus_loop\n"
+            "end_plus_loop:\n"
+            "\tmov rax, r8\n"
             "\tMAKE_INT rax\n"
+            "\tpop r9 \n"
+            "\tpop r8 \n"
             "\tpop rbx \n"
             "\tleave \n"
             "\tret \n"
