@@ -319,17 +319,22 @@
 (define create-fix-stack-position-Endlabel
     (makeLabel "\tL_fix_stack_position_exit_")
 )
-
-(define create-nil-fix-loop-label
-    (makeLabel "\tL_nil_fix_stack_loop_")
+;noNil
+(define create-no-nil-fix-label
+    (makeLabel "\tL_no_nil_fix_")
 )
-
-(define create-after-stack-fix-label
+;afterAll
+(define create-after-all-stack-fix-label
     (makeLabel "\tL_after_opt_stack_fix_")
 )
+;nilLoop
+(define create-nil-fix-loop
+    (makeLabel "\tL_nil_stack_fix_loop_")
+)
 
-(define create-after-nil-fix-label
-    (makeLabel "\tL_after_nil_stack_fix_")
+;afterNilFix
+(define create-afterNilFix-lable
+    (makeLabel "\tL_after_nil_stack_fix_loop_exit_")
 )
 
 
@@ -343,16 +348,11 @@
               (numOfParams (length (getLambdaVars 'lambda-opt lambdaOpt-expr)))
               (fixStackStartLoop (create-fix-stack-position-label))
               (fixStackEndLoop (create-fix-stack-position-Endlabel))
-              (afterAll (create-after-stack-fix-label))
-              (afterNil (create-after-stack-fix-label))
-              (nilLoop (create-nil-fix-loop-label))
+              (afterAll (create-after-all-stack-fix-label))
+              (noNil (create-no-nil-fix-label))
+              (nilLoop (create-nil-fix-loop))
+              (afterNilFix (create-afterNilFix-lable))
              )
-              (debugPrint numOfParams)
-              ;(debugPrint exitLabel)
-              ;(debugPrint lambda-body) 
-               
-              
-              
                (string-append  "\t;*****lambda opt start!*****\n\t" 
                (make-new-env major) 
                (copy-param-and-env major)
@@ -365,31 +365,38 @@
                "\tpush rbp\n"
                "\tmov rbp,rsp\n"
       
+                ;;;;;;;;;;;;;  NIL ;;;;;;;;;;;;;;
+                ;;;;;;;;check if opt is nil and need to insert only nil
+                "\tmov r8," (number->string numOfParams) "\n"
+                "\tsub r8, 1\n"
+                "\tmov r9, qword[rbp + 8*3]\t\t; r8 holds args count\n"
+                "\tcmp r8, r9\n"
+                "\tjne " noNil "\n"
+                "\tmov r10, r9\n"
+                "\tadd r10, 1\n" ;;r10 is the arg count +1 fir nil
+                "\tmov qword[rbp + 8*3], r10\t\t;update arg count\n"
+                "\tmov r10, rbp\n"
+                "\tmov r11, r9\n"
+                "\tadd r11, 4\n"; r11 = i (how many entrys to move down)
+                nilLoop ":\n"
+                "\tcmp r11, 0\n"
+                "\tje " afterNilFix "\n"
+                "\tmov r12, qword[r10]\n" ;;entry to move
+                "\tmov qword[r10 - 8], r12\n"
+                "\tadd r10, 8\n"
+                "\tsub r11, 1\n"
+                "\tjmp " nilLoop "\n"
 
-                ; ;;;;;;;;check if opt is nil and need to insert only nil
-                ; "\tmov r8," (number->string numOfParams) "\n"
-                ; "\tsub r8, 1\n"
-                ; "\tmov r9, qword[rbp + 8*3]\t\t; r8 holds args count\n"
-                ; "\tcmp r8, r9\n"
-                ; "\tjne " afterNil "\n"
-                ; "\tmov r10, r9\n"
-                ; "\tadd r10, 1\n" ;;r10 is the arg count +1 fir nil
-                ; "\tmov qword[rbp + 8*3], r10\t\t;update arg count\n"
-                ; "\tmov r10, rbp\n"
-                ; "\tmov r11, r9\n"
-                ; "\tadd r11, 4\n"; r11 = i (how many entrys to move down)
-                ; nilLoop ":\n"
-                ; "\tcmp r11, 0\n"
-                ; "\tje " afterAll "\n"
+
+                afterNilFix ":\n"
+                "\tmov rdx, qword[sobNil]\t\t;nil item\n"
+                "\tmov qword[r10 - 8], rdx\n";;;;;;;;;;;;;;;;;;
+                "\tsub rbp, 8\n"
+                "\tsub rsp, 8\n"
+                "\tjmp " afterAll "\n"
 
 
-
-                ; "\tjmp " nilLoop "\n"
-
-
-
-
-               afterNil ":\n"
+               noNil ":\n"
                ;;;;; TODO - Fix stack code
                "\tmov rdx, qword[sobNil]\t\t;nil for building the list of params recursivly\n"
                "\tmy_malloc 8\n"
