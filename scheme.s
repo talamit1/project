@@ -35,6 +35,16 @@
 	or %1, T_INTEGER
 %endmacro
 
+%macro MAKE_BOOL 1
+	shl %1, TYPE_BITS
+	or %1, T_BOOL
+%endmacro
+
+%macro MAKE_RUNTIME_LITERAL 2
+	shl %1, TYPE_BITS
+	or %1, %2
+%endmacro
+
 %macro MAKE_CHAR 1
 	shl %1, TYPE_BITS
 	or %1, T_CHAR

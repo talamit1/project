@@ -4,7 +4,7 @@
 
 ;;
 (define library_functions
-    `(("free_plus" "asm_plus"))
+    `(("free_plus" "asm_plus") ("free_isBool" "isBool") ("free_isInteger" "isInt") ("free_isPair" "isPair"))
     )
 
 ;;create closurer and put it on func_name
@@ -1048,7 +1048,16 @@
                 (list "free_mul" '* "free_mul:\n\tdq SOB_UNDEFINED\n")
                 (list "free_div" '/ "free_div:\n\tdq SOB_UNDEFINED\n")
                 (list "free_grater" '> "free_grater:\n\tdq SOB_UNDEFINED\n")
-                (list "free_smaller" '> "free_smaller:\n\tdq SOB_UNDEFINED\n")  
+                (list "free_smaller" '< "free_smaller:\n\tdq SOB_UNDEFINED\n")
+                (list "free_isBool" 'boolean? "free_isBool:\n\tdq SOB_UNDEFINED\n")
+                (list "free_isInteger" 'integer? "free_isInteger:\n\tdq SOB_UNDEFINED\n")
+                (list "free_isPair" 'pair? "free_isPair:\n\tdq SOB_UNDEFINED\n")
+                (list "free_isProcedure" 'procedure? "free_isProcedure:\n\tdq SOB_UNDEFINED\n")
+                (list "free_isChar" 'char? "free_isChar:\n\tdq SOB_UNDEFINED\n")  
+                (list "free_isNumber" 'number? "free_isNumber:\n\tdq SOB_UNDEFINED\n")                      
+                (list "free_isNull" 'null? "free_isNull:\n\tdq SOB_UNDEFINED\n")
+                (list "free_isString" 'string? "free_isString:\n\tdq SOB_UNDEFINED\n")  
+                (list "free_isRational" 'rational? "free_isRational:\n\tdq SOB_UNDEFINED\n")  
             )
         )
 
@@ -1201,7 +1210,7 @@
     )
 )
 
-
+;; + function
 (define asm_plus
       (string-append
             "\nasm_plus: \n"
@@ -1221,10 +1230,51 @@
         
         )
 
+(define create-pred-function
+    (lambda (type func_label)
+        (let ((func_true (string-append func_label "_true"))
+                (func_false (string-append func_label "_false"))
+                (func_exit (string-append func_label "_exit")))
+            (string-append
+                func_label ":\n"
+                "\tpush  rbp\n"
+                "\tmov rbp,rsp \n"
+                "\tpush  rbx\n"
+                "\tmov rbx,An(0)   ;;put argument in rbx\n"
+                "\tTYPE rbx   ;;put argument in rbx\n"
+                "\tcmp rbx," type " ;;put argument in rbx\n"
+                "\tje " func_true "   ;;if equal jump to func true\n"
+                "\tmov rax,0 \n"
+                "\tMAKE_BOOL rax \n"
+                "\tjmp " func_exit "\n"
+                "\t" func_true ":\n"
+                "\tmov rax,1 \n"
+                "\tMAKE_BOOL rax \n"
+                "\t" func_exit ":\n"
+                "\tpop  rbx\n"
+                "\tleave \n"
+                "\tret \n"
+            )
+        )
+    )
+)
+
+(define boolean_pred
+    (create-pred-function "T_BOOL" "isBool")
+    )
+
+(define int_pred
+        (create-pred-function "T_INTEGER" "isInt")
+ )
+ (define pair_pred
+    (create-pred-function "T_PAIR" "isPair")
+)
+
+
 
 
         (define library_functions_creation_list
-            `(,asm_plus)
+            `(,asm_plus ,boolean_pred ,int_pred ,pair_pred)
             
             )
 
@@ -1241,6 +1291,10 @@
         "newline:\n\t"
             "db CHAR_NEWLINE, 0\n\n"
         (apply string-append library_functions_creation_list)
+
+        
+
+        
         
     )
     
