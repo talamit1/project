@@ -1281,8 +1281,9 @@
 (define asm_numerator
     (string-append
         "nasm_numerator:\n"
+        "\tpush rbp \n"
+        "\tmov rbp,rsp \n"
         
-
 
 
     )
