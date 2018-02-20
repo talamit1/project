@@ -4,3 +4,5 @@ scheme\.o
 foo.s
 
 foo.scm
+
+makeme.sh
