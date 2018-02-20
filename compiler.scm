@@ -2,11 +2,22 @@
 (load "tag-parser.scm");
 (load "sexpr-parser.scm");
 
+
+(define arg-count-exception-label 
+    "bad_arg_count"
+)
+(define arg-type-exception-label 
+    "bad_arg_type"
+)
+(define not-proc-exception-label 
+    "not_proc_exception"
+)
 ;;
 (define library_functions
     `(("free_plus" "asm_plus") ("free_isBool" "isBool") ("free_isInteger" "isInt") ("free_isPair" "isPair")
       ("free_isChar" "isChar") ("free_isProcedure" "isProc") ("free_isNull" "isNull") ("free_isNumber" "isNumber")
-      ("free_isRational" "isNumber") ("free_isVector" "isVector")
+      ("free_isRational" "isNumber") ("free_isVector" "isVector") ("free_intToChar","intToChar") ("free_charToInt","charToInt")
+      ("free_isString","isString")
      )
     )
 
@@ -990,7 +1001,7 @@
                         ))
                         ((string? item) 
                             (append existingConsts 
-                            (list (list label item (string-append label ":\n\tdq MAKE_LITERAL_STRING " (string-append (splitString item)  "\n"  )))) 
+                            (list (list label item (string-append label ":\n\tMAKE_LITERAL_STRING " (string-append (splitString item)  "\n"  )))) 
                         ))
                         ((and (rational? item) (not (integer? item)))     
                             (let ((numer  (find-rep existingConsts (numerator item)))
@@ -1001,7 +1012,7 @@
                         )
                         ((vector? item)
                         (append existingConsts
-                        (list (list label item (string-append label ":\n\tdq MAKE_LITERAL_VECTOR " (string-append  (make-vec-rep item existingConsts)  "\n"  )))) 
+                        (list (list label item (string-append label ":\n\tMAKE_LITERAL_VECTOR " (string-append  (make-vec-rep item existingConsts)  "\n"  )))) 
                         ))
                     )                    
                 )                
@@ -1062,6 +1073,10 @@
                 (list "free_isString" 'string? "free_isString:\n\tdq SOB_UNDEFINED\n")  
                 (list "free_isRational" 'rational? "free_isRational:\n\tdq SOB_UNDEFINED\n") 
                 (list "free_isVector" 'vector? "free_isVector:\n\tdq SOB_UNDEFINED\n")  
+                (list "free_intToChar" 'integer->char "free_intToChar:\n\tdq SOB_UNDEFINED\n")
+                (list "free_charToInt" 'char->integer "free_charToInt:\n\tdq SOB_UNDEFINED\n")
+                
+                
             )
         )
 
@@ -1244,6 +1259,9 @@
                 "\tpush  rbp\n"
                 "\tmov rbp,rsp \n"
                 "\tpush  rbx\n"
+                "\tmov rbx ,arg_count\n"
+                "\tcmp rbx, arg_count \t\t ;checks if inserted more then 1 argument \n"
+                "\tjne " arg-type-exception-label "\t\t;jump to exception handler \n"
                 "\tmov rbx,An(0)   ;;put argument in rbx\n"
                 "\tTYPE rbx   ;;put argument in rbx\n"
                 "\tcmp rbx," type " ;;put argument in rbx\n"
@@ -1288,6 +1306,9 @@
 (define vector_pred
     (create-pred-function "T_VECTOR" "isVector")
 )
+(define string_pred
+    (create-pred-function "T_STRING" "isString")
+)
 
 (define number_pred
     (string-append
@@ -1296,6 +1317,9 @@
         "\tmov rbp,rsp\n"
         "\tpush rbx\n"
         "\tpush rcx\n"
+        "\tmov rbx,arg_count\n"
+        "\tcmp rbx, arg_count \t\t ;checks if inserted more then 1 argument \n"
+        "\tjne " arg-type-exception-label "\t\t;jump to exception handler \n"
         "\tmov rbx,An(0) \n"
         "\tTYPE rbx \n"
         "\tcmp rbx,T_INTEGER \n"
@@ -1317,16 +1341,101 @@
         )
 )
 
+(define iteger_to_char
+    (string-append
+        "\nintToChar:\n"
+        "\tpush rbp\n"
+        "\tmov rbp,rsp\n"
+        "\tpush rbx \n"
+        "\tmov rbx,arg_count\n"
+        "\tcmp rbx, arg_count \t\t ;checks if inserted more then 1 argument \n"
+        "\tjne " arg-type-exception-label "\t\t;jump to exception handler \n"
+        "\tmov rax,An(0) \n"
+        "\tDATA rax \n"
+        "\tMAKE_CHAR rax\n"
+        "\t pop rbx \n"
+        "\tleave \n"
+        "\tret \n"
+        )
+    )
+
+(define char_to_int
+    (string-append
+        "\ncharToInt:\n"
+        "\tpush rbp\n"
+        "\tmov rbp,rsp\n"
+        "\tpush rbx \n"
+        "\tmov rbx,arg_count\n"
+        "\tcmp rbx, arg_count \t\t ;checks if inserted more then 1 argument \n"
+        "\tjne " arg-type-exception-label "\t\t;jump to exception handler \n"
+        "\tmov rax,An(0) \n"
+        "\tDATA rax \n"
+        "\tMAKE_INT rax\n"
+        "\tpop rbx \n"
+        "\tleave \n"
+        "\tret \n"
+        )
+    )
+
+    ; (define make_vector
+    ;     (string-append
+    ;         "\nmake_vector:\n"
+    ;         "\tpush rbp\n"
+    ;         "\tmov rbp,rsp\n"
+    ;         "\tpush rbx \n"
+    ;         "\tpush rcx \n"
+    ;         "\tpush rdx \n"
+    ;         "\tpush r10 \n"
+    ;         "\tmov rbx,arg_count \t\t ;put arg_count in rbx \n"
+    ;         "\tcmp rbx,2 \t\t ;checking if 2 arguments inserted"
+    ;         "\tjne" arg-count-exception-label " ;throw exception if there are not exactly 2 arguments\n"
+    ;         "\tmov rcx,An(0)  \t\t ;put first argument (vec_length) in rcx\n"
+    ;         "\tTYPE rcx \n"
+    ;         "\tcmp rcx,T_INTEGER \t\t ;checki if first argument is an int \n"
+    ;         "\tjne" arg-type-exception-label "\t\t ;throws exception if it is not a number\n"
+    ;         "\tmov rcx,An(0)  \t\t ;put first argument (vec_length) in rcx\n"
+    ;         "\tmov rbx,An(1)  \t\t ;put value "
+    ;         "\timul rcx,8  ;multiply rcx in 8 to save mempry for the vector \n  "
+    ;         "\t my_malloc rcx \n"
+    ;         "\tmov rdx,rax \t\t ;pute memory pointer in rdx"
+    ;         "\tmov r10,An(0)"
+    ;         "\tmov rcx,0 \t\t ;counter \n"
+    ;         "\tmake_vec_create_start: \n"
+    ;         "\tcmp rcx,r10 \n"
+    ;         "\tje make_vec_create_end \n"
+    ;         "\t "
+
+            
+    ;         "\t make_vec_create_end:\n"
+    ;         "\tpop r10 \n"
+    ;         "\t pop rdx \n"
+    ;         "\tpop rcx \n"
+    ;         "\tpop rbx \n"
+    ;         "\tleave \n"
+    ;         "\tret \n"
+    ;         )
+    ;     )
+
 
 (define library_functions_creation_list
-    `(,asm_plus ,boolean_pred ,int_pred ,pair_pred ,char_pred ,proc_pred ,null_pred ,number_pred ,vector_pred)
+    `(,asm_plus ,boolean_pred ,int_pred ,pair_pred ,char_pred ,proc_pred ,null_pred ,number_pred ,vector_pred
+      ,iteger_to_char ,char_to_int ,string_pred
+     )
     
 )
+
+
 
         ;epilogue
 (define epilogue
     (string-append 
         "\t epilouge: \n"
+        "\t" arg-count-exception-label ":\n"
+        "\t"arg-type-exception-label":\n"
+        "\t"not-proc-exception-label":\n"
+
+
+
         "\tleave\n"
         "\tpop r12\n"
         "\tpop r13\n"
