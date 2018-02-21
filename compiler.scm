@@ -18,7 +18,7 @@
       ("free_isChar" "isChar") ("free_isProcedure" "isProc") ("free_isNull" "isNull") ("free_isNumber" "isNumber")
       ("free_isRational" "isNumber") ("free_isVector" "isVector") ("free_intToChar","intToChar") ("free_charToInt","charToInt")
       ("free_isString","isString") ("free_makeVector" "make_vector") ("free_vectorLength" "vector_length") ("free_scmNot" "scm_not") 
-      ("free_vectorRef" "vector_ref")  ("free_vector" "vector")
+      ("free_vectorRef" "vector_ref")  ("free_vector" "vector") ("free_vectorSet" "vector_set") ("free_zero" "isZero")
      )
     )
 
@@ -1128,6 +1128,7 @@
                 (list "free_isString" 'string? "free_isString:\n\tdq SOB_UNDEFINED\n")  
                 (list "free_isRational" 'rational? "free_isRational:\n\tdq SOB_UNDEFINED\n") 
                 (list "free_isVector" 'vector? "free_isVector:\n\tdq SOB_UNDEFINED\n")  
+                (list "free_zero" 'zero? "free_zero:\n\tdq SOB_UNDEFINED\n")
                 (list "free_intToChar" 'integer->char "free_intToChar:\n\tdq SOB_UNDEFINED\n")
                 (list "free_charToInt" 'char->integer "free_charToInt:\n\tdq SOB_UNDEFINED\n")
                 (list "free_makeVector" 'make-vector "free_makeVector:\n\tdq SOB_UNDEFINED\n")
@@ -1135,6 +1136,8 @@
                 (list "free_scmNot" 'not "free_scmNot:\n\tdq SOB_UNDEFINED\n")
                 (list "free_vectorRef" 'vector-ref "free_vectorRef:\n\tdq SOB_UNDEFINED\n")
                 (list "free_vector" 'vector "free_vector:\n\tdq SOB_UNDEFINED\n")
+                (list "free_vectorSet" 'vector-set! "free_vectorSet:\n\tdq SOB_UNDEFINED\n")
+                
                 
                 
                 
@@ -1511,6 +1514,39 @@
     (create-pred-function "T_STRING" "isString")
 )
 
+(define zero_pred
+    (string-append
+        "\nisZero:\n"
+        "\tpush  rbp\n"
+        "\tmov rbp,rsp \n"
+        "\t push rbx \n"
+        "\tmov rbx ,arg_count \n"
+        "\tcmp rbx,1 \n"
+        "\tjne " arg-count-exception-label "\n"
+        "\tmov rbx,An(0) \n"
+        "\tTYPE rbx \n"
+        "\tcmp rbx,T_INTEGER \n"
+        "\tjne ret_false_zero \t\t ;in case we don't have number\n"
+        "\tmov rbx,An(0) \n"
+        "\tDATA rbx \n"
+        "\tcmp rbx,0 \t\t ;this is boolean and it is #t \n"
+        "\tjne ret_false_not \t\t ;in case we don't  have zero we will return #f\n"
+        "\tmov rax,1 \t\t ;in case we have #f we need to return #t \n"
+        "\tMAKE_BOOL rax \n"
+        "\tjmp end_of_zero \n"
+        
+        "\tret_false_zero:\n"
+        "\tmov rax,0 \n"
+        "\tMAKE_BOOL rax \n"
+        "\tend_of_zero:"
+        "\t pop rbx \n"
+        "\tleave \n"
+        "\tret \n"
+        
+        )
+    
+    )
+
 (define asm_not
     (string-append
         "\nscm_not:\n"
@@ -1524,6 +1560,7 @@
         "\tTYPE rbx \n"
         "\tcmp rbx,T_BOOL \n"
         "\tjne ret_false_not \t\t ;in case we don't have a boolean the we will return #f\n"
+        "\tmov rbx,An(0) \n"
         "\tDATA rbx \n"
         "\tcmp rbx,1 \t\t ;this is boolean and it is #t \n"
         "\tje ret_false_not \t\t ;in case we have #t we will return #f\n"
@@ -1623,13 +1660,19 @@
             "\tpush r11 \n"
             "\tmov rbx,arg_count \t\t ;put arg_count in rbx \n"
             "\tcmp rbx,2 \t\t ;checking if 2 arguments inserted\n"
-            "\tjne " arg-count-exception-label " ;throw exception if there are not exactly 2 arguments\n"
+            "\tjg " arg-count-exception-label " ;throw exception if there are not exactly 2 arguments\n"
             "\tmov rcx,An(0)  \t\t ;put first argument (vec_length) in rcx\n"
             "\tTYPE rcx \n"
             "\tcmp rcx,T_INTEGER \t\t ;checki if first argument is an int \n"
             "\tjne " arg-type-exception-label "\t\t ;throws exception if it is not a number\n"
             "\tmov rcx,An(0)  \t\t ;put vec_length in rcx\n"
-            "\tmov rbx,An(1) \t\t ;put value in rbx \n"
+            "\tmov rbx,0\n"
+            "\tMAKE_INT rbx \n"
+            "\tmov r10,arg_count \n"
+            "\tcmp r10,1\n"
+            "\tje rest_of_execution\n"
+            "\tmov rbx,An(1) \t\t ;put value in rbx \n"          
+            "\trest_of_execution:\n"
             "\tDATA rcx \n"
             "\tcmp rcx,0 \n"
             "\tje empty_vec \n"
@@ -1789,13 +1832,55 @@
         )
     )
 
+(define vec_set
+        (string-append
+            "\nvector_set:\n"
+            "\tpush rbp\n"
+            "\tmov rbp,rsp\n"
+            "\tpush rbx \n"
+            "\tpush rcx \n"
+            "\tpush rdx \n"
+            "\tmov rbx,arg_count \n"
+            "\tcmp rbx,3 \n"
+            "\tjne " arg-count-exception-label "\t\t;jump to exception handler \n"
+            "\tmov rbx,An(0) \n"
+            "\tTYPE rbx \n"
+            "\tcmp rbx,T_VECTOR \t\t ;checks if the first arg is a vector\n"
+            "\tjne " arg-type-exception-label"\t\t;jump to exception handler \n"
+            "\tmov rbx,An(1) \n"
+            "\tTYPE rbx \n"
+            "\tcmp rbx,T_INTEGER \t\t ;checks if the sceond arg is an Integer\n"
+            "\tjne " arg-type-exception-label"\t\t;jump to exception handler \n"
+            "\tmov rbx,An(0) \t\t ;put the vector reference in rbx\n"
+            "\tmov rcx,An(1) \t\t ;put the desired index in rcx\n"
+            "\tmov rdx,An(2) \t\t ;put the value to set in rdx\n"
+            "\tDATA rcx \n"
+            "\tVECTOR_LENGTH rbx \t\t ;gets vector length\n"
+            "\tcmp rcx,rbx \t\t ;checks if it is a valid index \n"
+            "\tjge " arg-type-exception-label "\t\t ;index is to big\n"
+            "\tmov rbx,An(0) \n"
+            "\tVECTOR_ELEMENTS rbx \n"
+            "\tmov rax,[rbx+8*rcx] \n"
+            "\tmov [rax],rdx \n"
+            "\tmov rax,0 \n"
+            "\tmov rax,sobVoid \n"
+            "\tpop rdx \n"
+            "\tpop rcx \n"
+            "\tpop rbx \n"
+            "\tleave \n"
+            "\tret \n" 
+        )
+    )
+    
+
 
 
 
 (define library_functions_creation_list
     `(,asm_denominator ,asm_numerator ,asm_plus ,boolean_pred ,int_pred ,pair_pred
      ,char_pred ,proc_pred ,null_pred ,number_pred ,vector_pred
-      ,iteger_to_char ,char_to_int ,string_pred ,make_vec ,vec_length ,asm_not ,vec_ref ,vector
+      ,iteger_to_char ,char_to_int ,string_pred ,make_vec ,vec_length ,asm_not ,vec_ref ,vector ,vec_set
+      ,zero_pred
      )
     
 )
