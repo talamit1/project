@@ -14,7 +14,7 @@
 )
 ;;
 (define library_functions
-    `(("free_denominator" "nasm_denominator")("free_numerator" "nasm_numerator") ("free_plus" "asm_plus") ("free_isBool" "isBool") ("free_isInteger" "isInt") ("free_isPair" "isPair")
+    `(("free_denominator" "nasm_denominator")("free_numerator" "nasm_numerator") ("free_div" "asm_div") ("free_mul" "asm_mul") ("free_minus" "asm_minus") ("free_plus" "asm_plus") ("free_isBool" "isBool") ("free_isInteger" "isInt") ("free_isPair" "isPair")
       ("free_isChar" "isChar") ("free_isProcedure" "isProc") ("free_isNull" "isNull") ("free_isNumber" "isNumber")
       ("free_isRational" "isNumber") ("free_isVector" "isVector") ("free_intToChar","intToChar") ("free_charToInt","charToInt")
       ("free_isString","isString") ("free_makeVector" "make_vector") ("free_vectorLength" "vector_length") ("free_scmNot" "scm_not") 
@@ -1346,7 +1346,376 @@
     )
 )
 
-;;TODO gcd for two 
+;; / function
+(define asm_div
+    (string-append
+          "\nasm_div: \n"
+          "\tpush rbp \n"
+          "\tmov rbp,rsp \n"
+         
+      
+          "\tmov r10,1\n" ; numer accum
+          "\tmov r11,1\n" ; denomer accum
+          "\tmov r9, arg_count\n"
+
+
+          "\tmov r10 , An(0)\n"
+          "\tmov r11 , r10\n"
+          "\tTYPE r11\n"
+          "\tcmp r11, T_INTEGER\n"
+          "\tje div_first_is_integer\n"
+          
+          
+          "\tmov r11, r10\n"
+          "\tNUMERATOR r10\n"
+          "\tDATA r10\n"
+          "\tDENOMINATOR r11\n"
+          "\tDATA r11\n"
+          "\tjmp div_after_first\n"
+          "div_first_is_integer:\n"
+          "\tDATA R10\n"
+          "\tmov r11, 1\n"
+
+          "div_after_first:\n"
+          "\tmov r9, arg_count\n"
+          "\tcmp r9, 1\n"             ;;if just one parameter make negative and jump to directly to end
+          "\tjne div_loop\n"
+          ;"\tneg r10\n"
+          "\tmov r15, r10\n"
+          "\tmov r10, r11\n"
+          "\tmov r11, r15\n"
+
+          "\tjmp end_div_loop\n"  
+
+          
+          "div_loop:\n"
+          "\tcmp r9, 1\n"
+          "\tje end_div_loop\n"
+          "\tmov rax,An(r9-1)\n" ;;the new number to add
+          "\tmov r12, rax\n"
+          "\tTYPE r12\n" ;;get type - fraction or integer
+          "\tcmp r12, T_FRACTION\n"
+          "\tje div_type_is_fraction\n"
+         
+         
+          "\tDATA rax\n"
+          "\timul r11, rax\n"
+          ;"\tadd r10, rax\n"
+          "\tjmp div_after_add\n"
+
+          "div_type_is_fraction:\n"
+          "\tmov r12, rax\n"
+          "\tNUMERATOR r12\n" ;;holds numer   4
+          "\tDATA r12\n"
+          "\tDENOMINATOR rax\n" ;;holds denomer   7
+          "\tDATA rax\n"
+         ; "\tmov r14, r11\n" ;;save accum denom  r14 =5
+          "\timul r10, rax\n"  ;;updated denomer 7 * 5
+          "\timul r11, r12\n" ;;7*3
+          ;"\timul r12, r14\n" ;;5*4
+          ;"\tadd rax, r12\n"
+          ;"\tmov r10, rax\n"   ;;new numer!!!!
+      
+          "div_after_add:\n"
+          "\tsub r9, 1\n"
+          "\tjmp div_loop\n"
+          "end_div_loop:\n"
+
+          ;;GCD
+          "\tpush r10\n"
+          "\tpush r11\n"
+          "\tcall gcd\n"
+          "\tadd rsp, 16\n"
+          "\tmov r9, rax\n" ;;the gcd
+          "\tmov rax, r10\n"
+          "\tcqo\n"
+          "\tidiv r9\n"
+          "\tmov r10, rax\n"
+          "\tmov rax, r11\n"
+          "\tcqo\n"
+          "\tidiv r9\n"
+          "\tmov r11, rax\n"
+
+
+          "\tcmp r11, 1\n"
+          "\tje div_build_integer\n"
+
+          "\tcmp r11, -1\n"
+          "\tje div_build_integer_minus_one\n"
+  
+          
+          ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+          ;;TODO build runtime fraction
+          "\tMAKE_INT r10\n"
+         ; "\tmov rax, r10\n"
+          "\tMAKE_INT r11\n"
+
+          "\tmy_malloc 8\n"
+          "\tmov qword[rax], r10\n"
+          "\tsub rax, start_of_data\n"
+          "\tmov r10, rax\n"
+
+
+          "\tmy_malloc 8\n"
+          "\tmov qword[rax], r11\n"
+          "\tsub rax, start_of_data\n"
+          "\tmov r11, rax\n"
+         
+         
+          "\tshl r10, 30\n"
+          "\tor r10, r11\n"
+          "\tshl r10, 4\n"
+          "\tor r10, T_FRACTION\n"
+          "\tmov rax, r10\n"
+          "\tjmp div_end\n"
+          ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+          ;;;;; denomer = -1
+          "div_build_integer_minus_one:\n"
+          "\tneg r10\n"
+          "\tMAKE_INT r10\n"
+          "\tmov rax, r10\n"
+          "\tjmp div_end\n"
+
+          "div_build_integer:\n"
+          "\tMAKE_INT r10\n"
+          "\tmov rax, r10\n"
+         
+          "div_end:"
+          "\tleave \n"
+          "\tret \n"
+          )
+      )
+
+
+;; * function
+(define asm_mul
+    (string-append
+          "\nasm_mul: \n"
+          "\tpush rbp \n"
+          "\tmov rbp,rsp \n"
+         
+      
+          "\tmov r10,1\n" ; numer accum
+          "\tmov r11,1\n" ; denomer accum
+          "\tmov r9, arg_count\n"
+          
+          "mul_loop:\n"
+          "\tcmp r9, 0\n"
+          "\tje end_mul_loop\n"
+          "\tmov rax,An(r9-1)\n" ;;the new number to add
+          "\tmov r12, rax\n"
+          "\tTYPE r12\n" ;;get type - fraction or integer
+          "\tcmp r12, T_FRACTION\n"
+          "\tje mul_type_is_fraction\n"
+         
+         
+          "\tDATA rax\n"
+          "\timul r10, rax\n"
+          ;"\tadd r10, rax\n"
+          "\tjmp mul_after_add\n"
+
+          "mul_type_is_fraction:\n"
+          "\tmov r12, rax\n"
+          "\tNUMERATOR r12\n" ;;holds numer   4
+          "\tDATA r12\n"
+          "\tDENOMINATOR rax\n" ;;holds denomer   7
+          "\tDATA rax\n"
+         ; "\tmov r14, r11\n" ;;save accum denom  r14 =5
+          "\timul r10, r12\n"  ;;updated denomer 7 * 5
+          "\timul r11, rax\n" ;;7*3
+          ;"\timul r12, r14\n" ;;5*4
+          ;"\tadd rax, r12\n"
+          ;"\tmov r10, rax\n"   ;;new numer!!!!
+      
+          "mul_after_add:\n"
+          "\tsub r9, 1\n"
+          "\tjmp mul_loop\n"
+          "end_mul_loop:\n"
+
+          ;;GCD
+          "\tpush r10\n"
+          "\tpush r11\n"
+          "\tcall gcd\n"
+          "\tadd rsp, 16\n"
+          "\tmov r9, rax\n" ;;the gcd
+          "\tmov rax, r10\n"
+          "\tidiv r9\n"
+          "\tmov r10, rax\n"
+          "\tmov rax, r11\n"
+          "\tidiv r9\n"
+          "\tmov r11, rax\n"
+
+
+          "\tcmp r11, 1\n"
+          "\tje mul_build_integer\n"
+          
+          
+          ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+          ;;TODO build runtime fraction
+          "\tMAKE_INT r10\n"
+         ; "\tmov rax, r10\n"
+          "\tMAKE_INT r11\n"
+
+          "\tmy_malloc 8\n"
+          "\tmov qword[rax], r10\n"
+          "\tsub rax, start_of_data\n"
+          "\tmov r10, rax\n"
+
+
+          "\tmy_malloc 8\n"
+          "\tmov qword[rax], r11\n"
+          "\tsub rax, start_of_data\n"
+          "\tmov r11, rax\n"
+         
+         
+
+          "\tshl r10, 30\n"
+          "\tor r10, r11\n"
+          "\tshl r10, 4\n"
+          "\tor r10, T_FRACTION\n"
+          "\tmov rax, r10\n"
+          "\tjmp mul_end\n"
+          ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+          "mul_build_integer:\n"
+          "\tMAKE_INT r10\n"
+          "\tmov rax, r10\n"
+         
+          "mul_end:"
+          "\tleave \n"
+          "\tret \n"
+          )
+      )
+
+
+;; - function
+(define asm_minus
+    (string-append
+          "\nasm_minus: \n"
+          "\tpush rbp \n"
+          "\tmov rbp,rsp \n"
+         
+  
+          "\tmov r10 , An(0)\n"
+          "\tmov r11 , r10\n"
+          "\tTYPE r11\n"
+          "\tcmp r11, T_INTEGER\n"
+          "\tje minus_first_is_integer\n"
+          
+          
+          "\tmov r11, r10\n"
+          "\tNUMERATOR r10\n"
+          "\tDATA r10\n"
+          "\tDENOMINATOR r11\n"
+          "\tDATA r11\n"
+         "\tjmp minus_after_first\n"
+          "minus_first_is_integer:\n"
+          "\tDATA R10\n"
+          "\tmov r11, 1\n"
+
+          "minus_after_first:\n"
+          "\tmov r9, arg_count\n"
+          "\tcmp r9, 1\n"             ;;if just one parameter make negative and jump to directly to end
+          "\tjne minus_loop\n"
+          "\tneg r10\n"
+          "\tjmp end_minus_loop\n"  
+          
+          
+          "minus_loop:\n"
+          "\tcmp r9, 1\n"
+          "\tje end_minus_loop\n"
+          "\tmov rax,An(r9-1)\n" ;;the new number to sub
+          "\tmov r12, rax\n"
+          "\tTYPE r12\n" ;;get type - fraction or integer
+          "\tcmp r12, T_FRACTION\n"
+          "\tje minus_type_is_fraction\n"
+         
+         
+          "\tDATA rax\n"
+          "\timul rax, r11\n"
+          "\tsub r10, rax\n"
+          "\tjmp minus_after_add\n"
+
+          "minus_type_is_fraction:\n"
+          "\tmov r12, rax\n"
+          "\tNUMERATOR r12\n" ;;holds numer   4
+          "\tDATA r12\n"
+          "\tDENOMINATOR rax\n" ;;holds denomer   7
+          "\tDATA rax\n"
+          "\tmov r14, r11\n" ;;save accum denom  r14 = 5
+          "\timul r11, rax\n"  ;;updated denomer 7 * 5
+          "\timul rax, r10\n" ;;7*3
+          "\timul r12, r14\n" ;;5*4
+          "\tsub rax, r12\n" ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 7*3 - 5*4
+          "\tmov r10, rax\n"   ;;new numer!!!!
+      
+          "minus_after_add:\n"
+          "\tsub r9, 1\n"
+          "\tjmp minus_loop\n"
+          "end_minus_loop:\n"
+
+          ;;GCD
+          "\tpush r10\n"
+          "\tpush r11\n"
+          "\tcall gcd\n"
+          "\tadd rsp, 16\n"
+          "\tmov r9, rax\n" ;;the gcd
+          "\tmov rax, r10\n"
+          "\tcqo\n"
+          "\tidiv r9\n"
+          "\tmov r10, rax\n"
+          "\tmov rax, r11\n"
+          "\tcqo\n"
+          "\tidiv r9\n"
+          "\tmov r11, rax\n"
+
+
+          "\tcmp r11, 1\n"
+          "\tje minus_build_integer\n"
+          
+          
+          ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+          ;;TODO build runtime fraction
+          "\tMAKE_INT r10\n"
+         ; "\tmov rax, r10\n"
+          "\tMAKE_INT r11\n"
+
+          "\tmy_malloc 8\n"
+          "\tmov qword[rax], r10\n"
+          "\tsub rax, start_of_data\n"
+          "\tmov r10, rax\n"
+
+
+          "\tmy_malloc 8\n"
+          "\tmov qword[rax], r11\n"
+          "\tsub rax, start_of_data\n"
+          "\tmov r11, rax\n"
+         
+         
+
+          "\tshl r10, 30\n"
+          "\tor r10, r11\n"
+          "\tshl r10, 4\n"
+          "\tor r10, T_FRACTION\n"
+          "\tmov rax, r10\n"
+          "\tjmp minus_end\n"
+          ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+          "minus_build_integer:\n"
+          "\tMAKE_INT r10\n"
+          "\tmov rax, r10\n"
+         
+          "minus_end:"
+          "\tleave \n"
+          "\tret \n"
+          )
+      )
 
 ;; + function
 (define asm_plus
@@ -1448,8 +1817,9 @@
             "\tleave \n"
             "\tret \n"
             )
-        
         )
+
+
 (define create-pred-function
     (lambda (type func_label)
         (let ((func_true (string-append func_label "_true"))
@@ -1793,11 +2163,11 @@
 
 
 (define library_functions_creation_list
-    `(,asm_denominator ,asm_numerator ,asm_plus ,boolean_pred ,int_pred ,pair_pred
+    `(,asm_denominator ,asm_numerator ,asm_div ,asm_mul ,asm_minus ,asm_plus ,boolean_pred ,int_pred ,pair_pred
      ,char_pred ,proc_pred ,null_pred ,number_pred ,vector_pred
       ,iteger_to_char ,char_to_int ,string_pred ,make_vec ,vec_length ,asm_not ,vec_ref ,vector
      )
-    
+  
 )
 
 
