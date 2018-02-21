@@ -1338,37 +1338,110 @@
     )
 )
 
+;;TODO gcd for two 
+
 ;; + function
 (define asm_plus
       (string-append
             "\nasm_plus: \n"
             "\tpush rbp \n"
             "\tmov rbp,rsp \n"
-            "\tpush rbx \n"
-            "\tpush r8 \n"
-            "\tpush r9 \n"
-            "\tmov r8,0\n" ;start result
+           
+        
+            "\tmov r10,0\n" ; numer accum
+            "\tmov r11,1\n" ; denomer accum
             "\tmov r9, arg_count\n"
+            
             "plus_loop:\n"
             "\tcmp r9, 0\n"
             "\tje end_plus_loop\n"
-            "\tmov rax,An(r9-1)\n"
-            "\tDATA rax\n"           
-            "\tadd r8,rax\n"
+            "\tmov rax,An(r9-1)\n" ;;the new number to add
+            "\tmov r12, rax\n"
+            "\tTYPE r12\n" ;;get type - fraction or integer
+            "\tcmp r12, T_FRACTION\n"
+            "\tje plus_type_is_fraction\n"
+           
+           
+            "\tDATA rax\n"
+            "\timul rax, r11\n"
+            "\tadd r10, rax\n"
+            "\tjmp plus_after_add\n"
+
+            "plus_type_is_fraction:\n"
+            "\tmov r12, rax\n"
+            "\tNUMERATOR r12\n" ;;holds numer   4
+            "\tDATA r12\n"
+            "\tDENOMINATOR rax\n" ;;holds denomer   7
+            "\tDATA rax\n"
+            "\tmov r14, r11\n" ;;save accum denom  r14 =5
+            "\timul r11, rax\n"  ;;updated denomer 7 * 5
+            "\timul rax, r10\n" ;;7*3
+            "\timul r12, r14\n" ;;5*4
+            "\tadd rax, r12\n"
+            "\tmov r10, rax\n"   ;;new numer!!!!
+        
+            "plus_after_add:\n"
             "\tsub r9, 1\n"
             "\tjmp plus_loop\n"
             "end_plus_loop:\n"
-            "\tmov rax, r8\n"
-            "\tMAKE_INT rax\n"
-            "\tpop r9 \n"
-            "\tpop r8 \n"
-            "\tpop rbx \n"
+
+            ;;GCD
+            "\tpush r10\n"
+            "\tpush r11\n"
+            "\tcall gcd\n"
+            "\tadd rsp, 16\n"
+            "\tmov r9, rax\n" ;;the gcd
+            "\tmov rax, r10\n"
+            "\tidiv r9\n"
+            "\tmov r10, rax\n"
+            "\tmov rax, r11\n"
+            "\tidiv r9\n"
+            "\tmov r11, rax\n"
+
+
+            "\tcmp r11, 1\n"
+            "\tje plus_build_integer\n"
+            
+            
+            ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+            ;;TODO build runtime fraction
+            "\tMAKE_INT r10\n"
+           ; "\tmov rax, r10\n"
+            "\tMAKE_INT r11\n"
+
+            "\tmy_malloc 8\n"
+            "\tmov qword[rax], r10\n"
+            "\tsub rax, start_of_data\n"
+            "\tmov r10, rax\n"
+
+
+            "\tmy_malloc 8\n"
+            "\tmov qword[rax], r11\n"
+            "\tsub rax, start_of_data\n"
+            "\tmov r11, rax\n"
+           
+           
+
+            "\tshl r10, 30\n"
+            "\tor r10, r11\n"
+            "\tshl r10, 4\n"
+            "\tor r10, T_FRACTION\n"
+            "\tmov rax, r10\n"
+            "\tjmp plus_end\n"
+            ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+            "plus_build_integer:\n"
+            "\tMAKE_INT r10\n"
+            "\tmov rax, r10\n"
+           
+            "plus_end:"
             "\tleave \n"
             "\tret \n"
             )
         
         )
-
 (define create-pred-function
     (lambda (type func_label)
         (let ((func_true (string-append func_label "_true"))
