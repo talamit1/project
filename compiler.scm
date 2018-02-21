@@ -1469,44 +1469,44 @@
         )
     )
 
-    ; (define make_vector
-    ;     (string-append
-    ;         "\nmake_vector:\n"
-    ;         "\tpush rbp\n"
-    ;         "\tmov rbp,rsp\n"
-    ;         "\tpush rbx \n"
-    ;         "\tpush rcx \n"
-    ;         "\tpush rdx \n"
-    ;         "\tpush r10 \n"
-    ;         "\tmov rbx,arg_count \t\t ;put arg_count in rbx \n"
-    ;         "\tcmp rbx,2 \t\t ;checking if 2 arguments inserted"
-    ;         "\tjne" arg-count-exception-label " ;throw exception if there are not exactly 2 arguments\n"
-    ;         "\tmov rcx,An(0)  \t\t ;put first argument (vec_length) in rcx\n"
-    ;         "\tTYPE rcx \n"
-    ;         "\tcmp rcx,T_INTEGER \t\t ;checki if first argument is an int \n"
-    ;         "\tjne" arg-type-exception-label "\t\t ;throws exception if it is not a number\n"
-    ;         "\tmov rcx,An(0)  \t\t ;put first argument (vec_length) in rcx\n"
-    ;         "\tmov rbx,An(1)  \t\t ;put value "
-    ;         "\timul rcx,8  ;multiply rcx in 8 to save mempry for the vector \n  "
-    ;         "\t my_malloc rcx \n"
-    ;         "\tmov rdx,rax \t\t ;pute memory pointer in rdx"
-    ;         "\tmov r10,An(0)"
-    ;         "\tmov rcx,0 \t\t ;counter \n"
-    ;         "\tmake_vec_create_start: \n"
-    ;         "\tcmp rcx,r10 \n"
-    ;         "\tje make_vec_create_end \n"
-    ;         "\t "
+    (define make_vector
+        (string-append
+            "\nmake_vector:\n"
+            "\tpush rbp\n"
+            "\tmov rbp,rsp\n"
+            "\tpush rbx \n"
+            "\tpush rcx \n"
+            "\tpush rdx \n"
+            "\tpush r10 \n"
+            "\tmov rbx,arg_count \t\t ;put arg_count in rbx \n"
+            "\tcmp rbx,2 \t\t ;checking if 2 arguments inserted\n"
+            "\tjne" arg-count-exception-label " ;throw exception if there are not exactly 2 arguments\n"
+            "\tmov rcx,An(0)  \t\t ;put first argument (vec_length) in rcx\n"
+            "\tTYPE rcx \n"
+            "\tcmp rcx,T_INTEGER \t\t ;checki if first argument is an int \n"
+            "\tjne" arg-type-exception-label "\t\t ;throws exception if it is not a number\n"
+            "\tmov rcx,An(0)  \t\t ;put first argument (vec_length) in rcx\n"
+            "\tmov rbx,An(1)  \t\t ;put value \n"
+            "\timul rcx,8  ;multiply rcx in 8 to save mempry for the vector \n  "
+            "\t my_malloc rcx \n"
+            "\tmov rdx,rax \t\t ;pute memory pointer in rdx\n"
+            "\tmov r10,An(0)\n"
+            "\tmov rcx,0 \t\t ;counter \n"
+            "\tmake_vec_create_start: \n"
+            "\tcmp rcx,r10 \n"
+            "\tje make_vec_create_end \n"
+            "\t   \n"
 
             
-    ;         "\t make_vec_create_end:\n"
-    ;         "\tpop r10 \n"
-    ;         "\t pop rdx \n"
-    ;         "\tpop rcx \n"
-    ;         "\tpop rbx \n"
-    ;         "\tleave \n"
-    ;         "\tret \n"
-    ;         )
-    ;     )
+            "\t make_vec_create_end:\n"
+            "\tpop r10 \n"
+            "\t pop rdx \n"
+            "\tpop rcx \n"
+            "\tpop rbx \n"
+            "\tleave \n"
+            "\tret \n"
+            )
+        )
 
 
 (define library_functions_creation_list
