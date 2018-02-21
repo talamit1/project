@@ -17,7 +17,8 @@
     `(("free_denominator" "nasm_denominator")("free_numerator" "nasm_numerator") ("free_plus" "asm_plus") ("free_isBool" "isBool") ("free_isInteger" "isInt") ("free_isPair" "isPair")
       ("free_isChar" "isChar") ("free_isProcedure" "isProc") ("free_isNull" "isNull") ("free_isNumber" "isNumber")
       ("free_isRational" "isNumber") ("free_isVector" "isVector") ("free_intToChar","intToChar") ("free_charToInt","charToInt")
-      ("free_isString","isString")
+      ("free_isString","isString") ("free_makeVector" "make_vector") ("free_vectorLength" "vector_length") ("free_scmNot" "scm_not") 
+      ("free_vectorRef" "vector_ref")  ("free_vector" "vector")
      )
     )
 
@@ -1129,6 +1130,13 @@
                 (list "free_isVector" 'vector? "free_isVector:\n\tdq SOB_UNDEFINED\n")  
                 (list "free_intToChar" 'integer->char "free_intToChar:\n\tdq SOB_UNDEFINED\n")
                 (list "free_charToInt" 'char->integer "free_charToInt:\n\tdq SOB_UNDEFINED\n")
+                (list "free_makeVector" 'make-vector "free_makeVector:\n\tdq SOB_UNDEFINED\n")
+                (list "free_vectorLength" 'vector-length "free_vectorLength:\n\tdq SOB_UNDEFINED\n")
+                (list "free_scmNot" 'not "free_scmNot:\n\tdq SOB_UNDEFINED\n")
+                (list "free_vectorRef" 'vector-ref "free_vectorRef:\n\tdq SOB_UNDEFINED\n")
+                (list "free_vector" 'vector "free_vector:\n\tdq SOB_UNDEFINED\n")
+                
+                
                 
                 
             )
@@ -1430,6 +1438,39 @@
     (create-pred-function "T_STRING" "isString")
 )
 
+(define asm_not
+    (string-append
+        "\nscm_not:\n"
+        "\tpush  rbp\n"
+        "\tmov rbp,rsp \n"
+        "\t push rbx \n"
+        "\tmov rbx ,arg_count \n"
+        "\tcmp rbx,1 \n"
+        "\tjne " arg-count-exception-label "\n"
+        "\tmov rbx,An(0) \n"
+        "\tTYPE rbx \n"
+        "\tcmp rbx,T_BOOL \n"
+        "\tjne ret_false_not \t\t ;in case we don't have a boolean the we will return #f\n"
+        "\tDATA rbx \n"
+        "\tcmp rbx,1 \t\t ;this is boolean and it is #t \n"
+        "\tje ret_false_not \t\t ;in case we have #t we will return #f\n"
+        "\tmov rax,1 \t\t ;in case we have #f we need to return #t \n"
+        "\tMAKE_BOOL rax \n"
+        "\tjmp end_of_not \n"
+        
+        "\tret_false_not:\n"
+        "\tmov rax,0 \n"
+        "\tMAKE_BOOL rax \n"
+        "\tend_of_not:"
+        "\t pop rbx \n"
+        "\tleave \n"
+        "\tret \n"
+            
+        
+    )
+)
+
+
 (define number_pred
     (string-append
         "\nisNumber:\n"
@@ -1497,8 +1538,8 @@
         )
     )
 
-    (define make_vector
-        (string-append
+(define make_vec
+    (string-append
             "\nmake_vector:\n"
             "\tpush rbp\n"
             "\tmov rbp,rsp\n"
@@ -1506,41 +1547,182 @@
             "\tpush rcx \n"
             "\tpush rdx \n"
             "\tpush r10 \n"
+            "\tpush r11 \n"
             "\tmov rbx,arg_count \t\t ;put arg_count in rbx \n"
             "\tcmp rbx,2 \t\t ;checking if 2 arguments inserted\n"
-            "\tjne" arg-count-exception-label " ;throw exception if there are not exactly 2 arguments\n"
+            "\tjne " arg-count-exception-label " ;throw exception if there are not exactly 2 arguments\n"
             "\tmov rcx,An(0)  \t\t ;put first argument (vec_length) in rcx\n"
             "\tTYPE rcx \n"
             "\tcmp rcx,T_INTEGER \t\t ;checki if first argument is an int \n"
-            "\tjne" arg-type-exception-label "\t\t ;throws exception if it is not a number\n"
-            "\tmov rcx,An(0)  \t\t ;put first argument (vec_length) in rcx\n"
-            "\tmov rbx,An(1)  \t\t ;put value \n"
-            "\timul rcx,8  ;multiply rcx in 8 to save mempry for the vector \n  "
-            "\t my_malloc rcx \n"
-            "\tmov rdx,rax \t\t ;pute memory pointer in rdx\n"
-            "\tmov r10,An(0)\n"
-            "\tmov rcx,0 \t\t ;counter \n"
-            "\tmake_vec_create_start: \n"
-            "\tcmp rcx,r10 \n"
-            "\tje make_vec_create_end \n"
-            "\t   \n"
-
-            
-            "\t make_vec_create_end:\n"
+            "\tjne " arg-type-exception-label "\t\t ;throws exception if it is not a number\n"
+            "\tmov rcx,An(0)  \t\t ;put vec_length in rcx\n"
+            "\tmov rbx,An(1) \t\t ;put value in rbx \n"
+            "\tDATA rcx \n"
+            "\tcmp rcx,0 \n"
+            "\tje empty_vec \n"
+            "\tshl rcx,3\n"
+            "\tmy_malloc rcx \t\t ;allocate memory for the vector values\n"
+            "\tshr rcx,3\n"
+            "\tmov r11,rax  \t\t ;backs up the memory pointer in r11 for later use\n"
+            "\tmov rdx,rax \t\t ;put pointer to allocated mem in rdx\n"
+            "\tmov r10 ,0\n"
+            "\tmake_vec_add_values_start: \n"
+            "\tcmp r10,rcx \t\t ;stop condition counter==vect_length\n"
+            "\tje make_vec_add_values_end\n"
+            "\tmy_malloc 8 \t\t ;alloc mem for item \n"
+            "\tmov qword[rax],rbx \t\t ;put val in allocated memory\n"
+            "\tmov qword[rdx+8*r10],rax \t\t ;vec[i] = *val \n"
+            "\tinc r10 \n"
+            "\tjmp make_vec_add_values_start\n"
+            "\tmake_vec_add_values_end: \n"
+            "\tmov rdx,r11 \t\t ;put in rdx pointer to start of vector \n"
+            "\tsub rdx,start_of_data \n"
+            "\tsal rcx,(WORD_SIZE - TYPE_BITS)>> 1\n"
+            "\tor rcx,rdx\n"
+            "\tsal rcx,TYPE_BITS\n"
+            "\tor rcx,T_VECTOR\n"
+            "\tmy_malloc 8 \n"
+            "\tmov qword[rax],rcx  \n"
+            "\tmov rax,qword[rax]\n"
+            "\tjmp make_vec_end\n"
+            "\tempty_vec:\n"
+            "\tmov rax,0 \n"
+            "\tMAKE_RUNTIME_LITERAL rax,T_VECTOR\n"
+            "\tmake_vec_end:\n"
+            "\tpop r11 \n"
             "\tpop r10 \n"
             "\t pop rdx \n"
             "\tpop rcx \n"
             "\tpop rbx \n"
             "\tleave \n"
-            "\tret \n"
-            )
+            "\tret \n" 
+        
         )
+    )
+;vector_length
+(define vec_length
+    (string-append
+        "\nvector_length:\n"
+        "\tpush rbp\n"
+        "\tmov rbp,rsp\n"
+        "\tpush rbx \n"
+        "\tmov rbx,arg_count \n"
+        "\tcmp rbx,1 \n"
+        "\tjne " arg-count-exception-label "\t\t;jump to exception handler \n"
+        "\tmov rbx,An(0) \n"
+        "\tTYPE rbx \n"
+        "\tcmp rbx,T_VECTOR \n"
+        "\tjne " arg-type-exception-label"\t\t;jump to exception handler \n"
+        "\tmov rbx,An(0) \t\t ;put the argument in rbx\n"
+        "\t VECTOR_LENGTH rbx \t\t;extract vector length and put it in rbx \n"
+        "\tmov rax,rbx \t\t ;put answer in rax \n"
+        "\t MAKE_INT rax \n"
+        "\tpop rbx \n"
+        "\tleave \n"
+        "\tret \n" 
+    )
+)
+
+;vector_ref
+(define vec_ref
+    (string-append
+        "\nvector_ref:\n"
+        "\tpush rbp\n"
+        "\tmov rbp,rsp\n"
+        "\tpush rbx \n"
+        "\tpush rcx \n"
+        "\tmov rbx,arg_count \n"
+        "\tcmp rbx,2 \n"
+        "\tjne " arg-count-exception-label "\t\t;jump to exception handler \n"
+        "\tmov rbx,An(0) \n"
+        "\tTYPE rbx \n"
+        "\tcmp rbx,T_VECTOR \t\t ;checks if the first arg is a vector\n"
+        "\tjne " arg-type-exception-label"\t\t;jump to exception handler \n"
+        "\tmov rbx,An(1) \n"
+        "\tTYPE rbx \n"
+        "\tcmp rbx,T_INTEGER \t\t ;checks if the sceond arg is an Integer\n"
+        "\tjne " arg-type-exception-label"\t\t;jump to exception handler \n"
+        "\tmov rbx,An(0) \t\t ;put the vector reference in rbx\n"
+        "\tmov rcx,An(1) \t\t ;put the desired index in rcx\n"
+        "\tDATA rcx \n"
+        "\tVECTOR_LENGTH rbx \t\t ;gets vector length\n"
+        "\tcmp rcx,rbx \t\t ;checks if it is a valid index \n"
+        "\tjge " arg-type-exception-label "\t\t ;index is to big\n"
+        "\tmov rbx,An(0) \n"
+        "\tVECTOR_ELEMENTS rbx \n"
+        "\tmov rax,[rbx+8*rcx] \n"
+        "\tmov rax,[rax] \n"
+        "\tpop rcx \n"
+        "\tpop rbx \n"
+        "\tleave \n"
+        "\tret \n" 
+    )
+)
+
+(define vector
+    (string-append
+        "\nvector:\n"
+        "\tpush rbp\n"
+        "\tmov rbp,rsp\n"
+        "\tpush rbx \n"
+        "\tpush rcx \n"
+        "\tpush rdx \n"
+        "\tpush r11 \n"
+        "\tpush r10 \n"
+
+        "\tmov rcx,arg_count  \t\t ;put vec_length in rcx\n"
+        "\tcmp rcx,0 \n"
+        "\tje empty_vector \n"
+        "\tshl rcx,3\n"
+        "\tmy_malloc rcx \t\t ;allocate memory for the vector values\n"
+        "\tshr rcx,3\n"
+        "\tmov r11,rax  \t\t ;backs up the memory pointer in r11 for later use\n"
+        "\tmov rdx,rax \t\t ;put pointer to allocated mem in rdx\n"
+        "\tmov r10 ,0\n"
+        "\tcreate_vec_loop_start: \n"
+        "\tcmp r10,rcx \t\t ;stop condition counter==vect_length\n"
+        "\tje create_vec_add_values_end\n"
+        "\tmy_malloc 8 \t\t ;alloc mem for item \n"
+        "\tmov rbx,An(r10)\n"
+        "\tmov qword[rax],rbx \t\t ;put val in allocated memory\n"
+        "\tmov qword[rdx+8*r10],rax \t\t ;vec[i] = *val \n"
+        "\tinc r10 \n"
+        "\tjmp create_vec_loop_start\n"
+        "\tcreate_vec_add_values_end: \n"
+        "\tmov rdx,r11 \t\t ;put in rdx pointer to start of vector \n"
+        "\tsub rdx,start_of_data \n"
+        "\tsal rcx,(WORD_SIZE - TYPE_BITS)>> 1\n"
+        "\tor rcx,rdx\n"
+        "\tsal rcx,TYPE_BITS\n"
+        "\tor rcx,T_VECTOR\n"
+        "\tmy_malloc 8 \n"
+        "\tmov qword[rax],rcx  \n"
+        "\tmov rax,qword[rax]\n"
+        "\tjmp make_vec_end\n"
+        "\tempty_vector:\n"
+
+        "\tmov rax,0 \n"
+        "\tMAKE_RUNTIME_LITERAL rax,T_VECTOR\n"
+
+        "\tvector_end:\n"
+        "\tpop r10 \n"
+        "\tpop r11 \n"
+        "\tpush rdx \n"
+        "\tpop rcx \n"
+        "\tpop rbx \n"
+        "\tleave \n"
+        "\tret \n" 
+        
+        )
+    )
+
+
 
 
 (define library_functions_creation_list
     `(,asm_denominator ,asm_numerator ,asm_plus ,boolean_pred ,int_pred ,pair_pred
      ,char_pred ,proc_pred ,null_pred ,number_pred ,vector_pred
-      ,iteger_to_char ,char_to_int ,string_pred
+      ,iteger_to_char ,char_to_int ,string_pred ,make_vec ,vec_length ,asm_not ,vec_ref ,vector
      )
     
 )
