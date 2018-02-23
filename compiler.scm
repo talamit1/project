@@ -20,7 +20,7 @@
       ("free_isString","isString") ("free_makeVector" "make_vector") ("free_vectorLength" "vector_length") ("free_scmNot" "scm_not") 
       ("free_vectorRef" "vector_ref")  ("free_vector" "vector") ("free_vectorSet" "vector_set") ("free_zero" "isZero")
       ("free_makeString" "make_string") ("free_stringRef" "string_ref") ("free_stringLen" "string_length")
-      ("free_stringSet" "string_set")
+      ("free_stringSet" "string_set") ("free_car" "asm_car")
      )
     )
 
@@ -1145,6 +1145,7 @@
                 (list "free_stringRef" 'string-ref "free_stringRef:\n\tdq SOB_UNDEFINED\n")
                 (list "free_stringLen" 'string-length "free_stringLen:\n\tdq SOB_UNDEFINED\n")
                 (list "free_stringSet" 'string-set! "free_stringSet:\n\tdq SOB_UNDEFINED\n")
+                (list "free_car" 'car "free_car:\n\tdq SOB_UNDEFINED\n")
                 
                 
                 
@@ -1276,11 +1277,38 @@
     )
 
 (define create-check-void-label (makeLabel "check_void_lable_")) 
- 
+
+;;;;;here we will implement all primitive funtions with scheme implementation
+(define primit_list
+    (string-append
+        " (define list (lambda lst lst)) "
+        )
+    )
+
+(define primt_map
+    (string-append
+        "(define map
+            (lambda (f s)
+                (if (null? s)
+                    '()
+                (let ((x (f (car s)))) (cons x (map f (cdr s)))))))"        
+    )
+    
+)
+
+(define scheme-primitive-fucntions
+    (apply append (map string->list 
+        `(,primit_list)
+    ))
+    
+)
+    
 (define compile-scheme-file
     (lambda (scheme-file nasm-file)    
         (let* 
-            ((stringExp (file->list scheme-file))
+            ((fromFile (file->list scheme-file))
+                (stringExp 
+                    (append scheme-primitive-fucntions fromFile))
                 (astExpression  (pipeline stringExp))
                 (constTable (createConstTable astExpression))
                 (consTableRep (convert-to-string (only-rep-list constTable)))
@@ -2489,13 +2517,38 @@
     )
 )
 
+(define asm_car
+    (string-append
+        "\nasm_car:\n"
+        "\tpush rbp\n"
+        "\tmov rbp,rsp\n"
+        "\tpush rbx \n"
+        "\tmov rbx,arg_count \n"
+        "\tcmp rbx,1 \n"
+        "\tjne " arg-count-exception-label "\t\t;jump to exception handler \n"
+        "\tmov rbx,An(0) \n"
+        "\tTYPE rbx \n"
+        "\tcmp rbx,T_PAIR \n"
+        "\tjne " arg-type-exception-label"\t\t;jump to exception handler \n"
+        "\tmov rbx,An(0) \t\t ;put the argument in rbx\n"
+        "\tCAR rbx \n"
+        "\tmov rax,rbx \n"
+        "\tpop rbx \n"
+        "\tleave \n"
+        "\tret \n"         
+        
+        
+    )
+    
+)
+
 
 
 (define library_functions_creation_list
     `(,asm_denominator ,asm_numerator ,asm_div ,asm_mul ,asm_minus ,asm_plus ,boolean_pred ,int_pred ,pair_pred
      ,char_pred ,proc_pred ,null_pred ,number_pred ,vector_pred
       ,iteger_to_char ,char_to_int ,string_pred ,make_vec ,vec_length ,asm_not ,vec_ref ,vector ,vec_set
-      ,zero_pred ,make_str ,str_ref ,str_length ,str_set
+      ,zero_pred ,make_str ,str_ref ,str_length ,str_set ,asm_car
      )
   
 )

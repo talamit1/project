@@ -142,13 +142,13 @@ push rax
 push rbx 
 mov rax, %1 
 mov qword [rax], %2
-sub qword [rax], start_of_malloc
+sub qword [rax], start_of_data
 shl qword [rax], ((WORD_SIZE - TYPE_BITS) >> 1) 
 mov rbx, %3 
-sub rbx, start_of_malloc
+sub rbx, start_of_data
 or qword [rax], rbx 
 shl qword [rax], TYPE_BITS 
-or qword [rax], T_PAIR_MALLOC 
+or qword [rax], T_PAIR 
 pop rbx 
 pop rax 
 %endmacro
