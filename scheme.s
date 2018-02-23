@@ -24,6 +24,7 @@
 %define CHAR_PAGE 12
 %define CHAR_RETURN 13
 %define CHAR_SPACE 32
+%define CHAR_QUOTES 34
 
 %define TYPE_BITS 4
 %define WORD_SIZE 64
@@ -491,6 +492,8 @@ write_sob_string:
 	je .ch_tab
 	cmp rbx, CHAR_NEWLINE
 	je .ch_newline
+	cmp rbx,CHAR_QUOTES
+	je .ch_quotes
 	cmp rbx, CHAR_PAGE
 	je .ch_page
 	cmp rbx, CHAR_RETURN
@@ -506,6 +509,21 @@ write_sob_string:
 	mov rdi, .fs_hex_char
 	mov rsi, rbx
 	jmp .printf
+
+.ch_quotes:
+	mov rdi, .fs_backslash
+	push rbx
+	push rax
+	push rcx
+	mov rax, 0
+	call printf
+	pop rcx
+	pop rax
+	pop rbx
+	mov rdi, .double_quote
+	mov rsi, rbx
+	jmp .printf
+	
 	
 .ch_tab:
 	mov rdi, .fs_tab
@@ -551,7 +569,7 @@ section .data
 .fs_simple_char:
 	db "%c", 0
 .fs_hex_char:
-	db "\x%02x;", 0	
+	db "\x%01x;", 0	
 .fs_tab:
 	db "\t", 0
 .fs_page:
@@ -560,7 +578,8 @@ section .data
 	db "\r", 0
 .fs_newline:
 	db "\n", 0
-
+.fs_backslash:
+	db "\", 0
 write_sob_pair:
 	push rbp
 	mov rbp, rsp
