@@ -20,7 +20,7 @@
       ("free_isString","isString") ("free_makeVector" "make_vector") ("free_vectorLength" "vector_length") ("free_scmNot" "scm_not") 
       ("free_vectorRef" "vector_ref")  ("free_vector" "vector") ("free_vectorSet" "vector_set") ("free_zero" "isZero")
       ("free_makeString" "make_string") ("free_stringRef" "string_ref") ("free_stringLen" "string_length")
-      ("free_stringSet" "string_set") ("free_car" "asm_car")
+      ("free_stringSet" "string_set") ("free_car" "asm_car") ("free_cdr" "asm_cdr") ("free_cons" "asm_cons")
      )
     )
 
@@ -1146,6 +1146,8 @@
                 (list "free_stringLen" 'string-length "free_stringLen:\n\tdq SOB_UNDEFINED\n")
                 (list "free_stringSet" 'string-set! "free_stringSet:\n\tdq SOB_UNDEFINED\n")
                 (list "free_car" 'car "free_car:\n\tdq SOB_UNDEFINED\n")
+                (list "free_cdr" 'cdr "free_cdr:\n\tdq SOB_UNDEFINED\n")
+                (list "free_cons" 'cons "free_cons:\n\tdq SOB_UNDEFINED\n")
                 
                 
                 
@@ -1273,7 +1275,7 @@
 )
 
 (define show
-    (pipeline (file->list "foo.scm"))
+   (file->list "foo.scm")
     )
 
 (define create-check-void-label (makeLabel "check_void_lable_")) 
@@ -1298,7 +1300,7 @@
 
 (define scheme-primitive-fucntions
     (apply append (map string->list 
-        `(,primit_list)
+        `(,primit_list ,primt_map)
     ))
     
 )
@@ -2542,13 +2544,75 @@
     
 )
 
+(define asm_cdr
+    (string-append
+        "\nasm_cdr:\n"
+        "\tpush rbp\n"
+        "\tmov rbp,rsp\n"
+        "\tpush rbx \n"
+        "\tmov rbx,arg_count \n"
+        "\tcmp rbx,1 \n"
+        "\tjne " arg-count-exception-label "\t\t;jump to exception handler \n"
+        "\tmov rbx,An(0) \n"
+        "\tTYPE rbx \n"
+        "\tcmp rbx,T_PAIR \n"
+        "\tjne " arg-type-exception-label"\t\t;jump to exception handler \n"
+        "\tmov rbx,An(0) \t\t ;put the argument in rbx\n"
+        "\tCDR rbx \n"
+        "\tmov rax,rbx \n"
+        "\tpop rbx \n"
+        "\tleave \n"
+        "\tret \n"         
+        
+        
+    )
+    
+)
+
+(define asm_cons
+    (string-append
+        "\nasm_cons:\n"
+        "\tpush rbp\n"
+        "\tmov rbp,rsp\n"
+        "\tpush rbx \n"
+        "\tpush rcx \n"
+        "\tmov rbx,arg_count \n"
+        "\tcmp rbx,2 \n"
+        "\tjne " arg-count-exception-label "\t\t;jump to exception handler \n"
+        "\tmov rbx,An(0) \t\t ;put the first argument in rbx\n"
+        "\tmov rcx,An(1) \t\t ;put second arg in rcx \n"
+        "\tmy_malloc 8\n"
+        "\tmov qword [rax],rbx \n"
+        "\tmov rbx,rax \n"
+        "\tmy_malloc 8\n"
+        "\tmov qword [rax],rcx \n"
+        "\tmov rcx,rax \n"
+        "\tmy_malloc 8 \n "
+        "\tsub rbx,start_of_data \n "
+        "\tsal rbx,((WORD_SIZE - TYPE_BITS) >> 1) \n "
+        "\tsub rcx,start_of_data \n"
+        "\tor rbx,rcx \n"
+        "\tsal rbx,TYPE_BITS \n"
+        "\tor rbx,T_PAIR \n"
+        "\tmov [rax],rbx \n"
+        "\tmov rax,[rax]\n"
+
+        "\tpop rcx \n"
+        "\tpop rbx \n"
+        "\tleave \n"
+        "\tret \n"         
+        
+        
+    )
+    
+)
 
 
 (define library_functions_creation_list
     `(,asm_denominator ,asm_numerator ,asm_div ,asm_mul ,asm_minus ,asm_plus ,boolean_pred ,int_pred ,pair_pred
      ,char_pred ,proc_pred ,null_pred ,number_pred ,vector_pred
       ,iteger_to_char ,char_to_int ,string_pred ,make_vec ,vec_length ,asm_not ,vec_ref ,vector ,vec_set
-      ,zero_pred ,make_str ,str_ref ,str_length ,str_set ,asm_car
+      ,zero_pred ,make_str ,str_ref ,str_length ,str_set ,asm_car ,asm_cdr ,asm_cons
      )
   
 )
