@@ -14,7 +14,9 @@
 )
 ;;
 (define library_functions
-    `(("free_denominator" "nasm_denominator")("free_numerator" "nasm_numerator") ("free_div" "asm_div") ("free_mul" "asm_mul") ("free_minus" "asm_minus") ("free_plus" "asm_plus") ("free_isBool" "isBool") ("free_isInteger" "isInt") ("free_isPair" "isPair")
+    `(("free_denominator" "nasm_denominator")("free_numerator" "nasm_numerator") ("free_shave" "asm_shave") ("free_smaller" "asm_smaller")
+     ("free_grater" "asm_grater") ("free_div" "asm_div") ("free_mul" "asm_mul") ("free_minus" "asm_minus") ("free_plus" "asm_plus")
+      ("free_isBool" "isBool") ("free_isInteger" "isInt") ("free_isPair" "isPair")
       ("free_isChar" "isChar") ("free_isProcedure" "isProc") ("free_isNull" "isNull") ("free_isNumber" "isNumber")
       ("free_isRational" "isNumber") ("free_isVector" "isVector") ("free_intToChar","intToChar") ("free_charToInt","charToInt")
       ("free_isString","isString") ("free_makeVector" "make_vector") ("free_vectorLength" "vector_length") ("free_scmNot" "scm_not") 
@@ -1385,6 +1387,235 @@
     )
 )
 
+
+;; = function
+(define asm_shave
+    (string-append
+          "\nasm_shave: \n"
+          "\tpush rbp \n"
+          "\tmov rbp,rsp \n"
+
+          "\tmov rax,1 \n"  ;;1 == true
+          
+          "\tmov r8,1\n" ;;r8 = i
+          "\tmov r9, arg_count\n"
+          "\tcmp r9, 0\n"
+          "\tje "  arg-count-exception-label "\n"
+
+          "\tcmp r9, 1\n"  ;;if only one argument, finish with #t
+          "\tje shave_end\n"
+
+          "\tmov r10 , An(0)\n"
+          "\tmov r11 , r10\n"
+          "\tTYPE r11\n"
+          "\tcmp r11, T_INTEGER\n"
+          "\tje shave_first_is_integer\n"
+           
+          "\tmov r11, r10\n"
+          "\tNUMERATOR r10\n"
+          "\tDATA r10\n"
+          "\tDENOMINATOR r11\n"
+          "\tDATA r11\n"
+          "\tjmp shave_loop\n"
+          "shave_first_is_integer:\n"
+          "\tDATA R10\n"
+          "\tmov r11, 1\n"
+ 
+          "shave_loop:\n"
+          "\tcmp r8, r9\n"
+          "\tje shave_end\n"
+          "\tmov r14, r10\n"
+          "\tmov r15, r11\n"
+
+          "\tmov r12,An(r8)\n" ;;the new number to check
+          "\tmov r13, r12\n"
+          "\tTYPE r13\n" ;;get type - fraction or integer
+          "\tcmp r13, T_FRACTION\n"
+          "\tje shave_type_is_fraction\n"
+         
+          "\tDATA r12\n"
+          "\tmov r13, 1\n" 
+          "\tjmp shave_after_An\n"
+
+          "shave_type_is_fraction:\n"
+          "\tmov r13, r12\n"
+          "\tNUMERATOR r12\n" ;;holds numer   4
+          "\tDATA r12\n"
+          "\tDENOMINATOR r13\n" ;;holds denomer   7
+          "\tDATA r13\n"
+
+          "shave_after_An:\n"
+          "\timul r14, r13\n"
+          "\timul r12, r15\n"
+          "\tcmp r14, r12\n"
+          "\tjne shave_false\n"
+          "\tadd r8, 1\n"
+          "\tjmp shave_loop\n"
+          
+
+
+          "shave_false:\n"
+          "\tmov rax, 0\n"
+          
+          "\tshave_end:\n"
+          "\tMAKE_BOOL rax \n"
+          "\tleave \n"
+          "\tret \n"
+          )
+      )
+
+;; < function
+(define asm_smaller
+    (string-append
+          "\nasm_smaller: \n"
+          "\tpush rbp \n"
+          "\tmov rbp,rsp \n"
+
+          "\tmov rax,1 \n"  ;;1 == true
+          
+          "\tmov r8,1\n" ;;r8 = i
+          "\tmov r9, arg_count\n"
+          "\tcmp r9, 0\n"
+          "\tje "  arg-count-exception-label "\n"
+
+          "\tcmp r9, 1\n"  ;;if only one argument, finish with #t
+          "\tje smaller_end\n"
+
+          "\tmov r10 , An(0)\n"
+          "\tmov r11 , r10\n"
+          "\tTYPE r11\n"
+          "\tcmp r11, T_INTEGER\n"
+          "\tje smaller_first_is_integer\n"
+           
+          "\tmov r11, r10\n"
+          "\tNUMERATOR r10\n"
+          "\tDATA r10\n"
+          "\tDENOMINATOR r11\n"
+          "\tDATA r11\n"
+          "\tjmp smaller_loop\n"
+          "smaller_first_is_integer:\n"
+          "\tDATA R10\n"
+          "\tmov r11, 1\n"
+ 
+          "smaller_loop:\n"
+          "\tcmp r8, r9\n"
+          "\tje smaller_end\n"
+          "\tmov r14, r10\n"
+          "\tmov r15, r11\n"
+
+          "\tmov r12,An(r8)\n" ;;the new number to check
+          "\tmov r13, r12\n"
+          "\tTYPE r13\n" ;;get type - fraction or integer
+          "\tcmp r13, T_FRACTION\n"
+          "\tje smaller_type_is_fraction\n"
+         
+          "\tDATA r12\n"
+          "\tmov r13, 1\n" 
+          "\tjmp smaller_after_An\n"
+
+          "smaller_type_is_fraction:\n"
+          "\tmov r13, r12\n"
+          "\tNUMERATOR r12\n" ;;holds numer   4
+          "\tDATA r12\n"
+          "\tDENOMINATOR r13\n" ;;holds denomer   7
+          "\tDATA r13\n"
+
+          "smaller_after_An:\n"
+          "\timul r14, r13\n"
+          "\timul r12, r15\n"
+          "\tcmp r14, r12\n"
+          "\tjge smaller_false\n"
+          "\tadd r8, 1\n"
+          "\tjmp smaller_loop\n"
+          
+
+
+          "smaller_false:\n"
+          "\tmov rax, 0\n"
+          
+          "\tsmaller_end:\n"
+          "\tMAKE_BOOL rax \n"
+          "\tleave \n"
+          "\tret \n"
+          )
+      )
+
+;; > function
+(define asm_grater
+    (string-append
+          "\nasm_grater: \n"
+          "\tpush rbp \n"
+          "\tmov rbp,rsp \n"
+
+          "\tmov rax,1 \n"  ;;1 == true
+          
+          "\tmov r8,1\n" ;;r8 = i
+          "\tmov r9, arg_count\n"
+          "\tcmp r9, 0\n"
+          "\tje "  arg-count-exception-label "\n"
+
+          "\tcmp r9, 1\n"  ;;if only one argument, finish with #t
+          "\tje grater_end\n"
+
+          "\tmov r10 , An(0)\n"
+          "\tmov r11 , r10\n"
+          "\tTYPE r11\n"
+          "\tcmp r11, T_INTEGER\n"
+          "\tje grater_first_is_integer\n"
+           
+          "\tmov r11, r10\n"
+          "\tNUMERATOR r10\n"
+          "\tDATA r10\n"
+          "\tDENOMINATOR r11\n"
+          "\tDATA r11\n"
+          "\tjmp grater_loop\n"
+          "grater_first_is_integer:\n"
+          "\tDATA R10\n"
+          "\tmov r11, 1\n"
+ 
+          "grater_loop:\n"
+          "\tcmp r8, r9\n"
+          "\tje grater_end\n"
+          "\tmov r14, r10\n"
+          "\tmov r15, r11\n"
+
+          "\tmov r12,An(r8)\n" ;;the new number to check
+          "\tmov r13, r12\n"
+          "\tTYPE r13\n" ;;get type - fraction or integer
+          "\tcmp r13, T_FRACTION\n"
+          "\tje grater_type_is_fraction\n"
+         
+          "\tDATA r12\n"
+          "\tmov r13, 1\n" 
+          "\tjmp grater_after_An\n"
+
+          "grater_type_is_fraction:\n"
+          "\tmov r13, r12\n"
+          "\tNUMERATOR r12\n" ;;holds numer   4
+          "\tDATA r12\n"
+          "\tDENOMINATOR r13\n" ;;holds denomer   7
+          "\tDATA r13\n"
+
+          "grater_after_An:\n"
+          "\timul r14, r13\n"
+          "\timul r12, r15\n"
+          "\tcmp r14, r12\n"
+          "\tjle grater_false\n"
+          "\tadd r8, 1\n"
+          "\tjmp grater_loop\n"
+          
+
+
+          "grater_false:\n"
+          "\tmov rax, 0\n"
+          
+          "\tgrater_end:\n"
+          "\tMAKE_BOOL rax \n"
+          "\tleave \n"
+          "\tret \n"
+          )
+      )
+
 ;; / function
 (define asm_div
     (string-append
@@ -1417,7 +1648,7 @@
 
           "div_after_first:\n"
           "\tmov r9, arg_count\n"
-          "\tcmp r9, 1\n"             ;;if just one parameter make negative and jump to directly to end
+          "\tcmp r9, 1\n"             ;;if just one parameter make negative and jump directly to end
           "\tjne div_loop\n"
           ;"\tneg r10\n"
           "\tmov r15, r10\n"
@@ -1485,6 +1716,12 @@
           
           ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
           ;;TODO build runtime fraction
+         "\tcmp r11, 0\n"    ;;fix negative denominator bug
+         "\tjg not_minus_denom\n"
+         "\tneg r10\n"
+         "\tneg r11\n"
+
+         "not_minus_denom:\n"
           "\tMAKE_INT r10\n"
          ; "\tmov rax, r10\n"
           "\tMAKE_INT r11\n"
@@ -1580,9 +1817,11 @@
           "\tadd rsp, 16\n"
           "\tmov r9, rax\n" ;;the gcd
           "\tmov rax, r10\n"
+          "\tcqo\n"
           "\tidiv r9\n"
           "\tmov r10, rax\n"
           "\tmov rax, r11\n"
+          "\tcqo\n"
           "\tidiv r9\n"
           "\tmov r11, rax\n"
 
@@ -1808,9 +2047,11 @@
             "\tadd rsp, 16\n"
             "\tmov r9, rax\n" ;;the gcd
             "\tmov rax, r10\n"
+            "\tcqo\n"
             "\tidiv r9\n"
             "\tmov r10, rax\n"
             "\tmov rax, r11\n"
+            "\tcqo\n"
             "\tidiv r9\n"
             "\tmov r11, rax\n"
 
@@ -2545,7 +2786,7 @@
 
 
 (define library_functions_creation_list
-    `(,asm_denominator ,asm_numerator ,asm_div ,asm_mul ,asm_minus ,asm_plus ,boolean_pred ,int_pred ,pair_pred
+    `(,asm_denominator ,asm_numerator ,asm_shave ,asm_smaller ,asm_grater ,asm_div ,asm_mul ,asm_minus ,asm_plus ,boolean_pred ,int_pred ,pair_pred
      ,char_pred ,proc_pred ,null_pred ,number_pred ,vector_pred
       ,iteger_to_char ,char_to_int ,string_pred ,make_vec ,vec_length ,asm_not ,vec_ref ,vector ,vec_set
       ,zero_pred ,make_str ,str_ref ,str_length ,str_set ,asm_car
