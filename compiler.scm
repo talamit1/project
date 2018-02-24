@@ -1283,6 +1283,44 @@
 
 (define create-check-void-label (makeLabel "check_void_lable_")) 
 
+
+
+
+(define primit_foldr
+    (string-append
+        " (define (foldr func end lst)
+        (if (null? lst)
+           end
+           (func (car lst) (foldr func end (cdr lst)))))"
+        
+        
+        )
+    
+    
+    )
+(define append2
+    (string-append
+        "(define (append2 lis1 lis2)
+        (cond ((null? lis1)
+               lis2)
+              (else
+               (cons (car lis1)
+                     (append2 (cdr lis1) lis2)))))"
+        
+        )
+    
+    )
+(define primit_append
+    (string-append
+        "(define append (lambda lst
+            (foldr append2 '() lst)
+        ))"
+
+        
+        )
+)
+
+
 ;;;;;here we will implement all primitive funtions with scheme implementation
 (define primit_list
     (string-append
@@ -1303,7 +1341,7 @@
 
 (define scheme-primitive-fucntions
     (apply append (map string->list 
-        `(,primit_list ,primt_map)
+        `(,primit_list ,primt_map ,primit_foldr ,append2 ,primit_append) 
     ))
     
 )
