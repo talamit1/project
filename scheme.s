@@ -70,6 +70,9 @@
 
 %define MAKE_LITERAL_PAIR(car, cdr) (((((car - start_of_data) << ((WORD_SIZE - TYPE_BITS) >> 1)) | (cdr - start_of_data)) << TYPE_BITS) | T_PAIR)
 
+%define MAKE_LITERAL_SYMBOL(str, rep) (((((str - start_of_data) << ((WORD_SIZE - TYPE_BITS) >> 1)) | (rep - start_of_data)) << TYPE_BITS) | T_SYMBOL)
+
+
 %define MAKE_LITERAL_FRACTION(numerator, denominator) (((((numerator - start_of_data) << ((WORD_SIZE - TYPE_BITS) >> 1)) | (denominator - start_of_data)) << TYPE_BITS) | T_FRACTION)
 
 %macro CAR 1
@@ -153,6 +156,23 @@ pop rbx
 pop rax 
 %endmacro
 
+%macro MAKE_MALLOC_LITERAL_SYMBOL 3
+push rax 
+push rbx 
+mov rax, %1 
+mov qword [rax], %2
+sub qword [rax], start_of_data
+shl qword [rax], ((WORD_SIZE - TYPE_BITS) >> 1) 
+mov rbx, %3 
+sub rbx, start_of_data
+or qword [rax], rbx 
+shl qword [rax], TYPE_BITS 
+or qword [rax], T_SYMBOL 
+pop rbx 
+pop rax 
+%endmacro
+
+
 %macro CAR_MALLOC 1
 	DATA_UPPER %1
 	add %1, start_of_malloc
@@ -163,6 +183,12 @@ pop rax
 	DATA_LOWER %1
 	add %1, start_of_malloc
 	mov %1, qword [%1]
+%endmacro
+
+
+%macro NEXT 1
+	DATA_LOWER %1
+	add %1, start_of_data
 %endmacro
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -804,8 +830,39 @@ write_sob_symbol:
 	push rbp
 	mov rbp, rsp
 
+	mov rax, qword [rbp + 8 + 1*8]
+	CAR rax
+	mov rcx, rax
+	STRING_LENGTH rcx
+	STRING_ELEMENTS rax
+
+.loop:
+	cmp rcx, 0
+	je .done
+	mov bl, byte [rax]
+	and rbx, 0xff	
+	mov rdi, .fs_simple_char
+	mov rsi, rbx
+	jmp .printf
+
+.printf:
+	push rax
+	push rcx
+	mov rax, 0
+	call printf
+	pop rcx
+	pop rax
+
+	dec rcx
+	inc rax
+	jmp .loop
+
+.done:
 	leave
 	ret
+	
+.fs_simple_char:
+	db "%c", 0
 	
 write_sob_fraction:
 	push rbp

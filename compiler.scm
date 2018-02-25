@@ -22,8 +22,10 @@
       ("free_isString","isString") ("free_makeVector" "make_vector") ("free_vectorLength" "vector_length") ("free_scmNot" "scm_not") 
       ("free_vectorRef" "vector_ref")  ("free_vector" "vector") ("free_vectorSet" "vector_set") ("free_zero" "isZero")
       ("free_makeString" "make_string") ("free_stringRef" "string_ref") ("free_stringLen" "string_length")
-      ("free_stringSet" "string_set") ("free_car" "asm_car") ("free_cdr" "asm_cdr") ("free_cons" "asm_cons")
-     )
+      ("free_stringSet" "string_set") ("free_car" "asm_car") ("free_cdr" "asm_cdr") ("free_cons" "asm_cons") ("free_eq" "asm_eq")
+      ("free_isSymbol" "isSymbol") ("free_symboltostring" "asm_symbol_string") ("free_strtoSym" "asm_string_symbol")
+      
+      )
     )
 
 ;;create closurer and put it on func_name
@@ -562,7 +564,7 @@
     (lambda (box-expr constTable freeTable major)
         (let ((toGen (cadr box-expr))
              )
-             (debugPrint toGen)
+             
              (string-append "\t;****** box-start *****\n" 
                             (code-gen toGen constTable freeTable major)
                             "\tmov rbx, rax\n"
@@ -579,8 +581,8 @@
         (let ((toGenVal (caddr box-set-expr))
               (toGen (cadr box-set-expr)) 
              ) 
-             (debugPrint toGenVal)
-             (debugPrint toGen)
+             
+             
              (string-append "\t;****** box-set-start *****\n" 
                             (code-gen toGenVal constTable freeTable major)
                             "\tmov rbx, rax\n"
@@ -597,7 +599,7 @@
     (lambda (box-get-expr constTable freeTable major)
             (let ((toGen (cadr box-get-expr))
                  ) 
-                 (debugPrint toGen)
+                 
                  (string-append "\t;****** box-get-start *****\n" 
                                 (code-gen toGen constTable freeTable major)
                                 "\tmov rax,qword[rax]\n"
@@ -813,7 +815,9 @@
     (lambda (lst item)
     ;(debugPrint item)
     (cond
-        ((or (integer? item) (char? item)(string? item) (null? item)(boolean? item) (symbol? item) )`(,@lst ,item))
+        ((or (integer? item) (char? item)(string? item) (null? item)(boolean? item))`(,@lst ,item))
+        ((symbol? item)     
+            `(,@lst ,(symbol->string item) ,item ))
         ((and (rational? item) (not (integer? item))
                 `(,@lst ,(numerator item) ,(denominator item) ,item )))
         ((pair? item)
@@ -1055,9 +1059,13 @@
                         ((char? item) (append existingConsts 
                             (list (list label item (string-append label ":\n\tdq MAKE_LITERAL(T_CHAR ," (number->string (char->integer item )) ")\n" )))
                         ))
-                        ((symbol? item)  (append existingConsts 
-                            (list (list label item (string-append label ":\n\tdq MAKE_LITERAL(T_SYMBOL ," (symbol->string item) ")\n")))
-                        ))
+                        ((symbol? item)  
+                            (let ((str (find-rep existingConsts (symbol->string item))))
+                                (append existingConsts 
+                                    (list (list label item (string-append label ":\n\tdq MAKE_LITERAL_SYMBOL(" str "," label  ")\n"))))
+                                
+                                )
+                        )
                         ((string? item) 
                             (append existingConsts 
                             (list (list label item (string-append label ":\n\tMAKE_LITERAL_STRING " (string-append (splitString item)  "\n"  )))) 
@@ -1090,6 +1098,7 @@
                 (list "sobTrue" #t "sobTrue:\n\tdq SOB_TRUE\n")
                 (list "sobFalse" #f "sobFalse:\n\tdq SOB_FALSE\n") 
                 (list "sobVoid" (void) "sobVoid:\n\tdq SOB_VOID\n")
+                (list "sobUndefined" (void) "sobUndefined:\n\tdq SOB_UNDEFINED\n")
             ))
         )
             ;(debugPrint const-lst)  
@@ -1097,6 +1106,58 @@
         )    
     )
 )
+(define create-symtab-pair-label (makeLabel "symTab"))
+
+(define create-symtab-prev-label (makeLabel "symTab"))
+
+
+(define create-Sym-Tab
+    (lambda (symLabelList)
+        (debugPrint symLabelList)
+          (reverse (fold-left (lambda (acc symlbl) 
+                
+                (append acc (list (string-append  (create-symtab-pair-label) ":\n"
+                    "\tdq MAKE_LITERAL_PAIR(" symlbl "," (create-symtab-prev-label) ")\n" )))
+
+            )
+            '()
+            symLabelList))
+    
+    )
+    
+)
+
+
+
+(define construct-sym-table
+    (lambda (astExp allConstTable) 
+        (let* ((symList (map cadr (filter (lambda (item) (symbol? (cadr item))) allConstTable)))
+              (symLabels (map (lambda (item) (find-rep allConstTable item)) symList))
+              (endOfList "sobNil")
+              (symTableStartLabel "symbol_table: \n")
+              )
+              ;(debugPrint symList)
+             ;(debugPrint symLabels)
+              (if (= 0 (length symList))
+                  (string-append symTableStartLabel "\tdq " endOfList "\n")
+                  (let ((last (string-append  (create-symtab-pair-label) ":\n"
+                            "\tdq MAKE_LITERAL_PAIR(" (car symLabels) "," endOfList ")\n" )))
+                    (if(= 1 (length symLabels))
+                            (string-append symTableStartLabel last)
+                            (apply string-append symTableStartLabel 
+                                (append (create-Sym-Tab  (cdr symLabels)) (list last)  ))
+                    )
+                  )
+                 
+            
+             )
+        )
+     
+     )
+)
+
+
+
 
 ;----------------------------Free-Var-Table-----------------------------;
 
@@ -1132,7 +1193,8 @@
                 (list "free_isChar" 'char? "free_isChar:\n\tdq SOB_UNDEFINED\n")  
                 (list "free_isNumber" 'number? "free_isNumber:\n\tdq SOB_UNDEFINED\n")                      
                 (list "free_isNull" 'null? "free_isNull:\n\tdq SOB_UNDEFINED\n")
-                (list "free_isString" 'string? "free_isString:\n\tdq SOB_UNDEFINED\n")  
+                (list "free_isString" 'string? "free_isString:\n\tdq SOB_UNDEFINED\n") 
+                (list "free_isSymbol" 'symbol? "free_isSymbol:\n\tdq SOB_UNDEFINED\n") 
                 (list "free_isRational" 'rational? "free_isRational:\n\tdq SOB_UNDEFINED\n") 
                 (list "free_isVector" 'vector? "free_isVector:\n\tdq SOB_UNDEFINED\n")  
                 (list "free_zero" 'zero? "free_zero:\n\tdq SOB_UNDEFINED\n")
@@ -1151,7 +1213,9 @@
                 (list "free_car" 'car "free_car:\n\tdq SOB_UNDEFINED\n")
                 (list "free_cdr" 'cdr "free_cdr:\n\tdq SOB_UNDEFINED\n")
                 (list "free_cons" 'cons "free_cons:\n\tdq SOB_UNDEFINED\n")
-                
+                (list "free_eq" 'eq? "free_eq:\n\tdq SOB_UNDEFINED\n")
+                (list "free_symboltostring" 'symbol->string "free_symboltostring:\n\tdq SOB_UNDEFINED\n")
+                (list "free_strtoSym" 'string->symbol "free_strtoSym:\n\tdq SOB_UNDEFINED\n")
                 
                 
                 
@@ -1210,7 +1274,7 @@
 (define code-gen
     
     (lambda (exprToGen constTable freeTable major) 
-        (debugPrint exprToGen)
+        
         (if  (not (list? exprToGen))
             (string-append (symbol->string exprToGen) "\n")
             (let ((tag (car exprToGen)))
@@ -1241,7 +1305,7 @@
 
 
 (define write-to-file
-    (lambda (file-name contents constantTable freeTable)
+    (lambda (file-name contents constantTable freeTable symTable)
         ;;(print "@@in write " lst)
         (let* ((file (open-output-file file-name 'truncate))
                 (createLib (apply string-append (map create-free-func-closure library_functions)))
@@ -1249,6 +1313,7 @@
                 (display prologue file)
                 (display constantTable file)
                 (display freeTable file)
+                (display symTable file)
                 
                 ;;(display symbolsTable file)
                 (display (string-append  "\nsection .bss\n"
@@ -1357,6 +1422,7 @@
                 (consTableRep (convert-to-string (only-rep-list constTable)))
                 (freeTable (createFreeTable astExpression))
                 (freeTableRep (convert-to-string (only-rep-list freeTable)))
+                (symbole-table (construct-sym-table astExpression constTable))
                 (codeEpilogue (string-append 
                 "\tpush RAX\n"
                 "\tcall write_sob\n"
@@ -1371,7 +1437,7 @@
                 ;(debugPrint astExpression)
                 ;(debugPrint constTable)
                 (display "\n\n\n")
-                (write-to-file nasm-file generated-code consTableRep freeTableRep)  
+                (write-to-file nasm-file generated-code consTableRep freeTableRep symbole-table )  
             )
     )
 )
@@ -2285,6 +2351,9 @@
 (define string_pred
     (create-pred-function "T_STRING" "isString")
 )
+(define symbol_pred
+    (create-pred-function "T_SYMBOL" "isSymbol")
+)
 
 (define zero_pred
     (string-append
@@ -2971,12 +3040,129 @@
     
 )
 
-;,asm_remainder
+(define asm_eq 
+    (string-append
+        "\nasm_eq:\n"
+        "\tpush rbp\n"
+        "\tmov rbp,rsp\n"
+        
+        "\tmov rax, sobFalse\n"
+        
+
+        "\tmov r8, arg_count\n"
+        "\tcmp r8, 2\n"
+        "\tjne " arg-count-exception-label "\n"
+
+        "\tmov r10, An(0)\n"
+        "\tmov r11, An(1)\n"
+
+        "\tmov r12,r10\n"
+        "\tmov r13,r11\n"
+        "\tTYPE r12\n"
+        "\tTYPE r13\n"
+        "\tcmp r12, r13\n"
+
+        "\tjne eq_end\n"
+
+        "\tcmp r10, r11\n"
+        "\tje return_true\n"
+
+        "return_true:\n"
+        "\tmov rax, sobTrue\n"    
+        "eq_end:\n"
+        "\tmov rax, qword[rax]\n"
+        "\tleave \n"
+        "\tret \n"         
+        )
+   )
+
+(define asm_symbol_string
+    (string-append
+        "\nasm_symbol_string:\n"
+        "\tpush rbp\n"
+        "\tmov rbp,rsp\n"
+        
+        "\tmov rax,An(0)\n"
+        "\tCAR rax\n"
+
+
+        "\tleave \n"
+        "\tret \n"         
+        )
+)
+
+(define asm_string_symbol
+    (string-append
+        "\nasm_string_symbol:\n"
+        "\tpush rbp\n"
+        "\tmov rbp,rsp\n"
+        "\tpush rbx \n"
+        "\tpush rcx \n"
+        "\tpush rdx \n"
+        
+        "\tmov rbx,arg_count \n"
+        "\tcmp rbx,1 \n"
+        "\tjne " arg-count-exception-label "\t\t;jump to exception handler \n"
+        "\tmov rbx,An(0) \n"
+        "\tTYPE rbx \n"
+        "\tcmp rbx,T_STRING \n"
+        "\tjne " arg-type-exception-label"\t\t;jump to exception handler \n"
+
+        "\tmov rbx,An(0) \n"
+        "\tmov rcx,qword[symbol_table]\n"
+        "sym_tab_runner_loop:\n"
+        
+        "\tcmp rcx,sobNil\n"
+        "\tje not_found\n"
+        "\tmov rdx,rcx \n"
+        "\tCAR rdx \n"
+        "\tCAR rdx \n"
+        "\tcmp rdx,rbx \n"
+        "\tje found_symb \n"
+        "\tCDR rcx \n"
+        "\tcmp rcx,qword [sobNil]\n"
+        "\tje not_found\n"
+        "\tjmp sym_tab_runner_loop\n"
+
+        "found_symb:\n"
+        "\tCAR rcx \n"
+        "\tmov rax,rcx\n"
+        "\tjmp end_str_symbol \n"
+        
+        "not_found:\n"
+        "\tmy_malloc 8 \n"
+        "\tmov r9,rax \n"
+        "\tmy_malloc 8\n"
+        "\tmov qword[rax],rbx\n"
+        "\tmov rbx,rax\n"
+        "\tMAKE_MALLOC_LITERAL_SYMBOL r9,rbx,r9 \n"
+        "\tmy_malloc 8 \n"
+        "\tMAKE_MALLOC_LITERAL_PAIR rax,r9,symbol_table\n"
+        "\tmov qword[symbol_table],rax\n"
+        "\tmov rax,qword[r9] \n"
+        
+        
+       
+        
+ 
+
+        
+        "end_str_symbol:"
+        "\tpop rdx \n"
+        "\tpop rcx\n"
+        "\tpop rbx\n"
+        "\tleave \n"
+        "\tret \n"         
+        )
+)
+
+
 (define library_functions_creation_list
     `(,asm_denominator ,asm_numerator ,asm_remainder ,asm_shave ,asm_smaller ,asm_grater ,asm_div ,asm_mul ,asm_minus ,asm_plus ,boolean_pred ,int_pred ,pair_pred
      ,char_pred ,proc_pred ,null_pred ,number_pred ,vector_pred
-      ,iteger_to_char ,char_to_int ,string_pred ,make_vec ,vec_length ,asm_not ,vec_ref ,vector ,vec_set
-      ,zero_pred ,make_str ,str_ref ,str_length ,str_set ,asm_car ,asm_cdr ,asm_cons
+      ,iteger_to_char ,char_to_int ,string_pred ,symbol_pred ,make_vec ,vec_length ,asm_not ,vec_ref ,vector ,vec_set
+      ,zero_pred ,make_str ,str_ref ,str_length ,str_set ,asm_car ,asm_cdr ,asm_cons ,asm_eq ,asm_symbol_string
+      ,asm_string_symbol
      )
   
 )
