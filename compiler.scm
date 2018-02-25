@@ -3131,6 +3131,7 @@
 
         "\tcmp r10, r11\n"
         "\tje return_true\n"
+        "\tjmp eq_end \n"
 
         "return_true:\n"
         "\tmov rax, sobTrue\n"    
