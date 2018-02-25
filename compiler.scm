@@ -14,7 +14,7 @@
 )
 ;;("free_remainder" "asm_remainder")
 (define library_functions
-    `(("free_denominator" "nasm_denominator") ("free_numerator" "nasm_numerator") ("free_remainder" "asm_remainder") ("free_shave" "asm_shave")  ("free_smaller" "asm_smaller")
+    `(("free_denominator" "nasm_denominator") ("free_numerator" "nasm_numerator") ("free_apply" "asm_apply") ("free_remainder" "asm_remainder") ("free_shave" "asm_shave")  ("free_smaller" "asm_smaller")
      ("free_grater" "asm_grater") ("free_div" "asm_div") ("free_mul" "asm_mul") ("free_minus" "asm_minus") ("free_plus" "asm_plus")
       ("free_isBool" "isBool") ("free_isInteger" "isInt") ("free_isPair" "isPair")
       ("free_isChar" "isChar") ("free_isProcedure" "isProc") ("free_isNull" "isNull") ("free_isNumber" "isNumber")
@@ -1182,6 +1182,7 @@
                 (list "free_minus" '- "free_minus:\n\tdq SOB_UNDEFINED\n")
                 (list "free_shave" '= "free_shave:\n\tdq SOB_UNDEFINED\n")
                 (list "free_remainder" 'remainder "free_remainder:\n\tdq SOB_UNDEFINED\n")
+                (list "free_apply" 'apply "free_apply:\n\tdq SOB_UNDEFINED\n")
                 (list "free_mul" '* "free_mul:\n\tdq SOB_UNDEFINED\n")
                 (list "free_div" '/ "free_div:\n\tdq SOB_UNDEFINED\n")
                 (list "free_grater" '> "free_grater:\n\tdq SOB_UNDEFINED\n")
@@ -1343,7 +1344,7 @@
 )
 
 (define show
-   (file->list "foo.scm")
+   (pipeline (file->list "foo.scm"))
     )
 
 (define create-check-void-label (makeLabel "check_void_lable_")) 
@@ -1442,13 +1443,6 @@
     )
 )
 
-;; apply 
-(define asm_apply
-    (string-append
-        
-        
-    )    
-)
 
 ;; numerator
 (define asm_numerator
@@ -1493,6 +1487,77 @@
         "\tret \n"
     )
 )
+
+;; apply function
+(define asm_apply
+    (string-append
+          "\nasm_apply:\n" 
+          "\tpush rbp \n"
+          "\tmov rbp,rsp \n"
+
+          "\tmov r9, arg_count\n"
+          "\tcmp r9, 2\n"
+          "\tjne " arg-count-exception-label "\n"
+
+          "\tmov rax, An(0)\n"  ;;the proc
+          "\tmov r8, An(1)\n" ;;the list
+          
+          "\tmov r15, 0\n" ;; counter for parameters
+          "apply_count_args_loop:\n"
+          "\tmov r9, r8\n"
+          "\tTYPE r9\n"
+          "\tcmp r9, T_NIL\n"
+          "\tje apply_build_stack\n"
+          "\tCDR r8\n"
+          "\tadd r15, 1\n"
+          "\tjmp apply_count_args_loop\n"
+
+
+          "apply_build_stack:\n"
+          "\tmov r11, An(1)\n"    ;; sav list
+          "\tmov r12, ret_addr\n" ;;save ret
+          "\tmov r13, old_rbp\n"  ;; save old rbp
+          
+          "\tmov rdx,rbp\n"
+          "\tadd rdx,48 ;where  we start to put args\n"
+ 
+          "\tshl r15,3\n"
+          "\tsub rdx,r15\n"
+          "\tshr r15,3\n"
+          "\tmov r14,0\n"
+          "\tmov rcx,qword [rbp+5*8]\n" 
+          
+          "override_frame_loop:\n"
+          "\tcmp r14,r15\n"
+          "\tje override_frame_loop_exit\n" 
+          "\tmov rbx,rcx\n"
+          "\tCAR rbx\n"
+          "\tmov qword [rdx + 8*r14],rbx\n"
+          "\tCDR rcx\n"
+          "\tadd r14, 1\n"
+          "\tjmp override_frame_loop\n"
+    
+          "override_frame_loop_exit:\n"
+          ;"\tinc r15\n"
+          "\tsub rdx,8\n"
+          "\tmov qword [rdx],r15\n"
+          "\tsub rdx,8\n"
+          "\tmov rbx,rax\n"
+          "\tCLOSURE_ENV rbx\n"
+          "\tmov qword [rdx],rbx\n"
+          "\tsub rdx,8\n"
+          "\tmov qword [rdx],r12\n"
+          "\tmov rsp, rdx\n"
+          "\tmov rbp,r13\n"
+             
+          "\tCLOSURE_CODE rax\n"
+          "\tjmp rax\n"
+                   
+          "\tleave\n"
+          "\tret\n" 
+    )
+)
+
 
 ;; remainder function
 (define asm_remainder
@@ -3158,7 +3223,7 @@
 
 
 (define library_functions_creation_list
-    `(,asm_denominator ,asm_numerator ,asm_remainder ,asm_shave ,asm_smaller ,asm_grater ,asm_div ,asm_mul ,asm_minus ,asm_plus ,boolean_pred ,int_pred ,pair_pred
+    `(,asm_denominator ,asm_numerator ,asm_apply ,asm_remainder ,asm_shave ,asm_smaller ,asm_grater ,asm_div ,asm_mul ,asm_minus ,asm_plus ,boolean_pred ,int_pred ,pair_pred
      ,char_pred ,proc_pred ,null_pred ,number_pred ,vector_pred
       ,iteger_to_char ,char_to_int ,string_pred ,symbol_pred ,make_vec ,vec_length ,asm_not ,vec_ref ,vector ,vec_set
       ,zero_pred ,make_str ,str_ref ,str_length ,str_set ,asm_car ,asm_cdr ,asm_cons ,asm_eq ,asm_symbol_string
