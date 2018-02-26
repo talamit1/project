@@ -564,7 +564,7 @@
 (define defineOrSet
   (lambda (exp)
    
-    (or (equal?  exp 'define) (equal? exp 'set))
+    (or (equal?  exp 'define) (equal? exp 'set!))
   
   )  
 )
@@ -580,10 +580,7 @@
 )
 
 (define annotate-helper
-  (lambda (pe isTailposition?)
-    
-
-    
+  (lambda (pe isTailposition?)   
     (cond
       ((null? pe) '())
       ((list? (car pe))

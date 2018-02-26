@@ -1113,7 +1113,7 @@
 
 (define create-Sym-Tab
     (lambda (symLabelList)
-        (debugPrint symLabelList)
+        ;(debugPrint symLabelList)
           (reverse (fold-left (lambda (acc symlbl) 
                 
                 (append acc (list (string-append  (create-symtab-pair-label) ":\n"
@@ -1224,9 +1224,10 @@
             )
         )
 
+(define freeLabel  (makeLabel "free_"))
 (define helpForFree
     (lambda (x)
-        (let ((label (string-append "free_" (symbol->string x))))
+        (let ((label (freeLabel)))
             (if (find-rep basicFree x) #f 
             (list label x (string-append label ":\n\tdq SOB_UNDEFINED\n")))
         )
@@ -1344,7 +1345,7 @@
 )
 
 (define show
-   (pipeline (file->list "foo.scm"))
+    (file->list "foo.scm")
     )
 
 (define create-check-void-label (makeLabel "check_void_lable_")) 
@@ -1366,24 +1367,25 @@
     )
 (define append2
     (string-append
-        "(define (append2 lis1 lis2)
-        (cond ((null? lis1)
-               lis2)
-              (else
-               (cons (car lis1)
-                     (append2 (cdr lis1) lis2)))))"
+        "(define (append2 list1 list2)
+            (if (null? list1)
+		        list2
+		        (cons (car list1)
+		        (append (cdr list1) list2))))"
         
         )
     
     )
 (define primit_append
     (string-append
-        "(define append (lambda lst
-            (foldr append2 '() lst)
-        ))"
-
-        
-        )
+        "(define append
+        (letrec ((append-helper (lambda(s)
+                          (if (null? s) '()
+                              (if (null? (cdr s)) (car s)
+                                  (append2 (car s) (append-helper (cdr s))))))))
+          (lambda s 
+            (append-helper s))))"
+    )
 )
 
 
