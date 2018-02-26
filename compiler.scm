@@ -2987,6 +2987,7 @@
         "\tjge " arg-type-exception-label "\t\t ;index is to big\n"
         "\tmov rbx,An(0) \n"
         "\tSTRING_ELEMENTS rbx \n"
+        "\txor rax,rax\n"
         "\tmov al,byte [rbx+rcx] \n"
         "\tMAKE_CHAR rax\n"
         ;"\tmov rax,[rax] \n"

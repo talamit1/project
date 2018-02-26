@@ -32,36 +32,36 @@ c
 (define f2 (lambda (o a b) (o a b)))
 (f2 + 5 6)
 
-; test 55
-(define f3 (lambda () (begin
-                         (define foo (lambda (x) (x 5 6)))
-                         (define bar (lambda (a b) (+ a b)))
-                         (foo bar)
-                         )
-               )
-    )
-(f3)	
+; ; test 55
+; (define f3 (lambda () (begin
+;                          (define foo (lambda (x) (x 5 6)))
+;                          (define bar (lambda (a b) (+ a b)))
+;                          (foo bar)
+;                          )
+;                )
+;     )
+; (f3)	
 
-; test 56
-(define f4 (lambda (z) (begin
-                         (define foo (lambda (x y) (x y 5 6)))
-                         (define bar (lambda (op a b) (op a b)))
-                         (foo bar z)
-                         )
-               )
-    )
-(f4 *)	
+; ; test 56
+; (define f4 (lambda (z) (begin
+;                          (define foo (lambda (x y) (x y 5 6)))
+;                          (define bar (lambda (op a b) (op a b)))
+;                          (foo bar z)
+;                          )
+;                )
+;     )
+; (f4 *)	
 
 ; test 57
-(define f5 (lambda () (begin
-                           (define foo (lambda (x y) (x y 5 6)))
-                           (define bar (lambda (op a b) (op a b)))
-                           (define oop +)
-                           (foo bar oop)
-                           )
-                 )
-      )
-(f5)	  		
+; (define f5 (lambda () (begin
+;                            (define foo (lambda (x y) (x y 5 6)))
+;                            (define bar (lambda (op a b) (op a b)))
+;                            (define oop +)
+;                            (foo bar oop)
+;                            )
+;                  )
+;       )
+; (f5)	  		
 
 ; test 59
 (let ((square (lambda (x) (* x x)))) 33)
@@ -87,16 +87,16 @@ c
     )
 (fun2 45)
 
-; test 62
-(define fun3 (lambda ()
-                 (begin
-                   (define x (+ 2 1))
-                   (set! x (+ x 3 4))
-                   x
-                   )
-                 )
-    )
-(fun3)
+; ; test 62
+; (define fun3 (lambda ()
+;                  (begin
+;                    (define x (+ 2 1))
+;                    (set! x (+ x 3 4))
+;                    x
+;                    )
+;                  )
+;     )
+; (fun3)
 
 ; test 63
 (define fun4 (lambda ()
