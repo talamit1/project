@@ -4,4 +4,4 @@ make $1
 echo "making " $1 " \n\n"
 
 echo "invoking  " $1 " \n\n"
-$1
+./$1

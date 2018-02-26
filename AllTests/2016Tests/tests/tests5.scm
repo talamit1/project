@@ -48,15 +48,15 @@
                             )
     ) 'abc 99))
 
-; test 151
-((lambda (list) (begin
-		(set-car! (car (cdr list)) (cons 1 2))
-		 list)) (list 1 (cons 22 66) 3 4))
+; ; test 151
+; ((lambda (list) (begin
+; 		(set-car! (car (cdr list)) (cons 1 2))
+; 		 list)) (list 1 (cons 22 66) 3 4))
 
-; test 152
-((lambda (list) (begin
-		(set-cdr! (cdr list) (cons 1 2))
-		list)) (list 1 2 3 4))
+; ; test 152
+; ((lambda (list) (begin
+; 		(set-cdr! (cdr list) (cons 1 2))
+; 		list)) (list 1 2 3 4))
 
 ; test 153
 (let* ((x 1)

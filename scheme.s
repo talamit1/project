@@ -264,6 +264,12 @@ gcd:
 	%%LstrEnd:
 %endmacro
 
+%macro MAKE_EMPTY_STRING 0
+	dq (((((%%LstrEnd - %%Lstr) << ((WORD_SIZE - TYPE_BITS) >> 1)) | (%%Lstr - start_of_data)) << TYPE_BITS) | T_STRING)
+	%%Lstr:
+	%%LstrEnd:
+%endmacro
+
 %macro STRING_LENGTH 1
 	DATA_UPPER %1
 %endmacro
@@ -288,6 +294,12 @@ gcd:
 	dq ((((((%%VecEnd - %%Vec) >> 3) << ((WORD_SIZE - TYPE_BITS) >> 1)) | (%%Vec - start_of_data)) << TYPE_BITS) | T_VECTOR)
 	%%Vec:
 	dq %1
+	%%VecEnd:
+%endmacro
+
+%macro MAKE_EMPTY_VECTOR 0
+	dq ((((((%%VecEnd - %%Vec) >> 3) << ((WORD_SIZE - TYPE_BITS) >> 1)) | (%%Vec - start_of_data)) << TYPE_BITS) | T_VECTOR)
+	%%Vec:
 	%%VecEnd:
 %endmacro
 

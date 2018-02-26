@@ -301,10 +301,10 @@
    reverse
    string->list))
 
-(define list-set!
-  (lambda (s i x)
-    (if (zero? i) (set-car! s x)
-	(list-set! (cdr s) (- i 1) x))))
+; (define list-set!
+;   (lambda (s i x)
+;     (if (zero? i) (set-car! s x)
+; 	(list-set! (cdr s) (- i 1) x))))
 
 #f
 #t
@@ -391,10 +391,10 @@
    (vs! 1 234)
    (vs! 2 #\P)
    (equal? v '#(a 234 #\P)))  
-(let ((p (cons 'a 'b)))
-   (set-car! p 'just)
-   (set-cdr! p 'fine)
-   (equal? p '(just . fine)))  
+; (let ((p (cons 'a 'b)))
+;    (set-car! p 'just)
+;    (set-cdr! p 'fine)
+;    (equal? p '(just . fine)))  
 (let ((v '#(a b c)))
    (eq? 'c (vector-ref v 2)))   
 (= 65 (char->integer #\A))

@@ -7,11 +7,11 @@
 (quasiquote ( a 3 4 (unquote (* 4 3 2 1))))
 
 ; test 163
-(begin
-    (define m '(b c))
-    (define n '(d e))
-    `(a ,(list m n) f)
-  )
+; (begin
+;     (define m '(b c))
+;     (define n '(d e))
+;     `(a ,(list m n) f)
+;   )
 
 ; test 164
 `(,(list 3 4 5))

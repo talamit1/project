@@ -1,0 +1,5030 @@
+Doing test AllTests/2013-2014Tests/tests/test01.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test01.scm" "test01.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test01.s -o test01.o
+gcc test01.o -o test01
+[1;32mTest test01 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2013-2014Tests/tests/test02.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test02.scm" "test02.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test02.s -o test02.o
+gcc test02.o -o test02
+[1;32mTest test02 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2013-2014Tests/tests/test03.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test03.scm" "test03.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test03.s -o test03.o
+gcc test03.o -o test03
+[1;32mTest test03 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2013-2014Tests/tests/test04.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test04.scm" "test04.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test04.s -o test04.o
+gcc test04.o -o test04
+[1;32mTest test04 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2013-2014Tests/tests/test05.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test05.scm" "test05.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test05.s -o test05.o
+gcc test05.o -o test05
+[1;32mTest test05 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2013-2014Tests/tests/test06.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test06.scm" "test06.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test06.s -o test06.o
+gcc test06.o -o test06
+[1;32mTest test06 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2013-2014Tests/tests/test07.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test07.scm" "test07.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test07.s -o test07.o
+gcc test07.o -o test07
+[1;32mTest test07 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2013-2014Tests/tests/test08.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test08.scm" "test08.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test08.s -o test08.o
+gcc test08.o -o test08
+[1;32mTest test08 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2013-2014Tests/tests/test09.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test09.scm" "test09.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test09.s -o test09.o
+gcc test09.o -o test09
+[1;32mTest test09 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2013-2014Tests/tests/test10.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test10.scm" "test10.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test10.s -o test10.o
+gcc test10.o -o test10
+[1;32mTest test10 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2013-2014Tests/tests/test11.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test11.scm" "test11.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test11.s -o test11.o
+gcc test11.o -o test11
+[1;32mTest test11 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2013-2014Tests/tests/test12.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test12.scm" "test12.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test12.s -o test12.o
+gcc test12.o -o test12
+[1;32mTest test12 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2013-2014Tests/tests/test13.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test13.scm" "test13.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test13.s -o test13.o
+gcc test13.o -o test13
+[1;32mTest test13 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2013-2014Tests/tests/test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test14.scm" "test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test14.s -o test14.o
+gcc test14.o -o test14
+[1;32mTest test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2013-2014Tests/tests/test15.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test15.scm" "test15.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test15.s -o test15.o
+gcc test15.o -o test15
+[1;32mTest test15 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2013-2014Tests/tests/tests.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "tests.scm" "tests.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 tests.s -o tests.o
+gcc tests.o -o tests
+[1;32mTest tests Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/1test01.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "1test01.scm" "1test01.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 1test01.s -o 1test01.o
+gcc 1test01.o -o 1test01
+[1;32mTest 1test01 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/1test02.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "1test02.scm" "1test02.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 1test02.s -o 1test02.o
+gcc 1test02.o -o 1test02
+[1;32mTest 1test02 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/1test03.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "1test03.scm" "1test03.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 1test03.s -o 1test03.o
+gcc 1test03.o -o 1test03
+[1;32mTest 1test03 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/1test04.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "1test04.scm" "1test04.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 1test04.s -o 1test04.o
+gcc 1test04.o -o 1test04
+[1;32mTest 1test04 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/1test08.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "1test08.scm" "1test08.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 1test08.s -o 1test08.o
+gcc 1test08.o -o 1test08
+[1;32mTest 1test08 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/1test12.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "1test12.scm" "1test12.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 1test12.s -o 1test12.o
+gcc 1test12.o -o 1test12
+[1;32mTest 1test12 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/1test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "1test14.scm" "1test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 1test14.s -o 1test14.o
+gcc 1test14.o -o 1test14
+[1;32mTest 1test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/1test15.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "1test15.scm" "1test15.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 1test15.s -o 1test15.o
+gcc 1test15.o -o 1test15
+[1;32mTest 1test15 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/2test01.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "2test01.scm" "2test01.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 2test01.s -o 2test01.o
+gcc 2test01.o -o 2test01
+[1;32mTest 2test01 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/2test02.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "2test02.scm" "2test02.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 2test02.s -o 2test02.o
+gcc 2test02.o -o 2test02
+[1;32mTest 2test02 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/2test03.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "2test03.scm" "2test03.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 2test03.s -o 2test03.o
+gcc 2test03.o -o 2test03
+[1;32mTest 2test03 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/2test04.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "2test04.scm" "2test04.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 2test04.s -o 2test04.o
+gcc 2test04.o -o 2test04
+[1;32mTest 2test04 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/2test08.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "2test08.scm" "2test08.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 2test08.s -o 2test08.o
+gcc 2test08.o -o 2test08
+[1;32mTest 2test08 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/2test12.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "2test12.scm" "2test12.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 2test12.s -o 2test12.o
+gcc 2test12.o -o 2test12
+[1;32mTest 2test12 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/2test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "2test14.scm" "2test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 2test14.s -o 2test14.o
+gcc 2test14.o -o 2test14
+[1;32mTest 2test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/2test15.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "2test15.scm" "2test15.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 2test15.s -o 2test15.o
+gcc 2test15.o -o 2test15
+[1;32mTest 2test15 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/3test01.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "3test01.scm" "3test01.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 3test01.s -o 3test01.o
+gcc 3test01.o -o 3test01
+[1;32mTest 3test01 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/3test02.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "3test02.scm" "3test02.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 3test02.s -o 3test02.o
+gcc 3test02.o -o 3test02
+[1;32mTest 3test02 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/3test03.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "3test03.scm" "3test03.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 3test03.s -o 3test03.o
+gcc 3test03.o -o 3test03
+[1;32mTest 3test03 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/3test04.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "3test04.scm" "3test04.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 3test04.s -o 3test04.o
+gcc 3test04.o -o 3test04
+[1;32mTest 3test04 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/3test08.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "3test08.scm" "3test08.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 3test08.s -o 3test08.o
+gcc 3test08.o -o 3test08
+[1;32mTest 3test08 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/3test12.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "3test12.scm" "3test12.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 3test12.s -o 3test12.o
+gcc 3test12.o -o 3test12
+[1;32mTest 3test12 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/3test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "3test14.scm" "3test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 3test14.s -o 3test14.o
+gcc 3test14.o -o 3test14
+[1;32mTest 3test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/4test02.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "4test02.scm" "4test02.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 4test02.s -o 4test02.o
+gcc 4test02.o -o 4test02
+[1;32mTest 4test02 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/4test03.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "4test03.scm" "4test03.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 4test03.s -o 4test03.o
+gcc 4test03.o -o 4test03
+[1;32mTest 4test03 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/4test04.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "4test04.scm" "4test04.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 4test04.s -o 4test04.o
+gcc 4test04.o -o 4test04
+[1;32mTest 4test04 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/4test08.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "4test08.scm" "4test08.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 4test08.s -o 4test08.o
+gcc 4test08.o -o 4test08
+[1;32mTest 4test08 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/4test12.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "4test12.scm" "4test12.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 4test12.s -o 4test12.o
+gcc 4test12.o -o 4test12
+[1;32mTest 4test12 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/4test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "4test14.scm" "4test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 4test14.s -o 4test14.o
+gcc 4test14.o -o 4test14
+[1;32mTest 4test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/5test02.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "5test02.scm" "5test02.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 5test02.s -o 5test02.o
+gcc 5test02.o -o 5test02
+[1;32mTest 5test02 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/5test03.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "5test03.scm" "5test03.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 5test03.s -o 5test03.o
+gcc 5test03.o -o 5test03
+[1;32mTest 5test03 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/5test04.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "5test04.scm" "5test04.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 5test04.s -o 5test04.o
+gcc 5test04.o -o 5test04
+[1;32mTest 5test04 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/5test08.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "5test08.scm" "5test08.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 5test08.s -o 5test08.o
+gcc 5test08.o -o 5test08
+[1;32mTest 5test08 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/5test12.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "5test12.scm" "5test12.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 5test12.s -o 5test12.o
+gcc 5test12.o -o 5test12
+[1;32mTest 5test12 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/5test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "5test14.scm" "5test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 5test14.s -o 5test14.o
+gcc 5test14.o -o 5test14
+[1;32mTest 5test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/6test02.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "6test02.scm" "6test02.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 6test02.s -o 6test02.o
+gcc 6test02.o -o 6test02
+[1;32mTest 6test02 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/6test03.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "6test03.scm" "6test03.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 6test03.s -o 6test03.o
+gcc 6test03.o -o 6test03
+[1;32mTest 6test03 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/6test08.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "6test08.scm" "6test08.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 6test08.s -o 6test08.o
+gcc 6test08.o -o 6test08
+[1;32mTest 6test08 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/6test12.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "6test12.scm" "6test12.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 6test12.s -o 6test12.o
+gcc 6test12.o -o 6test12
+[1;32mTest 6test12 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/6test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "6test14.scm" "6test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 6test14.s -o 6test14.o
+gcc 6test14.o -o 6test14
+[1;32mTest 6test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/7test02.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "7test02.scm" "7test02.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 7test02.s -o 7test02.o
+gcc 7test02.o -o 7test02
+[1;32mTest 7test02 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/7test03.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "7test03.scm" "7test03.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 7test03.s -o 7test03.o
+gcc 7test03.o -o 7test03
+[1;32mTest 7test03 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/7test08.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "7test08.scm" "7test08.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 7test08.s -o 7test08.o
+gcc 7test08.o -o 7test08
+[1;32mTest 7test08 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/7test12.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "7test12.scm" "7test12.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 7test12.s -o 7test12.o
+gcc 7test12.o -o 7test12
+[1;32mTest 7test12 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/7test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "7test14.scm" "7test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 7test14.s -o 7test14.o
+gcc 7test14.o -o 7test14
+[1;32mTest 7test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/8test02.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "8test02.scm" "8test02.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 8test02.s -o 8test02.o
+gcc 8test02.o -o 8test02
+[1;32mTest 8test02 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/8test03.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "8test03.scm" "8test03.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 8test03.s -o 8test03.o
+gcc 8test03.o -o 8test03
+[1;32mTest 8test03 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/8test08.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "8test08.scm" "8test08.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 8test08.s -o 8test08.o
+gcc 8test08.o -o 8test08
+[1;32mTest 8test08 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/8test12.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "8test12.scm" "8test12.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 8test12.s -o 8test12.o
+gcc 8test12.o -o 8test12
+[1;32mTest 8test12 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/8test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "8test14.scm" "8test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 8test14.s -o 8test14.o
+gcc 8test14.o -o 8test14
+[1;32mTest 8test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/9test02.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "9test02.scm" "9test02.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 9test02.s -o 9test02.o
+gcc 9test02.o -o 9test02
+[1;32mTest 9test02 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/9test08.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "9test08.scm" "9test08.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 9test08.s -o 9test08.o
+gcc 9test08.o -o 9test08
+[1;32mTest 9test08 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/9test12.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "9test12.scm" "9test12.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 9test12.s -o 9test12.o
+gcc 9test12.o -o 9test12
+[1;32mTest 9test12 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/9test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "9test14.scm" "9test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 9test14.s -o 9test14.o
+gcc 9test14.o -o 9test14
+[1;32mTest 9test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/10test02.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "10test02.scm" "10test02.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 10test02.s -o 10test02.o
+gcc 10test02.o -o 10test02
+[1;32mTest 10test02 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/10test08.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "10test08.scm" "10test08.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 10test08.s -o 10test08.o
+gcc 10test08.o -o 10test08
+[1;32mTest 10test08 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/10test12.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "10test12.scm" "10test12.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 10test12.s -o 10test12.o
+gcc 10test12.o -o 10test12
+[1;32mTest 10test12 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/10test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "10test14.scm" "10test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 10test14.s -o 10test14.o
+gcc 10test14.o -o 10test14
+[1;32mTest 10test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/27test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "27test14.scm" "27test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 27test14.s -o 27test14.o
+gcc 27test14.o -o 27test14
+[1;32mTest 27test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/28test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "28test14.scm" "28test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 28test14.s -o 28test14.o
+gcc 28test14.o -o 28test14
+[1;32mTest 28test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/29test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "29test14.scm" "29test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 29test14.s -o 29test14.o
+gcc 29test14.o -o 29test14
+[1;32mTest 29test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/30test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "30test14.scm" "30test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 30test14.s -o 30test14.o
+gcc 30test14.o -o 30test14
+[1;32mTest 30test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/31test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "31test14.scm" "31test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 31test14.s -o 31test14.o
+gcc 31test14.o -o 31test14
+[1;32mTest 31test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/32test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "32test14.scm" "32test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 32test14.s -o 32test14.o
+gcc 32test14.o -o 32test14
+[1;32mTest 32test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/33test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "33test14.scm" "33test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 33test14.s -o 33test14.o
+gcc 33test14.o -o 33test14
+[1;32mTest 33test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/34test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "34test14.scm" "34test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 34test14.s -o 34test14.o
+gcc 34test14.o -o 34test14
+[1;32mTest 34test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a4.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a4.scm" "a4.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a4.s -o a4.o
+gcc a4.o -o a4
+[1;32mTest a4 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a6.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a6.scm" "a6.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a6.s -o a6.o
+gcc a6.o -o a6
+[1;32mTest a6 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a7.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a7.scm" "a7.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a7.s -o a7.o
+gcc a7.o -o a7
+[1;32mTest a7 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a8.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a8.scm" "a8.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a8.s -o a8.o
+gcc a8.o -o a8
+[1;32mTest a8 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a9.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a9.scm" "a9.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a9.s -o a9.o
+gcc a9.o -o a9
+[1;32mTest a9 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a10.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a10.scm" "a10.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a10.s -o a10.o
+gcc a10.o -o a10
+[1;32mTest a10 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a11.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a11.scm" "a11.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a11.s -o a11.o
+gcc a11.o -o a11
+[1;32mTest a11 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a12.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a12.scm" "a12.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a12.s -o a12.o
+gcc a12.o -o a12
+[1;32mTest a12 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a13.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a13.scm" "a13.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a13.s -o a13.o
+gcc a13.o -o a13
+[1;32mTest a13 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a14.scm" "a14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a14.s -o a14.o
+gcc a14.o -o a14
+[1;32mTest a14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a15.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a15.scm" "a15.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a15.s -o a15.o
+gcc a15.o -o a15
+[1;32mTest a15 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a17.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a17.scm" "a17.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a17.s -o a17.o
+gcc a17.o -o a17
+[1;31m *** RESULTS DIFFER in a17 ☹[0m
+*** scheme output: "HELLO WORLD!"
+*** our output: "hello world!"
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a18.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a18.scm" "a18.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a18.s -o a18.o
+gcc a18.o -o a18
+[1;31m *** RESULTS DIFFER in a18 ☹[0m
+*** scheme output: "hello world!"
+*** our output: "HELLO WORLD!"
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a19.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a19.scm" "a19.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a19.s -o a19.o
+gcc a19.o -o a19
+[1;32mTest a19 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a20.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a20.scm" "a20.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a20.s -o a20.o
+gcc a20.o -o a20
+[1;32mTest a20 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a21.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a21.scm" "a21.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a21.s -o a21.o
+gcc a21.o -o a21
+[1;32mTest a21 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a22.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a22.scm" "a22.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a22.s -o a22.o
+gcc a22.o -o a22
+[1;32mTest a22 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/a23.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "a23.scm" "a23.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 a23.s -o a23.o
+gcc a23.o -o a23
+[1;32mTest a23 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/fact-x.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "fact-x.scm" "fact-x.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 fact-x.s -o fact-x.o
+gcc fact-x.o -o fact-x
+[1;32mTest fact-x Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/test04.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test04.scm" "test04.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test04.s -o test04.o
+gcc test04.o -o test04
+[1;32mTest test04 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/test05.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test05.scm" "test05.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test05.s -o test05.o
+gcc test05.o -o test05
+[1;32mTest test05 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/test06.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test06.scm" "test06.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test06.s -o test06.o
+gcc test06.o -o test06
+[1;32mTest test06 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/test07.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test07.scm" "test07.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test07.s -o test07.o
+gcc test07.o -o test07
+[1;32mTest test07 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/test09.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test09.scm" "test09.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test09.s -o test09.o
+gcc test09.o -o test09
+[1;32mTest test09 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/test10.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test10.scm" "test10.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test10.s -o test10.o
+gcc test10.o -o test10
+[1;32mTest test10 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/test11.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test11.scm" "test11.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test11.s -o test11.o
+gcc test11.o -o test11
+[1;32mTest test11 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/torture-test-for-compiler-00.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-00.scm" "torture-test-for-compiler-00.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-00.s -o torture-test-for-compiler-00.o
+gcc torture-test-for-compiler-00.o -o torture-test-for-compiler-00
+[1;32mTest torture-test-for-compiler-00 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/torture-test-for-compiler-01.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-01.scm" "torture-test-for-compiler-01.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-01.s -o torture-test-for-compiler-01.o
+gcc torture-test-for-compiler-01.o -o torture-test-for-compiler-01
+[1;32mTest torture-test-for-compiler-01 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/torture-test-for-compiler-02.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-02.scm" "torture-test-for-compiler-02.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-02.s -o torture-test-for-compiler-02.o
+gcc torture-test-for-compiler-02.o -o torture-test-for-compiler-02
+[1;31m *** RESULTS DIFFER in torture-test-for-compiler-02 ☹[0m
+*** scheme output: #t
+*** our output: #f
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/torture-test-for-compiler-06.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-06.scm" "torture-test-for-compiler-06.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-06.s -o torture-test-for-compiler-06.o
+gcc torture-test-for-compiler-06.o -o torture-test-for-compiler-06
+[1;32mTest torture-test-for-compiler-06 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/torture-test-for-compiler-007.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-007.scm" "torture-test-for-compiler-007.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-007.s -o torture-test-for-compiler-007.o
+gcc torture-test-for-compiler-007.o -o torture-test-for-compiler-007
+[1;32mTest torture-test-for-compiler-007 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/torture-test-for-compiler-07.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-07.scm" "torture-test-for-compiler-07.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-07.s -o torture-test-for-compiler-07.o
+gcc torture-test-for-compiler-07.o -o torture-test-for-compiler-07
+[1;32mTest torture-test-for-compiler-07 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/torture-test-for-compiler-008.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-008.scm" "torture-test-for-compiler-008.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-008.s -o torture-test-for-compiler-008.o
+gcc torture-test-for-compiler-008.o -o torture-test-for-compiler-008
+[1;32mTest torture-test-for-compiler-008 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2015Tests/tests/torture-test-for-compiler-09.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-09.scm" "torture-test-for-compiler-09.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-09.s -o torture-test-for-compiler-09.o
+gcc torture-test-for-compiler-09.o -o torture-test-for-compiler-09
+[1;32mTest torture-test-for-compiler-09 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/fact-x.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "fact-x.scm" "fact-x.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 fact-x.s -o fact-x.o
+gcc fact-x.o -o fact-x
+[1;32mTest fact-x Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/tests1.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "tests1.scm" "tests1.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 tests1.s -o tests1.o
+gcc tests1.o -o tests1
+[1;31m *** RESULTS DIFFER in tests1 ☹[0m
+*** scheme output: 23
+-2
+-1
+5
+35
+88706213
+2811
+-5
+12
+14
+6
+-5
+6
+1830
+185
+70
+64
+27
+#f
+#t
+400
+-4
+200
+121
+250002
+178
+eq!
+no!
+720
+144
+#f
+#f
+"x is greater than y"
+a23
+#f
+36
+(3 . (5 . 4))
+0
+80976
+(1 . (2 . (3 . (4 . (5 . (6 . ()))))))
+2
+14
+hello
+5
+5504
+384
+123
+1241
+177147
+*** our output: 23
+-2
+-1
+5
+35
+88706213
+2811
+-5
+12
+14
+6
+-5
+6
+1830
+185
+70
+64
+27
+#f
+#t
+400
+-4
+200
+121
+250002
+178
+eq!
+no!
+720
+144
+#f
+#f
+"x is greater than y"
+a23
+#f
+36
+(3 5 . 4)
+0
+4960893008
+(1 2 3 4 5 6)
+2
+14
+hello
+5
+5504
+384
+123
+1241
+177147
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/tests2.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "tests2.scm" "tests2.s")' | scheme -q 
+nasm -g -f elf64 tests2.s -o tests2.o
+Makefile:8: recipe for target 'tests2' failed
+[1;31m *** RESULTS DIFFER in tests2 ☹[0m
+*** scheme output: (1 . ((2 . ((3 . ((4 . ((5 . ((6 . (7 . ())) . ())) . ())) . ())) . ())) . ()))
+(1 . ((2 . (3 . ())) . (4 . (6 . ()))))
+725760
+2
+11
+11
+30
+11
+33
+7
+10
+10
+10
+10
+10
+3
+25
+17
+15
+330
+138
+0
+14
+16
+2
+4
+#t
+#t
+65536
+65536
+36
+25
+625
+500
+625
+1000
+500
+36000
+16
+0
+121
+-11
+34
+-4
+50
+16
+8
+3
+50
+*** our output: 
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/tests3.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "tests3.scm" "tests3.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 tests3.s -o tests3.o
+gcc tests3.o -o tests3
+[1;31m *** RESULTS DIFFER in tests3 ☹[0m
+*** scheme output: (5 . 4)
+97
+#t
+#t
+"P"
+#t
+(55 . 6)
+#f
+#t
+#t
+#f
+#t
+#t
+#f
+1
+2
+5
+108
+hello
+a
+#t
+1
+8
+#t
+3
+500
+(444 . 5)
+(4 . 444)
+4
+*** our output: 
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/tests4.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "tests4.scm" "tests4.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 tests4.s -o tests4.o
+gcc tests4.o -o tests4
+[1;32mTest tests4 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/tests5.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "tests5.scm" "tests5.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 tests5.s -o tests5.o
+gcc tests5.o -o tests5
+[1;31m *** RESULTS DIFFER in tests5 ☹[0m
+*** scheme output: (1 . (2 . (3 . (#<void> . (#<void> . ())))))
+(a . (b . (#<void> . (#<void> . (f . ())))))
+1
+#t
+#f
+4
+65
+ok
+sbss
+acc
+(1 . (((1 . 2) . 66) . (3 . (4 . ()))))
+(1 . (2 . (1 . 2)))
+6
+106480
+14511880
+#f
+(0 . (1 . (2 . ())))
+(0 . (3 . (4 . ())))
+(1 . (a . ((* . (4 . ())) . ())))
+(bla . ((((s . ()) . (s . ())) . (sd . ())) . ()))
+*** our output: (1 2 3 #<void> #<void>)
+(a b #<void> #<void> f)
+1
+#t
+#f
+4
+65
+ok
+sbss
+acc
+6
+106480
+14511880
+#f
+(0 1 2)
+(0 3 4)
+(1 a (* 4))
+(bla (((s) s) sd))
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/tests6.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "tests6.scm" "tests6.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 tests6.s -o tests6.o
+gcc tests6.o -o tests6
+[1;31m *** RESULTS DIFFER in tests6 ☹[0m
+*** scheme output: (1 . (2 . (7 . ())))
+(a . (3 . (4 . (24 . ()))))
+(a . (((b . (c . ())) . ((d . (e . ())) . ())) . (f . ())))
+((3 . (4 . (5 . ()))) . ())
+((3 . (4 . (5 . ()))) . ())
+1
+(1 . (2 . (3 . (4 . (5 . (6 . ()))))))
+39
+23
+done
+(armadilo . (is . (greater . (than . (komodo . ())))))
+#f
+11
+#f
+#t
+#t
+#t
+#t
+#t
+*** our output: (1 2 7)
+(a 3 4 24)
+((3 4 5))
+((3 4 5))
+1
+(1 2 3 4 5 6)
+39
+23
+done
+(armadilo is greater than komodo)
+#f
+11
+#f
+#t
+#t
+#t
+#f
+#t
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/torture-test-for-compiler-00.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-00.scm" "torture-test-for-compiler-00.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-00.s -o torture-test-for-compiler-00.o
+gcc torture-test-for-compiler-00.o -o torture-test-for-compiler-00
+[1;32mTest torture-test-for-compiler-00 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/torture-test-for-compiler-01.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-01.scm" "torture-test-for-compiler-01.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-01.s -o torture-test-for-compiler-01.o
+gcc torture-test-for-compiler-01.o -o torture-test-for-compiler-01
+[1;32mTest torture-test-for-compiler-01 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/torture-test-for-compiler-02.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-02.scm" "torture-test-for-compiler-02.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-02.s -o torture-test-for-compiler-02.o
+gcc torture-test-for-compiler-02.o -o torture-test-for-compiler-02
+[1;31m *** RESULTS DIFFER in torture-test-for-compiler-02 ☹[0m
+*** scheme output: #t
+*** our output: #f
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/torture-test-for-compiler-03.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-03.scm" "torture-test-for-compiler-03.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-03.s -o torture-test-for-compiler-03.o
+gcc torture-test-for-compiler-03.o -o torture-test-for-compiler-03
+[1;32mTest torture-test-for-compiler-03 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/torture-test-for-compiler-005.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-005.scm" "torture-test-for-compiler-005.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-005.s -o torture-test-for-compiler-005.o
+gcc torture-test-for-compiler-005.o -o torture-test-for-compiler-005
+[1;32mTest torture-test-for-compiler-005 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/torture-test-for-compiler-05.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-05.scm" "torture-test-for-compiler-05.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-05.s -o torture-test-for-compiler-05.o
+gcc torture-test-for-compiler-05.o -o torture-test-for-compiler-05
+[1;32mTest torture-test-for-compiler-05 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/torture-test-for-compiler-006.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-006.scm" "torture-test-for-compiler-006.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-006.s -o torture-test-for-compiler-006.o
+gcc torture-test-for-compiler-006.o -o torture-test-for-compiler-006
+[1;32mTest torture-test-for-compiler-006 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/torture-test-for-compiler-06.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-06.scm" "torture-test-for-compiler-06.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-06.s -o torture-test-for-compiler-06.o
+gcc torture-test-for-compiler-06.o -o torture-test-for-compiler-06
+[1;32mTest torture-test-for-compiler-06 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/torture-test-for-compiler-007.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-007.scm" "torture-test-for-compiler-007.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-007.s -o torture-test-for-compiler-007.o
+gcc torture-test-for-compiler-007.o -o torture-test-for-compiler-007
+[1;32mTest torture-test-for-compiler-007 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/torture-test-for-compiler-07.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-07.scm" "torture-test-for-compiler-07.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-07.s -o torture-test-for-compiler-07.o
+gcc torture-test-for-compiler-07.o -o torture-test-for-compiler-07
+[1;32mTest torture-test-for-compiler-07 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/torture-test-for-compiler-008.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-008.scm" "torture-test-for-compiler-008.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-008.s -o torture-test-for-compiler-008.o
+gcc torture-test-for-compiler-008.o -o torture-test-for-compiler-008
+[1;32mTest torture-test-for-compiler-008 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/torture-test-for-compiler-08.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-08.scm" "torture-test-for-compiler-08.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-08.s -o torture-test-for-compiler-08.o
+gcc torture-test-for-compiler-08.o -o torture-test-for-compiler-08
+[1;32mTest torture-test-for-compiler-08 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/torture-test-for-compiler-09.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-09.scm" "torture-test-for-compiler-09.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-09.s -o torture-test-for-compiler-09.o
+gcc torture-test-for-compiler-09.o -o torture-test-for-compiler-09
+[1;32mTest torture-test-for-compiler-09 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/2016Tests/tests/torture-test-for-compiler-unsorted.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "torture-test-for-compiler-unsorted.scm" "torture-test-for-compiler-unsorted.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 torture-test-for-compiler-unsorted.s -o torture-test-for-compiler-unsorted.o
+gcc torture-test-for-compiler-unsorted.o -o torture-test-for-compiler-unsorted
+[1;32mTest torture-test-for-compiler-unsorted Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/mayer_fact-x.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "mayer_fact-x.scm" "mayer_fact-x.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 mayer_fact-x.s -o mayer_fact-x.o
+gcc mayer_fact-x.o -o mayer_fact-x
+[1;32mTest mayer_fact-x Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/mayer_test00.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "mayer_test00.scm" "mayer_test00.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 mayer_test00.s -o mayer_test00.o
+gcc mayer_test00.o -o mayer_test00
+[1;32mTest mayer_test00 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/mayer_test01.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "mayer_test01.scm" "mayer_test01.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 mayer_test01.s -o mayer_test01.o
+gcc mayer_test01.o -o mayer_test01
+[1;32mTest mayer_test01 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/mayer_test02.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "mayer_test02.scm" "mayer_test02.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 mayer_test02.s -o mayer_test02.o
+gcc mayer_test02.o -o mayer_test02
+[1;31m *** RESULTS DIFFER in mayer_test02 ☹[0m
+*** scheme output: #t
+*** our output: #f
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/mayer_test03.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "mayer_test03.scm" "mayer_test03.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 mayer_test03.s -o mayer_test03.o
+gcc mayer_test03.o -o mayer_test03
+[1;32mTest mayer_test03 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/mayer_test05.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "mayer_test05.scm" "mayer_test05.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 mayer_test05.s -o mayer_test05.o
+gcc mayer_test05.o -o mayer_test05
+[1;32mTest mayer_test05 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/mayer_test07.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "mayer_test07.scm" "mayer_test07.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 mayer_test07.s -o mayer_test07.o
+gcc mayer_test07.o -o mayer_test07
+[1;32mTest mayer_test07 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/mayer_test08.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "mayer_test08.scm" "mayer_test08.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 mayer_test08.s -o mayer_test08.o
+gcc mayer_test08.o -o mayer_test08
+[1;32mTest mayer_test08 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/mayer_test09.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "mayer_test09.scm" "mayer_test09.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 mayer_test09.s -o mayer_test09.o
+gcc mayer_test09.o -o mayer_test09
+[1;32mTest mayer_test09 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/mayer_unsorted1.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "mayer_unsorted1.scm" "mayer_unsorted1.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 mayer_unsorted1.s -o mayer_unsorted1.o
+gcc mayer_unsorted1.o -o mayer_unsorted1
+[1;32mTest mayer_unsorted1 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/mayer_unsorted2.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "mayer_unsorted2.scm" "mayer_unsorted2.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 mayer_unsorted2.s -o mayer_unsorted2.o
+gcc mayer_unsorted2.o -o mayer_unsorted2
+[1;32mTest mayer_unsorted2 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/mayer_unsorted3.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "mayer_unsorted3.scm" "mayer_unsorted3.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 mayer_unsorted3.s -o mayer_unsorted3.o
+gcc mayer_unsorted3.o -o mayer_unsorted3
+[1;32mTest mayer_unsorted3 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/mayer_unsorted4.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "mayer_unsorted4.scm" "mayer_unsorted4.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 mayer_unsorted4.s -o mayer_unsorted4.o
+gcc mayer_unsorted4.o -o mayer_unsorted4
+[1;32mTest mayer_unsorted4 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/mayer_unsorted5.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "mayer_unsorted5.scm" "mayer_unsorted5.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 mayer_unsorted5.s -o mayer_unsorted5.o
+gcc mayer_unsorted5.o -o mayer_unsorted5
+[1;32mTest mayer_unsorted5 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/mayer_unsorted6.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "mayer_unsorted6.scm" "mayer_unsorted6.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 mayer_unsorted6.s -o mayer_unsorted6.o
+gcc mayer_unsorted6.o -o mayer_unsorted6
+[1;32mTest mayer_unsorted6 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test0.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test0.scm" "test0.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test0.s -o test0.o
+gcc test0.o -o test0
+[1;32mTest test0 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test1.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test1.scm" "test1.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test1.s -o test1.o
+gcc test1.o -o test1
+[1;32mTest test1 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test2.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test2.scm" "test2.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test2.s -o test2.o
+gcc test2.o -o test2
+[1;32mTest test2 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test3.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test3.scm" "test3.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test3.s -o test3.o
+gcc test3.o -o test3
+[1;32mTest test3 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test4.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test4.scm" "test4.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test4.s -o test4.o
+gcc test4.o -o test4
+[1;32mTest test4 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test5.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test5.scm" "test5.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test5.s -o test5.o
+gcc test5.o -o test5
+[1;32mTest test5 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test6.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test6.scm" "test6.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test6.s -o test6.o
+gcc test6.o -o test6
+[1;32mTest test6 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test7.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test7.scm" "test7.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test7.s -o test7.o
+gcc test7.o -o test7
+[1;32mTest test7 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test8.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test8.scm" "test8.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test8.s -o test8.o
+gcc test8.o -o test8
+[1;32mTest test8 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test9.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test9.scm" "test9.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test9.s -o test9.o
+gcc test9.o -o test9
+[1;32mTest test9 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test10.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test10.scm" "test10.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test10.s -o test10.o
+gcc test10.o -o test10
+[1;31m *** RESULTS DIFFER in test10 ☹[0m
+*** scheme output: 
+*** our output: #<void>
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test11.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test11.scm" "test11.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test11.s -o test11.o
+gcc test11.o -o test11
+[1;32mTest test11 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test12.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test12.scm" "test12.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test12.s -o test12.o
+gcc test12.o -o test12
+[1;32mTest test12 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test13.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test13.scm" "test13.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test13.s -o test13.o
+gcc test13.o -o test13
+[1;32mTest test13 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test14.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test14.scm" "test14.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test14.s -o test14.o
+gcc test14.o -o test14
+[1;32mTest test14 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test15.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test15.scm" "test15.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test15.s -o test15.o
+gcc test15.o -o test15
+[1;32mTest test15 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test16.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test16.scm" "test16.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test16.s -o test16.o
+gcc test16.o -o test16
+[1;32mTest test16 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test18.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test18.scm" "test18.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test18.s -o test18.o
+gcc test18.o -o test18
+[1;32mTest test18 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test19.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test19.scm" "test19.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test19.s -o test19.o
+gcc test19.o -o test19
+[1;32mTest test19 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test22.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test22.scm" "test22.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test22.s -o test22.o
+gcc test22.o -o test22
+[1;32mTest test22 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test23.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test23.scm" "test23.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test23.s -o test23.o
+gcc test23.o -o test23
+[1;32mTest test23 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test24.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test24.scm" "test24.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test24.s -o test24.o
+gcc test24.o -o test24
+[1;32mTest test24 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test25.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test25.scm" "test25.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test25.s -o test25.o
+gcc test25.o -o test25
+[1;32mTest test25 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test30.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test30.scm" "test30.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test30.s -o test30.o
+gcc test30.o -o test30
+[1;32mTest test30 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test31.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test31.scm" "test31.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test31.s -o test31.o
+gcc test31.o -o test31
+[1;32mTest test31 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test32.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test32.scm" "test32.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test32.s -o test32.o
+gcc test32.o -o test32
+[1;32mTest test32 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test33.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test33.scm" "test33.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test33.s -o test33.o
+gcc test33.o -o test33
+[1;32mTest test33 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test34.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test34.scm" "test34.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test34.s -o test34.o
+gcc test34.o -o test34
+[1;32mTest test34 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test35.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test35.scm" "test35.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test35.s -o test35.o
+gcc test35.o -o test35
+[1;32mTest test35 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test36.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test36.scm" "test36.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test36.s -o test36.o
+gcc test36.o -o test36
+[1;32mTest test36 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test37.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test37.scm" "test37.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test37.s -o test37.o
+gcc test37.o -o test37
+[1;32mTest test37 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test38.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test38.scm" "test38.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test38.s -o test38.o
+gcc test38.o -o test38
+[1;32mTest test38 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test39.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test39.scm" "test39.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test39.s -o test39.o
+gcc test39.o -o test39
+[1;32mTest test39 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test40.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test40.scm" "test40.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test40.s -o test40.o
+gcc test40.o -o test40
+[1;32mTest test40 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test100.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test100.scm" "test100.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test100.s -o test100.o
+gcc test100.o -o test100
+[1;32mTest test100 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test101.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test101.scm" "test101.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test101.s -o test101.o
+gcc test101.o -o test101
+[1;32mTest test101 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test102.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test102.scm" "test102.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test102.s -o test102.o
+gcc test102.o -o test102
+[1;32mTest test102 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test103.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test103.scm" "test103.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test103.s -o test103.o
+gcc test103.o -o test103
+[1;32mTest test103 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test104.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test104.scm" "test104.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test104.s -o test104.o
+gcc test104.o -o test104
+[1;32mTest test104 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test105.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test105.scm" "test105.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test105.s -o test105.o
+gcc test105.o -o test105
+[1;32mTest test105 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test107.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test107.scm" "test107.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test107.s -o test107.o
+gcc test107.o -o test107
+[1;32mTest test107 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test109.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test109.scm" "test109.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test109.s -o test109.o
+gcc test109.o -o test109
+[1;32mTest test109 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test114.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test114.scm" "test114.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test114.s -o test114.o
+gcc test114.o -o test114
+[1;32mTest test114 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test115.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test115.scm" "test115.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test115.s -o test115.o
+gcc test115.o -o test115
+[1;32mTest test115 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test116.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test116.scm" "test116.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test116.s -o test116.o
+gcc test116.o -o test116
+[1;32mTest test116 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test117.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test117.scm" "test117.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test117.s -o test117.o
+gcc test117.o -o test117
+[1;32mTest test117 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test118.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test118.scm" "test118.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test118.s -o test118.o
+gcc test118.o -o test118
+[1;32mTest test118 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test119.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test119.scm" "test119.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test119.s -o test119.o
+gcc test119.o -o test119
+[1;32mTest test119 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test120.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test120.scm" "test120.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test120.s -o test120.o
+gcc test120.o -o test120
+[1;32mTest test120 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test121.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test121.scm" "test121.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test121.s -o test121.o
+gcc test121.o -o test121
+[1;32mTest test121 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test122.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test122.scm" "test122.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test122.s -o test122.o
+gcc test122.o -o test122
+[1;32mTest test122 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test123.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test123.scm" "test123.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test123.s -o test123.o
+gcc test123.o -o test123
+[1;32mTest test123 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test124.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test124.scm" "test124.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test124.s -o test124.o
+gcc test124.o -o test124
+[1;32mTest test124 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test125.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test125.scm" "test125.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test125.s -o test125.o
+gcc test125.o -o test125
+[1;32mTest test125 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test126.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test126.scm" "test126.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test126.s -o test126.o
+gcc test126.o -o test126
+[1;32mTest test126 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test127.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test127.scm" "test127.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test127.s -o test127.o
+gcc test127.o -o test127
+[1;32mTest test127 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test128.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test128.scm" "test128.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test128.s -o test128.o
+gcc test128.o -o test128
+[1;32mTest test128 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test129.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test129.scm" "test129.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test129.s -o test129.o
+gcc test129.o -o test129
+[1;32mTest test129 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test130.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test130.scm" "test130.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test130.s -o test130.o
+gcc test130.o -o test130
+[1;32mTest test130 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test131.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test131.scm" "test131.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test131.s -o test131.o
+gcc test131.o -o test131
+[1;32mTest test131 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test132.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test132.scm" "test132.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test132.s -o test132.o
+gcc test132.o -o test132
+[1;32mTest test132 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test133.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test133.scm" "test133.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test133.s -o test133.o
+gcc test133.o -o test133
+[1;32mTest test133 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test134.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test134.scm" "test134.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test134.s -o test134.o
+gcc test134.o -o test134
+[1;32mTest test134 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test135.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test135.scm" "test135.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test135.s -o test135.o
+gcc test135.o -o test135
+[1;32mTest test135 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test136.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test136.scm" "test136.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test136.s -o test136.o
+gcc test136.o -o test136
+[1;32mTest test136 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test137.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test137.scm" "test137.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test137.s -o test137.o
+gcc test137.o -o test137
+[1;32mTest test137 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test138.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test138.scm" "test138.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test138.s -o test138.o
+gcc test138.o -o test138
+[1;32mTest test138 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test139.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test139.scm" "test139.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test139.s -o test139.o
+gcc test139.o -o test139
+[1;32mTest test139 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test140.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test140.scm" "test140.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test140.s -o test140.o
+gcc test140.o -o test140
+[1;32mTest test140 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test141.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test141.scm" "test141.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test141.s -o test141.o
+gcc test141.o -o test141
+[1;32mTest test141 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test142.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test142.scm" "test142.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test142.s -o test142.o
+gcc test142.o -o test142
+[1;32mTest test142 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test143.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test143.scm" "test143.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test143.s -o test143.o
+gcc test143.o -o test143
+[1;32mTest test143 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test144.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test144.scm" "test144.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test144.s -o test144.o
+gcc test144.o -o test144
+[1;32mTest test144 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test145.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test145.scm" "test145.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test145.s -o test145.o
+gcc test145.o -o test145
+[1;32mTest test145 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test146.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test146.scm" "test146.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test146.s -o test146.o
+gcc test146.o -o test146
+[1;32mTest test146 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test147.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test147.scm" "test147.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test147.s -o test147.o
+gcc test147.o -o test147
+[1;32mTest test147 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test148.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test148.scm" "test148.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test148.s -o test148.o
+gcc test148.o -o test148
+[1;32mTest test148 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test149.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test149.scm" "test149.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test149.s -o test149.o
+gcc test149.o -o test149
+[1;32mTest test149 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test150.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test150.scm" "test150.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test150.s -o test150.o
+gcc test150.o -o test150
+[1;32mTest test150 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test151.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test151.scm" "test151.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test151.s -o test151.o
+gcc test151.o -o test151
+[1;32mTest test151 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test152.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test152.scm" "test152.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test152.s -o test152.o
+gcc test152.o -o test152
+[1;32mTest test152 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test153.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test153.scm" "test153.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test153.s -o test153.o
+gcc test153.o -o test153
+[1;32mTest test153 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test154.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test154.scm" "test154.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test154.s -o test154.o
+gcc test154.o -o test154
+[1;32mTest test154 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test155.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test155.scm" "test155.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test155.s -o test155.o
+gcc test155.o -o test155
+[1;32mTest test155 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test156.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test156.scm" "test156.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test156.s -o test156.o
+gcc test156.o -o test156
+[1;32mTest test156 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test157.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test157.scm" "test157.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test157.s -o test157.o
+gcc test157.o -o test157
+[1;32mTest test157 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test158.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test158.scm" "test158.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test158.s -o test158.o
+gcc test158.o -o test158
+[1;32mTest test158 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test159.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test159.scm" "test159.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test159.s -o test159.o
+gcc test159.o -o test159
+[1;32mTest test159 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test160.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test160.scm" "test160.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test160.s -o test160.o
+gcc test160.o -o test160
+[1;32mTest test160 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test161.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test161.scm" "test161.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test161.s -o test161.o
+gcc test161.o -o test161
+[1;32mTest test161 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test162.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test162.scm" "test162.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test162.s -o test162.o
+gcc test162.o -o test162
+[1;32mTest test162 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test163.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test163.scm" "test163.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test163.s -o test163.o
+gcc test163.o -o test163
+[1;32mTest test163 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test164.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test164.scm" "test164.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test164.s -o test164.o
+gcc test164.o -o test164
+[1;32mTest test164 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test165.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test165.scm" "test165.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test165.s -o test165.o
+gcc test165.o -o test165
+[1;32mTest test165 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test166.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test166.scm" "test166.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test166.s -o test166.o
+gcc test166.o -o test166
+[1;32mTest test166 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test167.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test167.scm" "test167.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test167.s -o test167.o
+gcc test167.o -o test167
+[1;32mTest test167 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test168.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test168.scm" "test168.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test168.s -o test168.o
+gcc test168.o -o test168
+[1;32mTest test168 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test169.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test169.scm" "test169.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test169.s -o test169.o
+gcc test169.o -o test169
+[1;32mTest test169 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test170.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test170.scm" "test170.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test170.s -o test170.o
+gcc test170.o -o test170
+[1;32mTest test170 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test171.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test171.scm" "test171.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test171.s -o test171.o
+gcc test171.o -o test171
+[1;32mTest test171 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test172.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test172.scm" "test172.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test172.s -o test172.o
+gcc test172.o -o test172
+[1;32mTest test172 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test173.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test173.scm" "test173.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test173.s -o test173.o
+gcc test173.o -o test173
+[1;32mTest test173 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test174.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test174.scm" "test174.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test174.s -o test174.o
+gcc test174.o -o test174
+[1;32mTest test174 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test175.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test175.scm" "test175.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test175.s -o test175.o
+gcc test175.o -o test175
+[1;32mTest test175 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test178.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test178.scm" "test178.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test178.s -o test178.o
+gcc test178.o -o test178
+[1;32mTest test178 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test179.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test179.scm" "test179.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test179.s -o test179.o
+gcc test179.o -o test179
+[1;32mTest test179 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test180.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test180.scm" "test180.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test180.s -o test180.o
+gcc test180.o -o test180
+[1;32mTest test180 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test181.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test181.scm" "test181.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test181.s -o test181.o
+gcc test181.o -o test181
+[1;32mTest test181 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test182.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test182.scm" "test182.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test182.s -o test182.o
+gcc test182.o -o test182
+[1;32mTest test182 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test183.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test183.scm" "test183.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test183.s -o test183.o
+gcc test183.o -o test183
+[1;32mTest test183 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test184.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test184.scm" "test184.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test184.s -o test184.o
+gcc test184.o -o test184
+[1;32mTest test184 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test185.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test185.scm" "test185.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test185.s -o test185.o
+gcc test185.o -o test185
+[1;32mTest test185 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test186.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test186.scm" "test186.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test186.s -o test186.o
+gcc test186.o -o test186
+[1;32mTest test186 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test187.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test187.scm" "test187.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test187.s -o test187.o
+gcc test187.o -o test187
+[1;32mTest test187 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test188.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test188.scm" "test188.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test188.s -o test188.o
+gcc test188.o -o test188
+[1;32mTest test188 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test190.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test190.scm" "test190.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test190.s -o test190.o
+gcc test190.o -o test190
+[1;32mTest test190 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test192.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test192.scm" "test192.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test192.s -o test192.o
+gcc test192.o -o test192
+[1;32mTest test192 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test193.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test193.scm" "test193.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test193.s -o test193.o
+gcc test193.o -o test193
+[1;32mTest test193 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test195.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test195.scm" "test195.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test195.s -o test195.o
+gcc test195.o -o test195
+[1;32mTest test195 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test197.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test197.scm" "test197.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test197.s -o test197.o
+gcc test197.o -o test197
+[1;32mTest test197 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test198.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test198.scm" "test198.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test198.s -o test198.o
+gcc test198.o -o test198
+[1;32mTest test198 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test199.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test199.scm" "test199.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test199.s -o test199.o
+gcc test199.o -o test199
+[1;32mTest test199 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test200.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test200.scm" "test200.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test200.s -o test200.o
+gcc test200.o -o test200
+[1;32mTest test200 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test201.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test201.scm" "test201.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test201.s -o test201.o
+gcc test201.o -o test201
+[1;32mTest test201 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test204.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test204.scm" "test204.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test204.s -o test204.o
+gcc test204.o -o test204
+[1;32mTest test204 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test205.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test205.scm" "test205.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test205.s -o test205.o
+gcc test205.o -o test205
+[1;32mTest test205 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test206.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test206.scm" "test206.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test206.s -o test206.o
+gcc test206.o -o test206
+[1;32mTest test206 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test207.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test207.scm" "test207.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test207.s -o test207.o
+gcc test207.o -o test207
+[1;32mTest test207 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test208.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test208.scm" "test208.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test208.s -o test208.o
+gcc test208.o -o test208
+[1;32mTest test208 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test209.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test209.scm" "test209.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test209.s -o test209.o
+gcc test209.o -o test209
+[1;32mTest test209 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test210.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test210.scm" "test210.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test210.s -o test210.o
+gcc test210.o -o test210
+[1;32mTest test210 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test211.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test211.scm" "test211.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test211.s -o test211.o
+gcc test211.o -o test211
+[1;32mTest test211 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test212.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test212.scm" "test212.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test212.s -o test212.o
+gcc test212.o -o test212
+[1;32mTest test212 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test215.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test215.scm" "test215.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test215.s -o test215.o
+gcc test215.o -o test215
+[1;32mTest test215 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test216.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test216.scm" "test216.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test216.s -o test216.o
+gcc test216.o -o test216
+[1;32mTest test216 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test217.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test217.scm" "test217.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test217.s -o test217.o
+gcc test217.o -o test217
+[1;32mTest test217 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test218.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test218.scm" "test218.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test218.s -o test218.o
+gcc test218.o -o test218
+[1;32mTest test218 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test219.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test219.scm" "test219.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test219.s -o test219.o
+gcc test219.o -o test219
+[1;32mTest test219 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test220.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test220.scm" "test220.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test220.s -o test220.o
+gcc test220.o -o test220
+[1;32mTest test220 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test221.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test221.scm" "test221.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test221.s -o test221.o
+gcc test221.o -o test221
+[1;32mTest test221 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test222.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test222.scm" "test222.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test222.s -o test222.o
+gcc test222.o -o test222
+[1;32mTest test222 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test223.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test223.scm" "test223.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test223.s -o test223.o
+gcc test223.o -o test223
+[1;32mTest test223 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test224.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test224.scm" "test224.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test224.s -o test224.o
+gcc test224.o -o test224
+[1;32mTest test224 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test225.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test225.scm" "test225.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test225.s -o test225.o
+gcc test225.o -o test225
+[1;32mTest test225 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test226.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test226.scm" "test226.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test226.s -o test226.o
+gcc test226.o -o test226
+[1;32mTest test226 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test227.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test227.scm" "test227.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test227.s -o test227.o
+gcc test227.o -o test227
+[1;32mTest test227 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test228.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test228.scm" "test228.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test228.s -o test228.o
+gcc test228.o -o test228
+[1;32mTest test228 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test229.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test229.scm" "test229.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test229.s -o test229.o
+gcc test229.o -o test229
+[1;32mTest test229 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test230.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test230.scm" "test230.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test230.s -o test230.o
+gcc test230.o -o test230
+[1;32mTest test230 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test231.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test231.scm" "test231.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test231.s -o test231.o
+gcc test231.o -o test231
+[1;32mTest test231 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test232.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test232.scm" "test232.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test232.s -o test232.o
+gcc test232.o -o test232
+[1;32mTest test232 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test233.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test233.scm" "test233.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test233.s -o test233.o
+gcc test233.o -o test233
+[1;32mTest test233 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test234.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test234.scm" "test234.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test234.s -o test234.o
+gcc test234.o -o test234
+[1;32mTest test234 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test235.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test235.scm" "test235.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test235.s -o test235.o
+gcc test235.o -o test235
+[1;32mTest test235 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test236.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test236.scm" "test236.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test236.s -o test236.o
+gcc test236.o -o test236
+[1;32mTest test236 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test238.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test238.scm" "test238.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test238.s -o test238.o
+gcc test238.o -o test238
+[1;32mTest test238 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test239.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test239.scm" "test239.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test239.s -o test239.o
+gcc test239.o -o test239
+[1;32mTest test239 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test240.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test240.scm" "test240.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test240.s -o test240.o
+gcc test240.o -o test240
+[1;32mTest test240 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test242.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test242.scm" "test242.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test242.s -o test242.o
+gcc test242.o -o test242
+[1;32mTest test242 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test243.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test243.scm" "test243.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test243.s -o test243.o
+gcc test243.o -o test243
+[1;32mTest test243 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test245.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test245.scm" "test245.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test245.s -o test245.o
+gcc test245.o -o test245
+[1;32mTest test245 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test246.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test246.scm" "test246.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test246.s -o test246.o
+gcc test246.o -o test246
+[1;32mTest test246 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test248.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test248.scm" "test248.s")' | scheme -q 
+nasm -g -f elf64 test248.s -o test248.o
+Makefile:8: recipe for target 'test248' failed
+[1;31m *** RESULTS DIFFER in test248 ☹[0m
+*** scheme output: 0
+*** our output: 
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test249.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test249.scm" "test249.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test249.s -o test249.o
+gcc test249.o -o test249
+[1;32mTest test249 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test250.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test250.scm" "test250.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test250.s -o test250.o
+gcc test250.o -o test250
+[1;32mTest test250 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test251.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test251.scm" "test251.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test251.s -o test251.o
+gcc test251.o -o test251
+[1;32mTest test251 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test252.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test252.scm" "test252.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test252.s -o test252.o
+gcc test252.o -o test252
+[1;32mTest test252 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test253.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test253.scm" "test253.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test253.s -o test253.o
+gcc test253.o -o test253
+[1;32mTest test253 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test254.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test254.scm" "test254.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test254.s -o test254.o
+gcc test254.o -o test254
+[1;31m *** RESULTS DIFFER in test254 ☹[0m
+*** scheme output: #t
+*** our output: #f
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test255.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test255.scm" "test255.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test255.s -o test255.o
+gcc test255.o -o test255
+[1;32mTest test255 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test256.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test256.scm" "test256.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test256.s -o test256.o
+gcc test256.o -o test256
+[1;32mTest test256 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test257.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test257.scm" "test257.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test257.s -o test257.o
+gcc test257.o -o test257
+[1;32mTest test257 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test258.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test258.scm" "test258.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test258.s -o test258.o
+gcc test258.o -o test258
+[1;32mTest test258 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test259.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test259.scm" "test259.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test259.s -o test259.o
+gcc test259.o -o test259
+[1;32mTest test259 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test260.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test260.scm" "test260.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test260.s -o test260.o
+gcc test260.o -o test260
+[1;32mTest test260 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test261.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test261.scm" "test261.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test261.s -o test261.o
+gcc test261.o -o test261
+[1;32mTest test261 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test262.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test262.scm" "test262.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test262.s -o test262.o
+gcc test262.o -o test262
+[1;32mTest test262 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test263.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test263.scm" "test263.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test263.s -o test263.o
+gcc test263.o -o test263
+[1;32mTest test263 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test265.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test265.scm" "test265.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test265.s -o test265.o
+gcc test265.o -o test265
+[1;32mTest test265 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test266.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test266.scm" "test266.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test266.s -o test266.o
+gcc test266.o -o test266
+[1;32mTest test266 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test267.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test267.scm" "test267.s")' | scheme -q 
+nasm -g -f elf64 test267.s -o test267.o
+Makefile:8: recipe for target 'test267' failed
+[1;31m *** RESULTS DIFFER in test267 ☹[0m
+*** scheme output: 0
+*** our output: 
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test268.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test268.scm" "test268.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test268.s -o test268.o
+gcc test268.o -o test268
+[1;32mTest test268 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test269.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test269.scm" "test269.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test269.s -o test269.o
+gcc test269.o -o test269
+[1;32mTest test269 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test270.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test270.scm" "test270.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test270.s -o test270.o
+gcc test270.o -o test270
+[1;32mTest test270 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test271.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test271.scm" "test271.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test271.s -o test271.o
+gcc test271.o -o test271
+[1;32mTest test271 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test272.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test272.scm" "test272.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test272.s -o test272.o
+gcc test272.o -o test272
+[1;32mTest test272 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test273.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test273.scm" "test273.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test273.s -o test273.o
+gcc test273.o -o test273
+[1;32mTest test273 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test274.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test274.scm" "test274.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test274.s -o test274.o
+gcc test274.o -o test274
+[1;32mTest test274 Passed ☺ [0m
+--------------------------------
+
+Doing test AllTests/ChloucheTests/tests/test275.scm:
+--------------------------------
+echo '(load "sexpr-parser.scm") (load "tag-parser.scm") (load "semantic-analyzer.scm") (load "compiler.scm") (compile-scheme-file "test275.scm" "test275.s")' | scheme -q 
+
+
+
+
+
+
+nasm -g -f elf64 test275.s -o test275.o
+gcc test275.o -o test275
+[1;32mTest test275 Passed ☺ [0m
+--------------------------------
+
+Number of tests: 341
+[1;32mNumber of passed tests: 327 [0m
+[1;31mNumber of failed tests: 14 [0m

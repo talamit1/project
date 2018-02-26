@@ -935,15 +935,18 @@
         )
 )
 (define make-vec-rep
-    (lambda (vector table) 
-        (let* ((vecLst (vector->list vector))
-                (getFromCurrLst (getFromTable table))
-                (itemRepList  (map getFromCurrLst vecLst))
-                (first (car itemRepList))
-                (rest  (cdr itemRepList))
-                ) 
-                
-                (string-append first (fold-left prepareString "" rest))
+    (lambda (vector table)
+        (if (eq? vector `#())
+            (list->string (vector->list vector))
+            (let* ((vecLst (vector->list vector))
+                    (getFromCurrLst (getFromTable table))
+                    (itemRepList  (map getFromCurrLst vecLst))
+                    (first (car itemRepList))
+                    (rest  (cdr itemRepList))
+                    ) 
+                    
+                    (string-append first (fold-left prepareString "" rest))
+            )
         )
     )
 )
@@ -1005,19 +1008,42 @@
 
 (define splitString 
     (lambda (str) 
-        (let* ((lstStr (string->list str))
-            (splitedList (reverse (fold-left splitSpecialChars `() lstStr )))
-            (withQuotes (map addQuotes splitedList))
-            (first (car withQuotes))
-            (rest  (cdr withQuotes))
+        (if (equal? str "")
+            str
+            (let* ((lstStr (string->list str))
+                (splitedList (reverse (fold-left splitSpecialChars `() lstStr )))
+                (withQuotes (map addQuotes splitedList))
+                (first (car withQuotes))
+                (rest  (cdr withQuotes))
+                )
+
+                (string-append first (fold-left prepareString "" rest))
+                                    
+
             )
-
-            (string-append first (fold-left prepareString "" rest))
-                                
-
-        )
         )
     )
+)
+
+(define constructString
+    (lambda (str)
+      (if (equal? str "")
+         "MAKE_EMPTY_STRING"
+          (string-append "MAKE_LITERAL_STRING " str)
+      
+      )  
+    )
+)
+
+(define constructVec
+    (lambda (vec)
+      (if (equal? vec "")
+         "MAKE_EMPTY_VECTOR"
+          (string-append "MAKE_LITERAL_VECTOR " vec)
+      
+      )  
+    )
+)
 
 
 (define add-To-Constants-Table
@@ -1066,10 +1092,15 @@
                                 
                                 )
                         )
-                        ((string? item) 
+                        ((string? item)
+                           (let* ((str (string-append (splitString item)))
+                                 (constructString (constructString str))
+                                )
                             (append existingConsts 
-                            (list (list label item (string-append label ":\n\tMAKE_LITERAL_STRING " (string-append (splitString item)  "\n"  )))) 
-                        ))
+                                (list (list label item 
+                                    (string-append label ":\n\t" constructString
+                                          "\n"  )))) 
+                            ))
                         ((and (rational? item) (not (integer? item)))     
                             (let ((numer  (find-rep existingConsts (numerator item)))
                                   (denom  (find-rep existingConsts (denominator item))))
@@ -1078,8 +1109,13 @@
                             )
                         )
                         ((vector? item)
-                        (append existingConsts
-                        (list (list label item (string-append label ":\n\tMAKE_LITERAL_VECTOR " (string-append  (make-vec-rep item existingConsts)  "\n"  )))) 
+                        (let* ((vec (string-append  (make-vec-rep item existingConsts)))
+                              (constructVec (constructVec vec))
+                              )
+                        (append existingConsts 
+                            (list (list label item 
+                                (string-append label ":\n\t" constructVec
+                                        "\n"  )))) 
                         ))
                     )                    
                 )                
@@ -1433,7 +1469,13 @@
                 "\tmov rdi, newline\n\tmov rax, 0\n\tcall printf\n"
                 ))
                 (generated-code (convert-to-string (map (lambda(x) (let ((checkVoid (create-check-void-label)))
-                 (string-append "\n\n" (code-gen x constTable freeTable 0) "\tcmp rax, sobVoid\n" "\tje " checkVoid "\n" codeEpilogue "\t" checkVoid ":\n" "\n\n"))) astExpression)))
+                 (string-append "\n\n" (code-gen x constTable freeTable 0) 
+                    "\tcmp rax, sobVoid\n" 
+                    "\tje "checkVoid "\n" 
+                    "\tmov r13, qword [sobVoid]\n" 
+                    "\tcmp rax, r13\n" 
+                    "\tje "checkVoid "\n" codeEpilogue "\t" checkVoid ":\n" 
+                    "\n\n"))) astExpression)))
                 )
                 (display "\n\n\n")
                 ;(debugPrint 555)
