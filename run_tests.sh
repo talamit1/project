@@ -23,7 +23,7 @@ for rawF in $(ls -v AllTests/*/tests/*.scm); do
   cp $rawF .
   echo "Doing test $rawF:"
   echo "--------------------------------"
-  make -f ./Makefile $f
+  make -f ./project/Makefile $f
   our=`./$f`
   total_tests=$((total_tests+1))
   if [ -f "$(echo $rawF | cut -d '/' -f-2)/sols/$f.scm" ]; then

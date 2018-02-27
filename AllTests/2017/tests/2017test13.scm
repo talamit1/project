@@ -1,0 +1,10 @@
+((lambda (a)
+        (begin
+          (define pi 3)
+          (define e 2)
+          (if (> a 64)
+              (+ pi e)
+              (* pi e)
+              )
+          )
+        ) 10)

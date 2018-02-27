@@ -1,0 +1,11 @@
+((lambda (x)
+      (begin
+        (define func1 (lambda (a)
+                        (+ a 4)
+                        )
+          )
+        (define func2 (lambda (a)
+                        (* a 4)
+                        )
+          )
+        (func1 (func2 (func1 x))))) 11)
