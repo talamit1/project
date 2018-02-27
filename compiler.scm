@@ -1380,9 +1380,9 @@
     )
 )
 
-(define show
-    (pipeline (file->list "foo.scm"))
-    )
+; (define show
+;     (pipeline (file->list "foo.scm"))
+;     )
 
 (define create-check-void-label (makeLabel "check_void_lable_")) 
 
