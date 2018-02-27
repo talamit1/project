@@ -1,6 +1,6 @@
-(load "semantic-analyzer.scm");
-(load "tag-parser.scm");
-(load "sexpr-parser.scm");
+(load "project/semantic-analyzer.scm");
+(load "project/tag-parser.scm");
+(load "project/sexpr-parser.scm");
 
 
 (define arg-count-exception-label 
@@ -62,7 +62,7 @@
 (define prologue
     (string-append 
         
-        "%include \"scheme.s\"\n\n"
+        "%include \"project/scheme.s\"\n\n"
         "section .data\n"
         "start_of_data:\n\n"
         

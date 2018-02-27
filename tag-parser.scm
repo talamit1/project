@@ -1,4 +1,4 @@
-(load "qq.scm")
+(load "project/qq.scm")
 
 
 (define  (debugPrint x)
