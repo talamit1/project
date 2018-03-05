@@ -1,7 +1,3 @@
-Tal Amit 201664737
-Roy Regev 305013518
-
-
 
 
 I (We) assert that the work we submitted is 100% our own. We have not received any
